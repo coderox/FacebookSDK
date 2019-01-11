@@ -95,14 +95,18 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="FacebookResult.h" />
+    <ClInclude Include="FacebookResult.h">
+      <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h">
       <DependentUpon>FacebookError.idl</DependentUpon>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FacebookResult.cpp" />
+    <ClCompile Include="FacebookResult.cpp">
+      <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
