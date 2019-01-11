@@ -95,12 +95,14 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FacebookResult.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h">
       <DependentUpon>FacebookError.idl</DependentUpon>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FacebookResult.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -111,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="FacebookResult.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />

@@ -1,0 +1,11 @@
+import "FacebookError.idl";
+
+namespace FacebookSDK
+{
+	runtimeclass FacebookResult {
+		FacebookResult(Object Object);
+		Boolean Succeeded{ get; };
+		Object Object{ get; };
+		FacebookError ErrorInfo{ get; };
+	};
+}

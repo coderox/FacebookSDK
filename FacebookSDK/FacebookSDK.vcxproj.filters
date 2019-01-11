@@ -13,10 +13,12 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="FacebookError.cpp" />
+    <ClCompile Include="FacebookResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h" />
+    <ClInclude Include="FacebookResult.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -27,5 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="FacebookResult.idl" />
   </ItemGroup>
 </Project>
