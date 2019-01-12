@@ -4,6 +4,7 @@
 //
 
 #include "pch.h"
+#include "BlankPage.xaml.h"
 
 using namespace FacebookSDK_Tests;
 
@@ -61,6 +62,8 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		// Place the frame in the current Window
 		Window::Current->Content = rootFrame;
+		
+		rootFrame->Navigate(FacebookSDK_Tests::BlankPage::typeid, nullptr);
 	}
 		
 	Microsoft::VisualStudio::TestPlatform::TestExecutor::WinRTCore::UnitTestClient::CreateDefaultUI();

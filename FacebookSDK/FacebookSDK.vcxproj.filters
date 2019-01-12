@@ -14,11 +14,13 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="FacebookError.cpp" />
     <ClCompile Include="FacebookResult.cpp" />
+    <ClCompile Include="HlsColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h" />
     <ClInclude Include="FacebookResult.h" />
+    <ClInclude Include="HlsColor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -31,5 +33,6 @@
     <Midl Include="FacebookError.idl" />
     <Midl Include="FacebookResult.idl" />
     <Midl Include="HlsColor.idl" />
+    <Midl Include="ColorLuminosityConverter.idl" />
   </ItemGroup>
 </Project>

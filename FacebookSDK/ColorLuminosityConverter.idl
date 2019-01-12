@@ -1,0 +1,7 @@
+namespace FacebookSDK
+{
+    runtimeclass ColorLuminosityConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+		ColorLuminosityConverter();
+    }
+}

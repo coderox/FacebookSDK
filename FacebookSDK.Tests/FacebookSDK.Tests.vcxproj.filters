@@ -55,4 +55,7 @@
   <ItemGroup>
     <None Include="FacebookSDK.Tests_TemporaryKey.pfx" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="BlankPage.xaml" />
+  </ItemGroup>
 </Project>

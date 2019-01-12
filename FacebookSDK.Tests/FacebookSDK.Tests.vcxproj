@@ -194,6 +194,9 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BlankPage.xaml.h">
+      <DependentUpon>BlankPage.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -220,6 +223,9 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlankPage.xaml.cpp">
+      <DependentUpon>BlankPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
@@ -248,6 +254,11 @@
     <ProjectReference Include="..\FacebookSDK\FacebookSDK.vcxproj">
       <Project>{9667b8a9-57b5-426d-b8b9-00c732d2b4c4}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="BlankPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
