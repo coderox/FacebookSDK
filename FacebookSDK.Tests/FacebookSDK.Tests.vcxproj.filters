@@ -18,6 +18,7 @@
     <ClCompile Include="FacebookError.Tests.cpp" />
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
+    <ClCompile Include="ColorLuminosityConverter.Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

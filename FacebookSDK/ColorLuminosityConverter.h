@@ -10,6 +10,8 @@ namespace winrt::FacebookSDK::implementation
 	{
 		ColorLuminosityConverter() { }
 
+		Windows::UI::Color ApplyFactor(Windows::UI::Color const& color, double factor);
+
 		virtual Windows::Foundation::IInspectable Convert(
 			Windows::Foundation::IInspectable const& value, 
 			Windows::UI::Xaml::Interop::TypeName const& targetType, 
@@ -17,10 +19,10 @@ namespace winrt::FacebookSDK::implementation
 			hstring const& language);
 		
 		virtual Windows::Foundation::IInspectable ConvertBack(
-			Windows::Foundation::IInspectable const& value, 
-			Windows::UI::Xaml::Interop::TypeName const& targetType, 
-			Windows::Foundation::IInspectable const& parameter, 
-			hstring const& language)
+			Windows::Foundation::IInspectable const& /*value*/, 
+			Windows::UI::Xaml::Interop::TypeName const& /*targetType*/, 
+			Windows::Foundation::IInspectable const& /*parameter*/, 
+			hstring const& /*language*/)
 		{
 			throw hresult_not_implemented();
 		}

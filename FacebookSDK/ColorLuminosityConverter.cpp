@@ -12,26 +12,29 @@ using namespace Windows::UI::Xaml::Media;
 
 namespace winrt::FacebookSDK::implementation
 {
+	Color ColorLuminosityConverter::ApplyFactor(Color const& color, double factor)
+	{
+		HlsColor hlsColor;
+		hlsColor.RgbValue(color);
+		hlsColor.Luminosity(hlsColor.Luminosity() * factor);
+		return hlsColor.RgbValue();
+	}
+
 	IInspectable ColorLuminosityConverter::Convert(
 		IInspectable const& value,
-		TypeName const& targetType,
+		TypeName const& /*targetType*/,
 		IInspectable const & parameter,
-		hstring const& language
+		hstring const& /*language*/
 	)
 	{
 		hstring paramString = parameter.as<IPropertyValue>().GetString();
 		double factor = stod(wstring(paramString.data()));
-		IInspectable result = nullptr;
-		HlsColor hlsColor;
+		IInspectable result;
 
 		SolidColorBrush scb = value.as<SolidColorBrush>();
 		if (scb != nullptr)
 		{
-			Color brushColor = scb.Color();
-			hlsColor.RgbValue(brushColor);
-			hlsColor.Luminosity(hlsColor.Luminosity() * factor);
-			Color newColor = hlsColor.RgbValue();
-			result = SolidColorBrush(newColor);
+			result = SolidColorBrush(ApplyFactor(scb.Color(), factor));
 		}
 		else
 		{
@@ -41,12 +44,8 @@ namespace winrt::FacebookSDK::implementation
 				GradientStopCollection gradientStops;
 				for (auto && stop : lgb.GradientStops())
 				{
-					//GradientStop^ stop = iter->Current;
 					GradientStop newStop;
-
-					hlsColor.RgbValue(stop.Color());
-					hlsColor.Luminosity(hlsColor.Luminosity() * factor);
-					newStop.Color(hlsColor.RgbValue());
+					newStop.Color(ApplyFactor(stop.Color(), factor));
 					newStop.Offset(stop.Offset());
 					gradientStops.Append(newStop);
 				}
