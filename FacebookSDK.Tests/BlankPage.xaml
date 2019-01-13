@@ -10,12 +10,18 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <facebook:ColorLuminosityConverter x:Key="ColorLuminosityConverter"/>
+        <facebook:ScaleConverter x:Key="ScaleConverter"/>
     </Page.Resources>
 
     <Grid Background="Red" Name="bgGrid" Padding="20">
         <Grid Background="{Binding ElementName=bgGrid, 
               Path=Background,
               Converter={StaticResource ColorLuminosityConverter},
+              ConverterParameter=0.7}"
+              
+              Width="{Binding ElementName=bgGrid,
+              Path=ActualWidth,
+              Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
     </Grid>
 </Page>

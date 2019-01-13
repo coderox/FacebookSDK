@@ -34,5 +34,6 @@
     <Midl Include="FacebookResult.idl" />
     <Midl Include="HlsColor.idl" />
     <Midl Include="ColorLuminosityConverter.idl" />
+    <Midl Include="ScaleConverter.idl" />
   </ItemGroup>
 </Project>

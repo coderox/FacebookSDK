@@ -110,6 +110,10 @@
     <ClInclude Include="FacebookError.h">
       <DependentUpon>FacebookError.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ScaleConverter.h">
+      <DependentUpon>ScaleConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
@@ -130,6 +134,10 @@
       <DependentUpon>FacebookError.idl</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="ScaleConverter.cpp">
+      <DependentUpon>ScaleConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="ColorLuminosityConverter.idl">
@@ -138,6 +146,9 @@
     <Midl Include="FacebookError.idl" />
     <Midl Include="FacebookResult.idl" />
     <Midl Include="HlsColor.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ScaleConverter.idl">
       <SubType>Designer</SubType>
     </Midl>
   </ItemGroup>

@@ -19,10 +19,13 @@
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
     <ClCompile Include="ColorLuminosityConverter.Tests.cpp" />
+    <ClCompile Include="BlankPage.xaml.cpp" />
+    <ClCompile Include="ScaleConverter.Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h" />
+    <ClInclude Include="BlankPage.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />
