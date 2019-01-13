@@ -8,6 +8,9 @@
     <Filter Include="Generated Files">
       <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{980aa99d-5cc6-4afa-a1fa-9d60dac24923}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -15,12 +18,16 @@
     <ClCompile Include="FacebookError.cpp" />
     <ClCompile Include="FacebookResult.cpp" />
     <ClCompile Include="HlsColor.cpp" />
+    <ClCompile Include="ColorLuminosityConverter.cpp" />
+    <ClCompile Include="ScaleConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h" />
     <ClInclude Include="FacebookResult.h" />
     <ClInclude Include="HlsColor.h" />
+    <ClInclude Include="ColorLuminosityConverter.h" />
+    <ClInclude Include="ScaleConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -33,7 +40,11 @@
     <Midl Include="FacebookError.idl" />
     <Midl Include="FacebookResult.idl" />
     <Midl Include="HlsColor.idl" />
-    <Midl Include="ColorLuminosityConverter.idl" />
-    <Midl Include="ScaleConverter.idl" />
+    <Midl Include="ColorLuminosityConverter.idl">
+      <Filter>Converters</Filter>
+    </Midl>
+    <Midl Include="ScaleConverter.idl">
+      <Filter>Converters</Filter>
+    </Midl>
   </ItemGroup>
 </Project>
