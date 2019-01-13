@@ -8,6 +8,12 @@
       <UniqueIdentifier>6118080a-5789-4c8c-a954-2f3d3c2a9a60</UniqueIdentifier>
       <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{39f550a8-60f5-45f3-bb08-5ee91a5a29cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pages">
+      <UniqueIdentifier>{6eeb9d6e-40bd-4f45-9a7e-0d523fb5e8d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -15,12 +21,22 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="FacebookError.Tests.cpp" />
-    <ClCompile Include="FacebookResult.Tests.cpp" />
-    <ClCompile Include="HlsColor.Tests.cpp" />
-    <ClCompile Include="ColorLuminosityConverter.Tests.cpp" />
     <ClCompile Include="BlankPage.xaml.cpp" />
-    <ClCompile Include="ScaleConverter.Tests.cpp" />
+    <ClCompile Include="ColorLuminosityConverter.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="FacebookError.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="FacebookResult.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleConverter.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="HlsColor.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -60,6 +76,8 @@
     <None Include="FacebookSDK.Tests_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BlankPage.xaml" />
+    <Page Include="BlankPage.xaml">
+      <Filter>Pages</Filter>
+    </Page>
   </ItemGroup>
 </Project>
