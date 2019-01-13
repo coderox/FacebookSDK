@@ -20,6 +20,7 @@
     <ClCompile Include="HlsColor.cpp" />
     <ClCompile Include="ColorLuminosityConverter.cpp" />
     <ClCompile Include="ScaleConverter.cpp" />
+    <ClCompile Include="FacebookSingleValue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -30,6 +31,8 @@
     <ClInclude Include="ScaleConverter.h" />
     <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="SDKMessage.h" />
+    <ClInclude Include="JsonClassFactory.h" />
+    <ClInclude Include="FacebookSingleValue.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -50,5 +53,6 @@
     </Midl>
     <Midl Include="FacebookSingleValue.idl" />
     <Midl Include="JsonClassFactory.idl" />
+    <Midl Include="IHttpClient.idl" />
   </ItemGroup>
 </Project>

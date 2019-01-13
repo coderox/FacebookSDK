@@ -40,6 +40,7 @@
     <ClCompile Include="FacebookSingleValue.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="HttpClientFake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

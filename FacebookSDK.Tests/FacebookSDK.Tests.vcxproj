@@ -230,6 +230,7 @@
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="FacebookSingleValue.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
+    <ClCompile Include="HttpClientFake.cpp" />
     <ClCompile Include="ScaleConverter.Tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>

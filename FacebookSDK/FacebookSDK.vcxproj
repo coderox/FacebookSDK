@@ -99,6 +99,10 @@
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="IHttpClient.h">
+      <DependentUpon>IHttpClient.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -158,6 +162,9 @@
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="IHttpClient.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="JsonClassFactory.idl">
       <SubType>Designer</SubType>
     </Midl>
