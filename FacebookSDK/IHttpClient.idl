@@ -21,8 +21,4 @@ namespace FacebookSDK
 			Windows.Foundation.Collections.IMapView<String, Object> parameters
 		);
     }
-
-	runtimeclass FacebookHttpClient : IHttpClient {
-
-	}
 }
