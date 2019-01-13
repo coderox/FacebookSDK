@@ -8,7 +8,7 @@ namespace winrt::FacebookSDK::implementation
     struct FacebookResult : FacebookResultT<FacebookResult>
     {
 	public:
-        FacebookResult() = delete;
+		FacebookResult() { };
         FacebookResult(Windows::Foundation::IInspectable const& Object);
 
         bool Succeeded();
@@ -17,8 +17,8 @@ namespace winrt::FacebookSDK::implementation
 	private:
 		~FacebookResult();
 
-		Windows::Foundation::IInspectable _object;
-		FacebookSDK::FacebookError _error;
+		Windows::Foundation::IInspectable _object{ nullptr };
+		FacebookSDK::FacebookError _error{ nullptr };
     };
 }
 

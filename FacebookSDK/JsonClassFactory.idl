@@ -1,0 +1,4 @@
+namespace FacebookSDK
+{
+	delegate Object JsonClassFactory(String jsonText);
+}

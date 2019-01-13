@@ -28,6 +28,8 @@
     <ClInclude Include="HlsColor.h" />
     <ClInclude Include="ColorLuminosityConverter.h" />
     <ClInclude Include="ScaleConverter.h" />
+    <ClInclude Include="HttpMethod.h" />
+    <ClInclude Include="SDKMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -46,5 +48,7 @@
     <Midl Include="ScaleConverter.idl">
       <Filter>Converters</Filter>
     </Midl>
+    <Midl Include="FacebookSingleValue.idl" />
+    <Midl Include="JsonClassFactory.idl" />
   </ItemGroup>
 </Project>

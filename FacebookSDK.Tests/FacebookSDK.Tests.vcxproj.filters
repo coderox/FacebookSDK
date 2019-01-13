@@ -37,6 +37,9 @@
     <ClCompile Include="HlsColor.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="FacebookSingleValue.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

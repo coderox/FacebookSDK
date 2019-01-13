@@ -99,13 +99,22 @@
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="JsonClassFactory.h">
+      <DependentUpon>JsonClassFactory.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookResult.h">
       <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="FacebookSingleValue.h">
+      <DependentUpon>FacebookSingleValue.idl</DependentUpon>
+      <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="HlsColor.h">
       <DependentUpon>HlsColor.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h">
       <DependentUpon>FacebookError.idl</DependentUpon>
@@ -114,6 +123,7 @@
       <DependentUpon>ScaleConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SDKMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
@@ -122,6 +132,10 @@
     </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
       <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="FacebookSingleValue.cpp">
+      <DependentUpon>FacebookSingleValue.idl</DependentUpon>
+      <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="HlsColor.cpp">
       <DependentUpon>HlsColor.idl</DependentUpon>
@@ -144,7 +158,13 @@
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="JsonClassFactory.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="FacebookResult.idl" />
+    <Midl Include="FacebookSingleValue.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="HlsColor.idl">
       <SubType>Designer</SubType>
     </Midl>
