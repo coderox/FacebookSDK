@@ -99,10 +99,6 @@
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="IHttpClient.h">
-      <DependentUpon>IHttpClient.idl</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
       <SubType>Code</SubType>
