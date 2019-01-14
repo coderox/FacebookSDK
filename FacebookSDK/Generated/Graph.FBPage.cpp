@@ -147,6 +147,6 @@ namespace winrt::FacebookSDK::Graph::implementation
 				}
 			}
 		}
-		return result.as<winrt::Windows::Foundation::IInspectable>();
+		return result.as<IInspectable>();// .as<winrt::Windows::Foundation::IInspectable>();
 	}
 }

@@ -36,7 +36,9 @@ namespace winrt::FacebookSDK::Graph::implementation
     struct FBPage : winrt::implements<FBPage, winrt::Windows::Foundation::IInspectable> 
     {
         public:
-            static winrt::Windows::Foundation::IInspectable FromJson(
+			FBPage() {};
+			
+			static winrt::Windows::Foundation::IInspectable FromJson(
                 winrt::hstring const& JsonText
             );
 
@@ -62,8 +64,7 @@ namespace winrt::FacebookSDK::Graph::implementation
             void Name(winrt::hstring const& value);
 
         private:
-
-            winrt::hstring _id;
+			winrt::hstring _id;
             winrt::hstring _category;
             int _checkins;
             winrt::hstring _description;

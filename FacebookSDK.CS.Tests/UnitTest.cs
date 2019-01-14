@@ -23,6 +23,7 @@ using Windows.Data.Json;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using FacebookSDK;
+using FacebookSDK.Graph;
 
 namespace FacebookSDK.CS.Tests
 {
