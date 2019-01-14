@@ -54,5 +54,6 @@
     <Midl Include="FacebookSingleValue.idl" />
     <Midl Include="JsonClassFactory.idl" />
     <Midl Include="IHttpClient.idl" />
+    <Midl Include="FacebookAppRequest.idl" />
   </ItemGroup>
 </Project>

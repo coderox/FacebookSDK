@@ -101,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="FacebookAppRequest.h">
+      <DependentUpon>FacebookAppRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FacebookResult.h">
@@ -128,6 +131,9 @@
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
+      </ClCompile>
+    <ClCompile Include="FacebookAppRequest.cpp">
+      <DependentUpon>FacebookAppRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
@@ -154,7 +160,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="ColorLuminosityConverter.idl">
+    <Midl Include="ColorLuminosityConverter.idl"/>
+    <Midl Include="FacebookAppRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
