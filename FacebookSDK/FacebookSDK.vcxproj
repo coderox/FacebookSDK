@@ -87,18 +87,49 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ColorLuminosityConverter.h">
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPage.h" />
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
     </ClInclude>
@@ -131,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="FacebookAppRequest.cpp">
       <DependentUpon>FacebookAppRequest.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -143,6 +174,7 @@
       <DependentUpon>FacebookSingleValue.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPage.cpp" />
     <ClCompile Include="HlsColor.cpp">
       <DependentUpon>HlsColor.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -160,11 +192,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="ColorLuminosityConverter.idl"/>
+    <Midl Include="ColorLuminosityConverter.idl" />
     <Midl Include="FacebookAppRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="Generated\Graph.FBPage.idl" />
     <Midl Include="IHttpClient.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -183,13 +216,24 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <None Include="codegen.cmd" />
     <None Include="FacebookSDK.def" />
+    <None Include="FBGraphObjectDefinition.ttinclude" />
+    <None Include="FBGraphObjectHeader.ttinclude" />
+    <None Include="FBGraphObjectImplementation.ttinclude" />
+    <None Include="Graph.FBPage.cpp.tt" />
+    <None Include="Graph.FBPage.h.tt" />
+    <None Include="Graph.FBPage.idl.tt" />
     <None Include="packages.config" />
+    <None Include="Utility.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt">
       <DeploymentContent>false</DeploymentContent>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Graph.FBPage.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

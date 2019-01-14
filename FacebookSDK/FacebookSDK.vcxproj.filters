@@ -21,6 +21,8 @@
     <ClCompile Include="ColorLuminosityConverter.cpp" />
     <ClCompile Include="ScaleConverter.cpp" />
     <ClCompile Include="FacebookSingleValue.cpp" />
+    <ClCompile Include="FacebookAppRequest.cpp" />
+    <ClCompile Include="Generated\Graph.FBPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -33,10 +35,20 @@
     <ClInclude Include="SDKMessage.h" />
     <ClInclude Include="JsonClassFactory.h" />
     <ClInclude Include="FacebookSingleValue.h" />
+    <ClInclude Include="FacebookAppRequest.h" />
+    <ClInclude Include="Generated\Graph.FBPage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
     <None Include="packages.config" />
+    <None Include="Utility.ttinclude" />
+    <None Include="FBGraphObjectImplementation.ttinclude" />
+    <None Include="FBGraphObjectHeader.ttinclude" />
+    <None Include="FBGraphObjectDefinition.ttinclude" />
+    <None Include="codegen.cmd" />
+    <None Include="Graph.FBPage.cpp.tt" />
+    <None Include="Graph.FBPage.h.tt" />
+    <None Include="Graph.FBPage.idl.tt" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -55,5 +67,9 @@
     <Midl Include="JsonClassFactory.idl" />
     <Midl Include="IHttpClient.idl" />
     <Midl Include="FacebookAppRequest.idl" />
+    <Midl Include="Generated\Graph.FBPage.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Graph.FBPage.xml" />
   </ItemGroup>
 </Project>

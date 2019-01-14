@@ -1,0 +1,17 @@
+namespace FacebookSDK
+{
+    namespace Graph
+    {
+        runtimeclass FBPage
+        {
+            static Object FromJson(String JsonText);
+            String Id{ get; set; };
+            String Category{ get; set; };
+            Int32 Checkins{ get; set; };
+            String Description{ get; set; };
+            Int32 Likes{ get; set; };
+            String Link{ get; set; };
+            String Name{ get; set; };
+        }
+    }
+}

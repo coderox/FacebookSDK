@@ -1,12 +1,6 @@
-﻿//
-// Declaration of the FacebookJsonClassFactory class.
-//
-
-#pragma once
-
-#include "JsonClassFactory.g.h"
+﻿#pragma once
 
 namespace winrt::FacebookSDK::implementation
 {
-	winrt::delegate<winrt::Windows::Foundation::IInspectable, winrt::hstring> FacebookJsonClassFactory;
+	winrt::delegate<winrt::Windows::Foundation::IInspectable, winrt::hstring> JsonClassFactory;
 }

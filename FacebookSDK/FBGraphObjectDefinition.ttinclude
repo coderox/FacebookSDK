@@ -1,0 +1,34 @@
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Xml" #>
+<#
+    XmlDocument doc = new XmlDocument();
+    doc.Load(classDefFile);
+
+    XmlNode rootNode = doc.SelectSingleNode("class");
+
+    string className = rootNode.Attributes["name"].Value;
+    bool bindable = ((rootNode.Attributes["bindable"] != null) && 
+        rootNode.Attributes["bindable"].Value.Equals("yes"));
+#>
+namespace FacebookSDK
+{
+    namespace Graph
+    {
+        runtimeclass <#= className #>
+        {
+            static Object FromJson(String JsonText);
+<#
+
+    foreach (XmlNode child in rootNode.SelectNodes("property"))
+    {
+        string idlType = IDLTypeFor(child);
+        string propName  = PropNameFor(child);
+#>
+            <#= idlType #> <#= propName #>{ get; set; };
+<#
+    }
+#>
+        }
+    }
+}
+<#@ include file="Utility.ttinclude" #>
