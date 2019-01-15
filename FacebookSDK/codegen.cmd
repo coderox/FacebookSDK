@@ -18,10 +18,10 @@ call :GenFile Graph.FBPage.cpp Graph.FBPage.cpp.tt
 REM call :GenFile FBPageCategory.cpp FBPageCategory.cpp.tt
 REM call :GenFile FBPaging.cpp FBPaging.cpp.tt
 REM call :GenFile FBPermission.cpp FBPermission.cpp.tt
-REM call :GenFile FBUser.cpp FBUser.cpp.tt
-REM call :GenFile FBProfilePicture.cpp FBProfilePicture.cpp.tt
-REM call :GenFile FBProfilePictureData.cpp FBProfilePictureData.cpp.tt
-REM call :GenFile FBAppRequest.cpp FBAppRequest.cpp.tt
+call :GenFile Graph.FBUser.cpp Graph.FBUser.cpp.tt
+call :GenFile Graph.FBProfilePicture.cpp Graph.FBProfilePicture.cpp.tt
+call :GenFile Graph.FBProfilePictureData.cpp Graph.FBProfilePictureData.cpp.tt
+call :GenFile Graph.FBAppRequest.cpp Graph.FBAppRequest.cpp.tt
 REM call :GenFile FBObject.cpp FBObject.cpp.tt
 
 REM header files
@@ -31,14 +31,18 @@ call :GenFile Graph.FBPage.h Graph.FBPage.h.tt
 REM call :GenFile FBPageCategory.h FBPageCategory.h.tt
 REM call :GenFile FBPaging.h FBPaging.h.tt
 REM call :GenFile FBPermission.h FBPermission.h.tt
-REM call :GenFile FBUser.h FBUser.h.tt
-REM call :GenFile FBProfilePicture.h FBProfilePicture.h.tt
-REM call :GenFile FBProfilePictureData.h FBProfilePictureData.h.tt
-REM call :GenFile FBAppRequest.h FBAppRequest.h.tt
+call :GenFile Graph.FBUser.h Graph.FBUser.h.tt
+call :GenFile Graph.FBProfilePicture.h Graph.FBProfilePicture.h.tt
+call :GenFile Graph.FBProfilePictureData.h Graph.FBProfilePictureData.h.tt
+call :GenFile Graph.FBAppRequest.h Graph.FBAppRequest.h.tt
 REM call :GenFile FBObject.h FBObject.h.tt
 
 REM definition files
 call :GenFile Graph.FBPage.idl Graph.FBPage.idl.tt
+call :GenFile Graph.FBAppRequest.idl Graph.FBAppRequest.idl.tt
+call :GenFile Graph.FBUser.idl Graph.FBUser.idl.tt
+call :GenFile Graph.FBProfilePicture.idl Graph.FBProfilePicture.idl.tt
+call :GenFile Graph.FBProfilePictureData.idl Graph.FBProfilePictureData.idl.tt
 
 goto End
 

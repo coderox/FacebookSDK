@@ -102,7 +102,7 @@
         }
         else if (type.Equals("fbclass"))
         {
-            result = node.Attributes["className"].Value;
+            result = "FacebookSDK::Graph::" + node.Attributes["className"].Value;
         }
 
         return result;
@@ -117,10 +117,10 @@
         {
             result = "winrt::";
         } 
-        else if (rawType.Equals("fbclass"))
-        {
-            result = "winsdkfb::Graph::";
-        }
+        //else if (rawType.Equals("fbclass"))
+        //{
+        //    result = "FacebookSDK::Graph::";
+        //}
 
         return result;
     }
@@ -149,7 +149,7 @@
         }
         else if (type.Equals("fbclass"))
         {
-            result = node.Attributes["className"].Value;
+            result = "FacebookSDK.Graph." + node.Attributes["className"].Value;
         }
 
         return result;

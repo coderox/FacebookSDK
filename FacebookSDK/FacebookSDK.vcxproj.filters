@@ -11,6 +11,9 @@
     <Filter Include="Converters">
       <UniqueIdentifier>{980aa99d-5cc6-4afa-a1fa-9d60dac24923}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object Templates">
+      <UniqueIdentifier>{4c576227-9e26-499a-908b-cb632fdedc46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -22,7 +25,21 @@
     <ClCompile Include="ScaleConverter.cpp" />
     <ClCompile Include="FacebookSingleValue.cpp" />
     <ClCompile Include="FacebookAppRequest.cpp" />
-    <ClCompile Include="Generated\Graph.FBPage.cpp" />
+    <ClCompile Include="Generated\Graph.FBAppRequest.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBProfilePicture.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBUser.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -36,19 +53,83 @@
     <ClInclude Include="JsonClassFactory.h" />
     <ClInclude Include="FacebookSingleValue.h" />
     <ClInclude Include="FacebookAppRequest.h" />
-    <ClInclude Include="Generated\Graph.FBPage.h" />
+    <ClInclude Include="Generated\Graph.FBAppRequest.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBProfilePicture.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBProfilePictureData.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBUser.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
     <None Include="packages.config" />
-    <None Include="Utility.ttinclude" />
-    <None Include="FBGraphObjectImplementation.ttinclude" />
-    <None Include="FBGraphObjectHeader.ttinclude" />
-    <None Include="FBGraphObjectDefinition.ttinclude" />
     <None Include="codegen.cmd" />
-    <None Include="Graph.FBPage.cpp.tt" />
-    <None Include="Graph.FBPage.h.tt" />
-    <None Include="Graph.FBPage.idl.tt" />
+    <None Include="Graph.FBAppRequest.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBAppRequest.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBAppRequest.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectDefinition.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectHeader.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectImplementation.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Utility.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -67,9 +148,37 @@
     <Midl Include="JsonClassFactory.idl" />
     <Midl Include="IHttpClient.idl" />
     <Midl Include="FacebookAppRequest.idl" />
-    <Midl Include="Generated\Graph.FBPage.idl" />
+    <Midl Include="Generated\Graph.FBAppRequest.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPage.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBProfilePicture.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBProfilePictureData.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBUser.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Graph.FBPage.xml" />
+    <Xml Include="Graph.FBPage.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBAppRequest.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBProfilePicture.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBProfilePictureData.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBUser.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

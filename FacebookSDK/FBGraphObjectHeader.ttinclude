@@ -28,7 +28,7 @@
         {
             string memberClassName = prop.Attributes["className"].Value;
 #>
-#include "<#= memberClassName #>.h"
+#include "Graph.<#= memberClassName #>.h"
 <#
         }
     }
@@ -97,9 +97,16 @@ namespace winrt::FacebookSDK::Graph::implementation
     {
         string fullType = FullTypeFor(child);
         string varName  = MemberNameFor(child);
+        string rawType = child.Attributes["type"].Value;
+        if(rawType.Equals("fbclass")) {
+#>
+        <#= fullType #> <#= varName #>{ nullptr };
+<#
+        } else {
 #>
         <#= fullType #> <#= varName #>;
 <#
+        }
     }
 #>
     };

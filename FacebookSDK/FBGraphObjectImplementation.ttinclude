@@ -110,7 +110,7 @@ namespace winrt::FacebookSDK::Graph::implementation
             string memberClassType = RTTypeFor(prop);
 #>
                         found++;
-                        result-><#= classPropName #>(static_cast<<#= memberClassType #>>(<#= memberClassName #>::FromJson(current.Value().Stringify())));
+                        result-><#= classPropName #>(<#= memberClassName #>::FromJson(current.Value().Stringify()).as<<#= memberClassType #>>());
 <#
         }
         else

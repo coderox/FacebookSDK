@@ -104,6 +104,15 @@ call codegen.cmd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pushd "$(ProjectDir)"
 call codegen.cmd</Command>
     </PreBuildEvent>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
@@ -124,13 +133,26 @@ call codegen.cmd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pushd "$(ProjectDir)"
 call codegen.cmd</Command>
     </PreBuildEvent>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
+    <Midl>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ColorLuminosityConverter.h">
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="Generated\Graph.FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBPage.h" />
+    <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
+    <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
+    <ClInclude Include="Generated\Graph.FBUser.h" />
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
     </ClInclude>
@@ -175,7 +197,11 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookSingleValue.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="Generated\Graph.FBAppRequest.cpp" />
     <ClCompile Include="Generated\Graph.FBPage.cpp" />
+    <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
+    <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
+    <ClCompile Include="Generated\Graph.FBUser.cpp" />
     <ClCompile Include="HlsColor.cpp">
       <DependentUpon>HlsColor.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -198,7 +224,11 @@ call codegen.cmd</Command>
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="Generated\Graph.FBAppRequest.idl" />
     <Midl Include="Generated\Graph.FBPage.idl" />
+    <Midl Include="Generated\Graph.FBProfilePicture.idl" />
+    <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
+    <Midl Include="Generated\Graph.FBUser.idl" />
     <Midl Include="IHttpClient.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -222,9 +252,21 @@ call codegen.cmd</Command>
     <None Include="FBGraphObjectDefinition.ttinclude" />
     <None Include="FBGraphObjectHeader.ttinclude" />
     <None Include="FBGraphObjectImplementation.ttinclude" />
+    <None Include="Graph.FBAppRequest.cpp.tt" />
+    <None Include="Graph.FBAppRequest.h.tt" />
+    <None Include="Graph.FBAppRequest.idl.tt" />
     <None Include="Graph.FBPage.cpp.tt" />
     <None Include="Graph.FBPage.h.tt" />
     <None Include="Graph.FBPage.idl.tt" />
+    <None Include="Graph.FBProfilePicture.cpp.tt" />
+    <None Include="Graph.FBProfilePicture.h.tt" />
+    <None Include="Graph.FBProfilePicture.idl.tt" />
+    <None Include="Graph.FBProfilePictureData.cpp.tt" />
+    <None Include="Graph.FBProfilePictureData.h.tt" />
+    <None Include="Graph.FBProfilePictureData.idl.tt" />
+    <None Include="Graph.FBUser.cpp.tt" />
+    <None Include="Graph.FBUser.h.tt" />
+    <None Include="Graph.FBUser.idl.tt" />
     <None Include="packages.config" />
     <None Include="Utility.ttinclude" />
   </ItemGroup>
@@ -234,7 +276,11 @@ call codegen.cmd</Command>
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Graph.FBAppRequest.xml" />
     <Xml Include="Graph.FBPage.xml" />
+    <Xml Include="Graph.FBProfilePicture.xml" />
+    <Xml Include="Graph.FBProfilePictureData.xml" />
+    <Xml Include="Graph.FBUser.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
