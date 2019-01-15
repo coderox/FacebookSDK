@@ -21,7 +21,7 @@ if not "%ErrorLevel%" == "0" goto :NotFound
 if not exist Generated md Generated
 REM cpp files
 call :GenFile Graph.FBCursors.cpp Graph.FBCursors.cpp.tt
-REM call :GenFile FBGroup.cpp FBGroup.cpp.tt
+call :GenFile Graph.FBGroup.cpp Graph.FBGroup.cpp.tt
 call :GenFile Graph.FBPage.cpp Graph.FBPage.cpp.tt
 REM call :GenFile FBPageCategory.cpp FBPageCategory.cpp.tt
 REM call :GenFile FBPaging.cpp FBPaging.cpp.tt
@@ -34,7 +34,7 @@ REM call :GenFile FBObject.cpp FBObject.cpp.tt
 
 REM header files
 call :GenFile Graph.FBCursors.h Graph.FBCursors.h.tt
-REM call :GenFile FBGroup.h FBGroup.h.tt
+call :GenFile Graph.FBGroup.h Graph.FBGroup.h.tt
 call :GenFile Graph.FBPage.h Graph.FBPage.h.tt
 REM call :GenFile FBPageCategory.h FBPageCategory.h.tt
 REM call :GenFile FBPaging.h FBPaging.h.tt
@@ -52,6 +52,7 @@ call :GenFile Graph.FBUser.idl Graph.FBUser.idl.tt
 call :GenFile Graph.FBProfilePicture.idl Graph.FBProfilePicture.idl.tt
 call :GenFile Graph.FBProfilePictureData.idl Graph.FBProfilePictureData.idl.tt
 call :GenFile Graph.FBCursors.idl Graph.FBCursors.idl.tt
+call :GenFile Graph.FBGroup.idl Graph.FBGroup.idl.tt
 
 goto End
 
