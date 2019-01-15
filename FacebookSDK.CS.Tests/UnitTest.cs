@@ -155,31 +155,32 @@ namespace FacebookSDK.CS.Tests
             }
         }
 
-        //[TestMethod]
-        //public void tryCreatePageViaClassFactory()
-        //{
-        //    string[] pages =
-        //    {
-        //        SampleJsonPage,
-        //        SampleJsonPage2,
-        //        SampleJsonPage3,
-        //        SampleJsonPage4
-        //    };
+        [TestMethod]
+        public void tryCreatePageViaClassFactory()
+        {
+            string[] pages =
+            {
+                SampleJsonPage,
+                SampleJsonPage2,
+                SampleJsonPage3,
+                SampleJsonPage4
+            };
 
-        //    for (int i = SAMPLE_PAGE_INDEX; i <= SAMPLE_PAGE4_INDEX; i++)
-        //    {
-        //        JsonClassFactory fact = new JsonClassFactory(
-        //            (JsonText) => FBPage.FromJson(JsonText));
-        //        object obj = fact(pages[i]);
-        //        FBPage page = (FBPage)obj;
-        //        Assert.IsNotNull(obj);
-        //        Assert.IsNotNull(page);
+            for (int i = SAMPLE_PAGE_INDEX; i <= SAMPLE_PAGE4_INDEX; i++)
+            {
+                JsonClassFactory fact = new JsonClassFactory(
+                    (JsonText) => FBPage.FromJson(JsonText));
+                object obj = fact(pages[i]);
+                FBPage page = (FBPage)obj;
+                Assert.IsNotNull(obj);
+                Assert.IsNotNull(page);
 
-        //        StringAssert.Equals(page.Name, PageNames[i]);
-        //        StringAssert.Equals(page.Category, PageCategories[i]);
-        //        StringAssert.Equals(page.Id, PageIds[i]);
-        //    }
-        //}
+                StringAssert.Equals(page.Name, PageNames[i]);
+                StringAssert.Equals(page.Category, PageCategories[i]);
+                StringAssert.Equals(page.Id, PageIds[i]);
+            }
+        }
+
         //[TestMethod]
         //public void tryCreateFBPaging()
         //{
@@ -216,31 +217,31 @@ namespace FacebookSDK.CS.Tests
         //    }
         //}
 
-        //[TestMethod]
-        //public void parseErrorFromJson()
-        //{
-        //    FacebookError e = FacebookError.FromJson(ErrorObjectJson);
-        //    Assert.IsNotNull(e);
-        //    Assert.IsNotNull(e.Message);
-        //    Assert.IsNotNull(e.Type);
-        //    Assert.IsNotNull(e.ErrorUserTitle);
-        //    Assert.IsNotNull(e.ErrorUserMessage);
-        //    Assert.AreEqual(e.Message, ErrorJsonMessage);
-        //    Assert.AreEqual(e.Type, ErrorJsonType);
-        //    Assert.AreEqual(e.Code, ErrorJsonCode);
-        //    Assert.AreEqual(e.Subcode, ErrorJsonSubcode);
-        //    Assert.AreEqual(e.ErrorUserTitle, ErrorJsonTitle);
-        //    Assert.AreEqual(e.ErrorUserMessage, ErrorJsonUserMessage);
-        //}
+        [TestMethod]
+        public void parseErrorFromJson()
+        {
+            FacebookError e = FacebookError.FromJson(ErrorObjectJson);
+            Assert.IsNotNull(e);
+            Assert.IsNotNull(e.Message);
+            Assert.IsNotNull(e.Type);
+            Assert.IsNotNull(e.ErrorUserTitle);
+            Assert.IsNotNull(e.ErrorUserMessage);
+            Assert.AreEqual(e.Message, ErrorJsonMessage);
+            Assert.AreEqual(e.Type, ErrorJsonType);
+            Assert.AreEqual(e.Code, ErrorJsonCode);
+            Assert.AreEqual(e.Subcode, ErrorJsonSubcode);
+            Assert.AreEqual(e.ErrorUserTitle, ErrorJsonTitle);
+            Assert.AreEqual(e.ErrorUserMessage, ErrorJsonUserMessage);
+        }
 
-        //[TestMethod]
-        //public void parseErrorFromQueryString()
-        //{
-        //    FacebookError err = FacebookError.FromUri(new Uri(FBCanceledRequestResponse));
-        //    Assert.IsNotNull(err);
-        //    Assert.AreEqual(err.Code, 4201);
-        //    Assert.AreEqual(FBCanceledRequestMessage, err.Message);
-        //}
+        [TestMethod]
+        public void parseErrorFromQueryString()
+        {
+            FacebookError err = FacebookError.FromUri(new Uri(FBCanceledRequestResponse));
+            Assert.IsNotNull(err);
+            Assert.AreEqual(err.Code, 4201);
+            Assert.AreEqual(FBCanceledRequestMessage, err.Message);
+        }
 
         //private async Task<string> getAppToken()
         //{

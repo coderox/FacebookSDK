@@ -34,8 +34,26 @@ namespace FacebookSDK_Tests
 
 			// assert
 			Assert::IsNotNull(fbError);
-			Assert::AreEqual(fbError->Message, L"message");
-			Assert::AreEqual(fbError->Type, L"type");
+			Assert::AreEqual(L"message", fbError->Message);
+			Assert::AreEqual(L"type", fbError->Type);
+		}
+
+		TEST_METHOD(TestAnotherCreationFromJson)
+		{
+			// arrange
+			auto json = ref new Platform::String(L"{\"error\": {\"message\": \"Message describing the error\", \"type\": \"OAuthException\", \"code\": 190, \"error_subcode\": 460, \"error_user_title\": \"A title\", \"error_user_msg\": \"A message\"}}");
+
+			// act
+			auto fbError = FacebookSDK::FacebookError::FromJson(json);
+
+			// assert
+			Assert::IsNotNull(fbError);
+			Assert::AreEqual(L"Message describing the error", fbError->Message);
+			Assert::AreEqual(L"OAuthException", fbError->Type);
+			Assert::AreEqual(190, fbError->Code);
+			Assert::AreEqual(460, fbError->Subcode);
+			Assert::AreEqual(L"A title", fbError->ErrorUserTitle);
+			Assert::AreEqual(L"A message", fbError->ErrorUserMessage);
 		}
 
 		TEST_METHOD(TestAppropriateFacebookErrorJsonMessage)

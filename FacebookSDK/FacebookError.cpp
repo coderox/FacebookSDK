@@ -111,49 +111,52 @@ namespace winrt::FacebookSDK::implementation
 
 	FacebookSDK::FacebookError FacebookError::FromJson(hstring const& JsonText)
 	{
-		auto result = winrt::make_self<FacebookError>();
-		int found = 0;
+		com_ptr<FacebookError> result{ nullptr };
 		JsonValue val{ nullptr };
 
 		if (JsonValue::TryParse(JsonText, val))
 		{
-			if (val.ValueType() == JsonValueType::Object)
-			{
-				JsonObject obj = val.GetObject();
-				for (auto&& current : obj)
-				{
-					winrt::hstring key = current.Key();
+			JsonObject obj = val.GetObject();
+			if (obj.HasKey(L"error")) {
+				obj = obj.GetNamedObject(L"error");
+			}
 
-					if (key == L"message")
-					{
-						found++;
-						result->_message = current.Value().GetString();
-					}
-					else if (key == L"type")
-					{
-						found++;
-						result->_type = current.Value().GetString();
-					}
-					else if (key == L"code")
-					{
-						found++;
-						result->_code = static_cast<int>(current.Value().GetNumber());
-					}
-					else if (key == L"error_subcode")
-					{
-						found++;
-						result->_subcode = static_cast<int>(current.Value().GetNumber());
-					}
-					else if (key == L"error_user_title")
-					{
-						found++;
-						result->_errorUserTitle = current.Value().GetString();
-					}
-					else if (key == L"error_user_msg")
-					{
-						found++;
-						result->_errorUserMessage = current.Value().GetString();
-					}
+			result = winrt::make_self<FacebookError>();
+			int found = 0;
+
+			for (auto&& current : obj)
+			{
+				winrt::hstring key = current.Key();
+
+				if (key == L"message")
+				{
+					found++;
+					result->_message = current.Value().GetString();
+				}
+				else if (key == L"type")
+				{
+					found++;
+					result->_type = current.Value().GetString();
+				}
+				else if (key == L"code")
+				{
+					found++;
+					result->_code = static_cast<int>(current.Value().GetNumber());
+				}
+				else if (key == L"error_subcode")
+				{
+					found++;
+					result->_subcode = static_cast<int>(current.Value().GetNumber());
+				}
+				else if (key == L"error_user_title")
+				{
+					found++;
+					result->_errorUserTitle = current.Value().GetString();
+				}
+				else if (key == L"error_user_msg")
+				{
+					found++;
+					result->_errorUserMessage = current.Value().GetString();
 				}
 			}
 		}
