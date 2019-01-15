@@ -40,6 +40,9 @@
     <ClCompile Include="Generated\Graph.FBUser.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Generated\Graph.FBCursors.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -66,6 +69,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="Generated\Graph.FBUser.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBCursors.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -130,6 +136,15 @@
     <None Include="Graph.FBUser.idl.tt">
       <Filter>Object Templates</Filter>
     </None>
+    <None Include="Graph.FBCursors.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBCursors.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBCursors.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -163,6 +178,9 @@
     <Midl Include="Generated\Graph.FBUser.idl">
       <Filter>Generated Files</Filter>
     </Midl>
+    <Midl Include="Generated\Graph.FBCursors.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -178,6 +196,9 @@
       <Filter>Object Templates</Filter>
     </Xml>
     <Xml Include="Graph.FBUser.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBCursors.xml">
       <Filter>Object Templates</Filter>
     </Xml>
   </ItemGroup>

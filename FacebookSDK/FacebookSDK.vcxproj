@@ -149,6 +149,7 @@ call codegen.cmd</Command>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Generated\Graph.FBAppRequest.h" />
+    <ClInclude Include="Generated\Graph.FBCursors.h" />
     <ClInclude Include="Generated\Graph.FBPage.h" />
     <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
     <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
@@ -198,6 +199,7 @@ call codegen.cmd</Command>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Generated\Graph.FBAppRequest.cpp" />
+    <ClCompile Include="Generated\Graph.FBCursors.cpp" />
     <ClCompile Include="Generated\Graph.FBPage.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
@@ -225,6 +227,7 @@ call codegen.cmd</Command>
     </Midl>
     <Midl Include="FacebookError.idl" />
     <Midl Include="Generated\Graph.FBAppRequest.idl" />
+    <Midl Include="Generated\Graph.FBCursors.idl" />
     <Midl Include="Generated\Graph.FBPage.idl" />
     <Midl Include="Generated\Graph.FBProfilePicture.idl" />
     <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
@@ -255,6 +258,9 @@ call codegen.cmd</Command>
     <None Include="Graph.FBAppRequest.cpp.tt" />
     <None Include="Graph.FBAppRequest.h.tt" />
     <None Include="Graph.FBAppRequest.idl.tt" />
+    <None Include="Graph.FBCursors.cpp.tt" />
+    <None Include="Graph.FBCursors.h.tt" />
+    <None Include="Graph.FBCursors.idl.tt" />
     <None Include="Graph.FBPage.cpp.tt" />
     <None Include="Graph.FBPage.h.tt" />
     <None Include="Graph.FBPage.idl.tt" />
@@ -277,6 +283,7 @@ call codegen.cmd</Command>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBAppRequest.xml" />
+    <Xml Include="Graph.FBCursors.xml" />
     <Xml Include="Graph.FBPage.xml" />
     <Xml Include="Graph.FBProfilePicture.xml" />
     <Xml Include="Graph.FBProfilePictureData.xml" />

@@ -1,6 +1,14 @@
 @echo off
 setlocal
 
+REM Add TextTransform to our path based on the default location for VS2017 Enterprise Edition
+set _TT=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\
+set PATH=%_TT%;%PATH%;
+
+REM Verify that we can find TextTransform
+where /q TextTransform.exe
+if "%ErrorLevel%" == "0" goto :Found
+
 REM Add TextTransform to our path based on the default location for VS2017
 set _TT=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\IDE\
 set PATH=%_TT%;%PATH%;
@@ -12,7 +20,7 @@ if not "%ErrorLevel%" == "0" goto :NotFound
 :Found
 if not exist Generated md Generated
 REM cpp files
-REM call :GenFile FBCursors.cpp FBCursors.cpp.tt
+call :GenFile Graph.FBCursors.cpp Graph.FBCursors.cpp.tt
 REM call :GenFile FBGroup.cpp FBGroup.cpp.tt
 call :GenFile Graph.FBPage.cpp Graph.FBPage.cpp.tt
 REM call :GenFile FBPageCategory.cpp FBPageCategory.cpp.tt
@@ -25,7 +33,7 @@ call :GenFile Graph.FBAppRequest.cpp Graph.FBAppRequest.cpp.tt
 REM call :GenFile FBObject.cpp FBObject.cpp.tt
 
 REM header files
-REM call :GenFile FBCursors.h FBCursors.h.tt
+call :GenFile Graph.FBCursors.h Graph.FBCursors.h.tt
 REM call :GenFile FBGroup.h FBGroup.h.tt
 call :GenFile Graph.FBPage.h Graph.FBPage.h.tt
 REM call :GenFile FBPageCategory.h FBPageCategory.h.tt
@@ -43,6 +51,7 @@ call :GenFile Graph.FBAppRequest.idl Graph.FBAppRequest.idl.tt
 call :GenFile Graph.FBUser.idl Graph.FBUser.idl.tt
 call :GenFile Graph.FBProfilePicture.idl Graph.FBProfilePicture.idl.tt
 call :GenFile Graph.FBProfilePictureData.idl Graph.FBProfilePictureData.idl.tt
+call :GenFile Graph.FBCursors.idl Graph.FBCursors.idl.tt
 
 goto End
 
