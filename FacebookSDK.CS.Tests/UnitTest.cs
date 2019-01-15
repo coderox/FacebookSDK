@@ -181,14 +181,14 @@ namespace FacebookSDK.CS.Tests
             }
         }
 
-        //[TestMethod]
-        //public void tryCreateFBPaging()
-        //{
-        //    Object obj = FBPaging.FromJson(PagingObjectJson);
-        //    FBPaging paging = (FBPaging)obj;
-        //    Assert.IsNotNull(obj);
-        //    Assert.IsNotNull(paging);
-        //}
+        [TestMethod]
+        public void tryCreateFBPaging()
+        {
+            Object obj = FBPaging.FromJson(PagingObjectJson);
+            FBPaging paging = (FBPaging)obj;
+            Assert.IsNotNull(obj);
+            Assert.IsNotNull(paging);
+        }
 
         //[TestMethod]
         //public void parseArrayOfLikes()
