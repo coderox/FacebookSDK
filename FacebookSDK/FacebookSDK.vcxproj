@@ -153,6 +153,8 @@ call codegen.cmd</Command>
     <ClInclude Include="Generated\Graph.FBGroup.h" />
     <ClInclude Include="Generated\Graph.FBObject.h" />
     <ClInclude Include="Generated\Graph.FBPage.h" />
+    <ClInclude Include="Generated\Graph.FBPageCategory.h" />
+    <ClInclude Include="Generated\Graph.FBPaging.h" />
     <ClInclude Include="Generated\Graph.FBPermission.h" />
     <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
     <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
@@ -206,6 +208,8 @@ call codegen.cmd</Command>
     <ClCompile Include="Generated\Graph.FBGroup.cpp" />
     <ClCompile Include="Generated\Graph.FBObject.cpp" />
     <ClCompile Include="Generated\Graph.FBPage.cpp" />
+    <ClCompile Include="Generated\Graph.FBPageCategory.cpp" />
+    <ClCompile Include="Generated\Graph.FBPaging.cpp" />
     <ClCompile Include="Generated\Graph.FBPermission.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
@@ -237,6 +241,8 @@ call codegen.cmd</Command>
     <Midl Include="Generated\Graph.FBGroup.idl" />
     <Midl Include="Generated\Graph.FBObject.idl" />
     <Midl Include="Generated\Graph.FBPage.idl" />
+    <Midl Include="Generated\Graph.FBPageCategory.idl" />
+    <Midl Include="Generated\Graph.FBPaging.idl" />
     <Midl Include="Generated\Graph.FBPermission.idl" />
     <Midl Include="Generated\Graph.FBProfilePicture.idl" />
     <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
@@ -279,6 +285,12 @@ call codegen.cmd</Command>
     <None Include="Graph.FBPage.cpp.tt" />
     <None Include="Graph.FBPage.h.tt" />
     <None Include="Graph.FBPage.idl.tt" />
+    <None Include="Graph.FBPageCategory.cpp.tt" />
+    <None Include="Graph.FBPageCategory.h.tt" />
+    <None Include="Graph.FBPageCategory.idl.tt" />
+    <None Include="Graph.FBPaging.cpp.tt" />
+    <None Include="Graph.FBPaging.h.tt" />
+    <None Include="Graph.FBPaging.idl.tt" />
     <None Include="Graph.FBPermission.cpp.tt" />
     <None Include="Graph.FBPermission.h.tt" />
     <None Include="Graph.FBPermission.idl.tt" />
@@ -305,6 +317,8 @@ call codegen.cmd</Command>
     <Xml Include="Graph.FBGroup.xml" />
     <Xml Include="Graph.FBObject.xml" />
     <Xml Include="Graph.FBPage.xml" />
+    <Xml Include="Graph.FBPageCategory.xml" />
+    <Xml Include="Graph.FBPaging.xml" />
     <Xml Include="Graph.FBPermission.xml" />
     <Xml Include="Graph.FBProfilePicture.xml" />
     <Xml Include="Graph.FBProfilePictureData.xml" />

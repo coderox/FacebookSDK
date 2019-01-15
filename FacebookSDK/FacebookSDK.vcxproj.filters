@@ -52,6 +52,12 @@
     <ClCompile Include="Generated\Graph.FBPermission.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPageCategory.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPaging.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -90,6 +96,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="Generated\Graph.FBPermission.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPageCategory.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPaging.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -190,6 +202,24 @@
     <None Include="Graph.FBPermission.idl.tt">
       <Filter>Object Templates</Filter>
     </None>
+    <None Include="Graph.FBPageCategory.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPageCategory.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPageCategory.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -235,6 +265,12 @@
     <Midl Include="Generated\Graph.FBPermission.idl">
       <Filter>Generated Files</Filter>
     </Midl>
+    <Midl Include="Generated\Graph.FBPageCategory.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPaging.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -262,6 +298,12 @@
       <Filter>Object Templates</Filter>
     </Xml>
     <Xml Include="Graph.FBPermission.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPageCategory.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPaging.xml">
       <Filter>Object Templates</Filter>
     </Xml>
   </ItemGroup>

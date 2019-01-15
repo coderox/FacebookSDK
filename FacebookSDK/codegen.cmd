@@ -23,8 +23,8 @@ REM cpp files
 call :GenFile Graph.FBCursors.cpp Graph.FBCursors.cpp.tt
 call :GenFile Graph.FBGroup.cpp Graph.FBGroup.cpp.tt
 call :GenFile Graph.FBPage.cpp Graph.FBPage.cpp.tt
-REM call :GenFile FBPageCategory.cpp FBPageCategory.cpp.tt
-REM call :GenFile FBPaging.cpp FBPaging.cpp.tt
+call :GenFile Graph.FBPageCategory.cpp Graph.FBPageCategory.cpp.tt
+call :GenFile Graph.FBPaging.cpp Graph.FBPaging.cpp.tt
 call :GenFile Graph.FBPermission.cpp Graph.FBPermission.cpp.tt
 call :GenFile Graph.FBUser.cpp Graph.FBUser.cpp.tt
 call :GenFile Graph.FBProfilePicture.cpp Graph.FBProfilePicture.cpp.tt
@@ -36,8 +36,8 @@ REM header files
 call :GenFile Graph.FBCursors.h Graph.FBCursors.h.tt
 call :GenFile Graph.FBGroup.h Graph.FBGroup.h.tt
 call :GenFile Graph.FBPage.h Graph.FBPage.h.tt
-REM call :GenFile FBPageCategory.h FBPageCategory.h.tt
-REM call :GenFile FBPaging.h FBPaging.h.tt
+call :GenFile Graph.FBPageCategory.h Graph.FBPageCategory.h.tt
+call :GenFile Graph.FBPaging.h Graph.FBPaging.h.tt
 call :GenFile Graph.FBPermission.h Graph.FBPermission.h.tt
 call :GenFile Graph.FBUser.h Graph.FBUser.h.tt
 call :GenFile Graph.FBProfilePicture.h Graph.FBProfilePicture.h.tt
@@ -55,6 +55,8 @@ call :GenFile Graph.FBCursors.idl Graph.FBCursors.idl.tt
 call :GenFile Graph.FBGroup.idl Graph.FBGroup.idl.tt
 call :GenFile Graph.FBObject.idl Graph.FBObject.idl.tt
 call :GenFile Graph.FBPermission.idl Graph.FBPermission.idl.tt
+call :GenFile Graph.FBPaging.idl Graph.FBPaging.idl.tt
+call :GenFile Graph.FBPageCategory.idl Graph.FBPageCategory.idl.tt
 
 goto End
 
