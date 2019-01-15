@@ -271,6 +271,7 @@
     <Midl Include="Generated\Graph.FBPaging.idl">
       <Filter>Generated Files</Filter>
     </Midl>
+    <Midl Include="HttpManager.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
