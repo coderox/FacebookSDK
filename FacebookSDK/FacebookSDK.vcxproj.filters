@@ -49,6 +49,9 @@
     <ClCompile Include="Generated\Graph.FBObject.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPermission.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -84,6 +87,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="Generated\Graph.FBObject.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPermission.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -175,6 +181,15 @@
     <None Include="Graph.FBObject.idl.tt">
       <Filter>Object Templates</Filter>
     </None>
+    <None Include="Graph.FBPermission.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPermission.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPermission.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -217,6 +232,9 @@
     <Midl Include="Generated\Graph.FBObject.idl">
       <Filter>Generated Files</Filter>
     </Midl>
+    <Midl Include="Generated\Graph.FBPermission.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -241,6 +259,9 @@
       <Filter>Object Templates</Filter>
     </Xml>
     <Xml Include="Graph.FBObject.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPermission.xml">
       <Filter>Object Templates</Filter>
     </Xml>
   </ItemGroup>

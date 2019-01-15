@@ -153,6 +153,7 @@ call codegen.cmd</Command>
     <ClInclude Include="Generated\Graph.FBGroup.h" />
     <ClInclude Include="Generated\Graph.FBObject.h" />
     <ClInclude Include="Generated\Graph.FBPage.h" />
+    <ClInclude Include="Generated\Graph.FBPermission.h" />
     <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
     <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
     <ClInclude Include="Generated\Graph.FBUser.h" />
@@ -205,6 +206,7 @@ call codegen.cmd</Command>
     <ClCompile Include="Generated\Graph.FBGroup.cpp" />
     <ClCompile Include="Generated\Graph.FBObject.cpp" />
     <ClCompile Include="Generated\Graph.FBPage.cpp" />
+    <ClCompile Include="Generated\Graph.FBPermission.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
     <ClCompile Include="Generated\Graph.FBUser.cpp" />
@@ -235,6 +237,7 @@ call codegen.cmd</Command>
     <Midl Include="Generated\Graph.FBGroup.idl" />
     <Midl Include="Generated\Graph.FBObject.idl" />
     <Midl Include="Generated\Graph.FBPage.idl" />
+    <Midl Include="Generated\Graph.FBPermission.idl" />
     <Midl Include="Generated\Graph.FBProfilePicture.idl" />
     <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
     <Midl Include="Generated\Graph.FBUser.idl" />
@@ -276,6 +279,9 @@ call codegen.cmd</Command>
     <None Include="Graph.FBPage.cpp.tt" />
     <None Include="Graph.FBPage.h.tt" />
     <None Include="Graph.FBPage.idl.tt" />
+    <None Include="Graph.FBPermission.cpp.tt" />
+    <None Include="Graph.FBPermission.h.tt" />
+    <None Include="Graph.FBPermission.idl.tt" />
     <None Include="Graph.FBProfilePicture.cpp.tt" />
     <None Include="Graph.FBProfilePicture.h.tt" />
     <None Include="Graph.FBProfilePicture.idl.tt" />
@@ -299,6 +305,7 @@ call codegen.cmd</Command>
     <Xml Include="Graph.FBGroup.xml" />
     <Xml Include="Graph.FBObject.xml" />
     <Xml Include="Graph.FBPage.xml" />
+    <Xml Include="Graph.FBPermission.xml" />
     <Xml Include="Graph.FBProfilePicture.xml" />
     <Xml Include="Graph.FBProfilePictureData.xml" />
     <Xml Include="Graph.FBUser.xml" />
