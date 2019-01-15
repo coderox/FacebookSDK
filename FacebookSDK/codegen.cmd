@@ -30,7 +30,7 @@ call :GenFile Graph.FBUser.cpp Graph.FBUser.cpp.tt
 call :GenFile Graph.FBProfilePicture.cpp Graph.FBProfilePicture.cpp.tt
 call :GenFile Graph.FBProfilePictureData.cpp Graph.FBProfilePictureData.cpp.tt
 call :GenFile Graph.FBAppRequest.cpp Graph.FBAppRequest.cpp.tt
-REM call :GenFile FBObject.cpp FBObject.cpp.tt
+call :GenFile Graph.FBObject.cpp Graph.FBObject.cpp.tt
 
 REM header files
 call :GenFile Graph.FBCursors.h Graph.FBCursors.h.tt
@@ -43,7 +43,7 @@ call :GenFile Graph.FBUser.h Graph.FBUser.h.tt
 call :GenFile Graph.FBProfilePicture.h Graph.FBProfilePicture.h.tt
 call :GenFile Graph.FBProfilePictureData.h Graph.FBProfilePictureData.h.tt
 call :GenFile Graph.FBAppRequest.h Graph.FBAppRequest.h.tt
-REM call :GenFile FBObject.h FBObject.h.tt
+call :GenFile Graph.FBObject.h Graph.FBObject.h.tt
 
 REM definition files
 call :GenFile Graph.FBPage.idl Graph.FBPage.idl.tt
@@ -53,6 +53,7 @@ call :GenFile Graph.FBProfilePicture.idl Graph.FBProfilePicture.idl.tt
 call :GenFile Graph.FBProfilePictureData.idl Graph.FBProfilePictureData.idl.tt
 call :GenFile Graph.FBCursors.idl Graph.FBCursors.idl.tt
 call :GenFile Graph.FBGroup.idl Graph.FBGroup.idl.tt
+call :GenFile Graph.FBObject.idl Graph.FBObject.idl.tt
 
 goto End
 

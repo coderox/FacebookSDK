@@ -151,6 +151,7 @@ call codegen.cmd</Command>
     <ClInclude Include="Generated\Graph.FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBCursors.h" />
     <ClInclude Include="Generated\Graph.FBGroup.h" />
+    <ClInclude Include="Generated\Graph.FBObject.h" />
     <ClInclude Include="Generated\Graph.FBPage.h" />
     <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
     <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
@@ -202,6 +203,7 @@ call codegen.cmd</Command>
     <ClCompile Include="Generated\Graph.FBAppRequest.cpp" />
     <ClCompile Include="Generated\Graph.FBCursors.cpp" />
     <ClCompile Include="Generated\Graph.FBGroup.cpp" />
+    <ClCompile Include="Generated\Graph.FBObject.cpp" />
     <ClCompile Include="Generated\Graph.FBPage.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
@@ -231,6 +233,7 @@ call codegen.cmd</Command>
     <Midl Include="Generated\Graph.FBAppRequest.idl" />
     <Midl Include="Generated\Graph.FBCursors.idl" />
     <Midl Include="Generated\Graph.FBGroup.idl" />
+    <Midl Include="Generated\Graph.FBObject.idl" />
     <Midl Include="Generated\Graph.FBPage.idl" />
     <Midl Include="Generated\Graph.FBProfilePicture.idl" />
     <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
@@ -267,6 +270,9 @@ call codegen.cmd</Command>
     <None Include="Graph.FBGroup.cpp.tt" />
     <None Include="Graph.FBGroup.h.tt" />
     <None Include="Graph.FBGroup.idl.tt" />
+    <None Include="Graph.FBObject.cpp.tt" />
+    <None Include="Graph.FBObject.h.tt" />
+    <None Include="Graph.FBObject.idl.tt" />
     <None Include="Graph.FBPage.cpp.tt" />
     <None Include="Graph.FBPage.h.tt" />
     <None Include="Graph.FBPage.idl.tt" />
@@ -291,6 +297,7 @@ call codegen.cmd</Command>
     <Xml Include="Graph.FBAppRequest.xml" />
     <Xml Include="Graph.FBCursors.xml" />
     <Xml Include="Graph.FBGroup.xml" />
+    <Xml Include="Graph.FBObject.xml" />
     <Xml Include="Graph.FBPage.xml" />
     <Xml Include="Graph.FBProfilePicture.xml" />
     <Xml Include="Graph.FBProfilePictureData.xml" />
