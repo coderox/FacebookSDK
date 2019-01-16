@@ -8,6 +8,13 @@ using namespace concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Web::Http;
+using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
+using namespace Windows::Storage::Streams;
+using namespace Windows::System::Threading;
+using namespace Windows::Data::Json;
+using namespace Windows::Web::Http::Filters;
+using namespace Windows::Web::Http::Headers;
 
 #define BufferSize (1024 * 4) // 4kb
 #define AttachmentMustHavePropertiesSetError "Attachment (FBMediaObject/FBMediaStream) must have a content type, file name, and value set."
@@ -24,10 +31,70 @@ using namespace Windows::Web::Http;
 
 namespace winrt::FacebookSDK::implementation
 {
+	PropertySet FacebookClient::ToDictionary(
+		PropertySet const& parameters,
+		PropertySet const& mediaObjects,
+		PropertySet const& mediaStreams
+	) {
+		if (parameters == nullptr)
+		{
+			return nullptr;
+		}
+
+		// Create a PropertySet to hold all objects that are not a MediaStream or mediaObject
+		PropertySet dictionary;
+
+		// Enumerate through all the parameters
+		for (auto const& current : parameters)
+		{
+			hstring key(current.Key());
+			if (current.Value().try_as<FacebookMediaObject>()) {
+				mediaObjects.Insert(key, current.Value());
+			}
+			else if (current.Value().try_as<FacebookMediaStream>()) {
+				mediaStreams.Insert(key, current.Value());
+			}
+			else {
+				dictionary.Insert(key, current.Value());
+			}
+		}
+
+		return dictionary;
+	}
+
 	IAsyncOperation<hstring> FacebookClient::GetTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
-		throw hresult_not_implemented();
+		PropertySet modifiableParams = MapViewToPropertySet(parameters);
+		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Get, path, modifiableParams);
+		
+		co_await winrt::resume_background();
+		
+		winrt::hstring response = FacebookClient::GetTaskInternalAsync(uri).get();
+
+		if (FacebookClient::IsOAuthErrorResponse(response)) {
+			//auto session = FacebookSession::ActiveSession();
+			//co_await session.TryRefreshAccessToken();
+			co_return FacebookClient::GetTaskInternalAsync(uri).get();
+		}
+		else {
+			co_return response;
+		}
 	}
+
+	task<hstring> FacebookClient::GetTaskInternalAsync(Uri const& RequestUri)
+	{
+		HttpBaseProtocolFilter filter;
+		HttpClient httpClient(filter);
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+		cancellation_token_source cancellationTokenSource = cancellation_token_source();
+
+		filter.CacheControl().ReadBehavior(HttpCacheReadBehavior::Default);
+		auto asyncCall = httpClient.GetAsync(RequestUri);
+		
+		task<HttpResponseMessage> httpRequestTask = create_task(asyncCall, cancellationTokenSource.get_token());
+		return TryReceiveHttpResponse(httpRequestTask, cancellationTokenSource);
+	}
+
 
 	IAsyncOperation<hstring> FacebookClient::PostTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
@@ -93,44 +160,6 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	/**
-	 * Sorts parameters into FBMediaStream, FBMediaObject, and everything else.
-	 * @param parameters The PropertySet to sort
-	 * @param mediaObjects PropertySet to append FBmediaObject objects to
-	 * @param mediaStreams PropertySet to append FBmediaStream objects to
-	 * @return PropertySet of all objects that are not a FBMediaStrem or a
-	 * FBMediaObject. If parameters is nullptr, will instead return nullptr.
-	 * Note that mediaObjects and mediaStreams are both altered by this function.
-	 */
-	PropertySet FacebookClient::ToDictionary(
-		PropertySet const& parameters,
-		PropertySet const& mediaObjects,
-		PropertySet const& mediaStreams
-	) {
-		if (parameters == nullptr)
-		{
-			return nullptr;
-		}
-
-		// Create a PropertySet to hold all objects that are not a MediaStream or mediaObject
-		PropertySet dictionary;
-
-		// Enumerate through all the parameters
-		for (auto const& current : parameters)
-		{
-			hstring key(current.Key());
-			if (current.Value().try_as<FacebookMediaObject>()) {
-				mediaObjects.Insert(key, current.Value());
-			} else if(current.Value().try_as<FacebookMediaStream>()) {
-				mediaStreams.Insert(key, current.Value());
-			}
-			else {
-				dictionary.Insert(key, current.Value());
-			}
-		}
-
-		return dictionary;
-	}
 
 	/**
 	 * Builds request URI.
@@ -170,16 +199,6 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	/**
-	 * Performs the actual HTTP GET request.
-	 * @param RequestUri the full URI of the request
-	 * @return The response content
-	 * @exception Exception Any exception that can occur during the request
-	 */
-	task<hstring> FacebookClient::GetTaskInternalAsync(Uri const& RequestUri)
-	{
-		throw hresult_not_implemented();
-	}
 
 	/**
 	 * Performs the actual HTTP DELETE request.

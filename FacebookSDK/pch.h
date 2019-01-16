@@ -13,3 +13,6 @@
 #include "winrt/Windows.UI.Xaml.Media.h"
 #include "winrt/Windows.Web.Http.h"
 #include "winrt/Windows.Storage.Streams.h"
+#include "winrt/Windows.System.Threading.h"
+
+#include "FacebookConstants.h"
