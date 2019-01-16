@@ -59,6 +59,8 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="HttpManager.cpp" />
+    <ClCompile Include="FacebookClient.cpp" />
+    <ClCompile Include="FacebookMediaObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -106,6 +108,8 @@
     </ClInclude>
     <ClInclude Include="HttpManager.h" />
     <ClInclude Include="HttpMethod.h" />
+    <ClInclude Include="FacebookClient.h" />
+    <ClInclude Include="FacebookMediaObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -276,6 +280,7 @@
     <Midl Include="HttpManager.idl" />
     <Midl Include="FacebookClient.idl" />
     <Midl Include="FacebookMediaObject.idl" />
+    <Midl Include="FacebookMediaStream.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">

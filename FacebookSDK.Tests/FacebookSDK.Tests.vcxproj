@@ -229,6 +229,7 @@
     <ClCompile Include="ColorLuminosityConverter.Tests.cpp" />
     <ClCompile Include="FacebookAppRequest.Tests.cpp" />
     <ClCompile Include="FacebookMediaObject.Tests.cpp" />
+    <ClCompile Include="FacebookMediaStream.Tests.cpp" />
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="FacebookSingleValue.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />

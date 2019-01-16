@@ -121,8 +121,8 @@ namespace winrt::FacebookSDK::implementation
 			hstring key(current.Key());
 			if (current.Value().try_as<FacebookMediaObject>()) {
 				mediaObjects.Insert(key, current.Value());
-			//} else if(current.Value().try_as<FBMediaStream>()) {
-			//	mediaStreams.Insert(key, current.Value());
+			} else if(current.Value().try_as<FacebookMediaStream>()) {
+				mediaStreams.Insert(key, current.Value());
 			}
 			else {
 				dictionary.Insert(key, current.Value());

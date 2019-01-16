@@ -156,6 +156,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookMediaStream.h">
+      <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="Generated\Graph.FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBCursors.h" />
     <ClInclude Include="Generated\Graph.FBGroup.h" />
@@ -216,6 +220,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FacebookMediaStream.cpp">
+      <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
       <DependentUpon>FacebookResult.idl</DependentUpon>
     </ClCompile>
@@ -264,6 +272,9 @@ call codegen.cmd</Command>
     </Midl>
     <Midl Include="FacebookError.idl" />
     <Midl Include="FacebookMediaObject.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="FacebookMediaStream.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="Generated\Graph.FBAppRequest.idl" />
