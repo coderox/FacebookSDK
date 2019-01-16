@@ -148,6 +148,14 @@ call codegen.cmd</Command>
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookClient.h">
+      <DependentUpon>FacebookClient.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="FacebookMediaObject.h">
+      <DependentUpon>FacebookMediaObject.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="Generated\Graph.FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBCursors.h" />
     <ClInclude Include="Generated\Graph.FBGroup.h" />
@@ -163,6 +171,7 @@ call codegen.cmd</Command>
       <DependentUpon>HttpManager.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="JsonClassFactory.h">
       <DependentUpon>JsonClassFactory.idl</DependentUpon>
     </ClInclude>
@@ -181,7 +190,6 @@ call codegen.cmd</Command>
       <DependentUpon>HlsColor.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="FacebookError.h">
       <DependentUpon>FacebookError.idl</DependentUpon>
@@ -198,6 +206,14 @@ call codegen.cmd</Command>
     </ClCompile>
     <ClCompile Include="FacebookAppRequest.cpp">
       <DependentUpon>FacebookAppRequest.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="FacebookClient.cpp">
+      <DependentUpon>FacebookClient.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="FacebookMediaObject.cpp">
+      <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
@@ -243,7 +259,13 @@ call codegen.cmd</Command>
     <Midl Include="FacebookAppRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="FacebookClient.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="FacebookMediaObject.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="Generated\Graph.FBAppRequest.idl" />
     <Midl Include="Generated\Graph.FBCursors.idl" />
     <Midl Include="Generated\Graph.FBGroup.idl" />

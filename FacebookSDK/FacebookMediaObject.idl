@@ -1,0 +1,10 @@
+namespace FacebookSDK
+{
+    runtimeclass FacebookMediaObject 
+    {
+		String ContentType{ get; set; };
+		String FileName{ get; set; };
+		FacebookMediaObject SetValue(UInt8[] value);
+		UInt8[] GetValue();
+    }
+}

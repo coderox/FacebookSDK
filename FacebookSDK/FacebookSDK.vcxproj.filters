@@ -58,6 +58,7 @@
     <ClCompile Include="Generated\Graph.FBPaging.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="HttpManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -66,7 +67,6 @@
     <ClInclude Include="HlsColor.h" />
     <ClInclude Include="ColorLuminosityConverter.h" />
     <ClInclude Include="ScaleConverter.h" />
-    <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="SDKMessage.h" />
     <ClInclude Include="JsonClassFactory.h" />
     <ClInclude Include="FacebookSingleValue.h" />
@@ -104,6 +104,8 @@
     <ClInclude Include="Generated\Graph.FBPaging.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="HttpManager.h" />
+    <ClInclude Include="HttpMethod.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -272,6 +274,8 @@
       <Filter>Generated Files</Filter>
     </Midl>
     <Midl Include="HttpManager.idl" />
+    <Midl Include="FacebookClient.idl" />
+    <Midl Include="FacebookMediaObject.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">

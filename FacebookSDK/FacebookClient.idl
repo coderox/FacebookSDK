@@ -1,0 +1,10 @@
+import "JsonClassFactory.idl";
+import "IHttpClient.idl";
+
+namespace FacebookSDK
+{
+    runtimeclass FacebookClient : IHttpClient
+    {
+        FacebookClient();
+	}
+}

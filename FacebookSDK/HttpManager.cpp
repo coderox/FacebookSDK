@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "HttpManager.h"
-//#include "FacebookClient.h"
+#include "FacebookClient.h"
 
 namespace winrt::FacebookSDK::implementation
 {
@@ -36,7 +36,7 @@ namespace winrt::FacebookSDK::implementation
 
 	FacebookSDK::HttpManager HttpManager::Instance()
 	{
-		static HttpManager _instance = nullptr;// HttpManager(FBClient());
+		static HttpManager _instance(winrt::make<FacebookClient>());
 		return _instance;
 	}
 }
