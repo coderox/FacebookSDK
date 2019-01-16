@@ -2,6 +2,7 @@ namespace FacebookSDK
 {
     runtimeclass FacebookMediaObject 
     {
+		FacebookMediaObject();
 		String ContentType{ get; set; };
 		String FileName{ get; set; };
 		FacebookMediaObject SetValue(UInt8[] value);

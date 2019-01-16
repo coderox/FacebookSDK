@@ -44,6 +44,9 @@
     <ClCompile Include="FacebookAppRequest.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="FacebookMediaObject.Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

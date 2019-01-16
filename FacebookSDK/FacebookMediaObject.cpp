@@ -1,35 +1,44 @@
 ﻿#include "pch.h"
 #include "FacebookMediaObject.h"
 
+using namespace winrt;
+using namespace Windows::Foundation::Collections;
+
 namespace winrt::FacebookSDK::implementation
 {
 	hstring FacebookMediaObject::ContentType()
 	{
-		throw hresult_not_implemented();
+		return _contentType.c_str();
 	}
 
 	void FacebookMediaObject::ContentType(hstring const& value)
 	{
-		throw hresult_not_implemented();
+		_contentType = value.c_str();
 	}
 
 	hstring FacebookMediaObject::FileName()
 	{
-		throw hresult_not_implemented();
+		return _fileName.c_str();
 	}
 
 	void FacebookMediaObject::FileName(hstring const& value)
 	{
-		throw hresult_not_implemented();
+		_fileName = value.c_str();
 	}
 
-	FacebookSDK::FacebookMediaObject FacebookMediaObject::SetValue(array_view<uint8_t const> value)
+	FacebookSDK::FacebookMediaObject FacebookMediaObject::SetValue(array_view<const uint8_t> value)
 	{
-		throw hresult_not_implemented();
+		_value.clear();
+		for (auto item : value)
+		{
+			_value.push_back(item);
+		}
+		return *this;
 	}
 
 	com_array<uint8_t> FacebookMediaObject::GetValue()
 	{
-		throw hresult_not_implemented();
+		winrt::com_array<uint8_t> result(_value);
+		return result;
 	}
 }
