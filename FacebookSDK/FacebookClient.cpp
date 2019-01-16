@@ -116,18 +116,18 @@ namespace winrt::FacebookSDK::implementation
 		PropertySet dictionary;
 
 		// Enumerate through all the parameters
-		//for (auto const& current : parameters)
-		//{
-		//	hstring key(current.Key());
-		//	if (current.Value().try_as<FBMediaObject>()) {
-		//		mediaObjects.Insert(key, current.Value());
-		//	} else if(current.Value().try_as<FBMediaStream>()) {
-		//		mediaStreams.Insert(key, current.Value());
-		//	}
-		//	else {
-		//		dictionary.Insert(key, current.Value());
-		//	}
-		//}
+		for (auto const& current : parameters)
+		{
+			hstring key(current.Key());
+			if (current.Value().try_as<FacebookMediaObject>()) {
+				mediaObjects.Insert(key, current.Value());
+			//} else if(current.Value().try_as<FBMediaStream>()) {
+			//	mediaStreams.Insert(key, current.Value());
+			}
+			else {
+				dictionary.Insert(key, current.Value());
+			}
+		}
 
 		return dictionary;
 	}
