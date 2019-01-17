@@ -18,5 +18,6 @@
 #include "winrt/Windows.Web.Http.Filters.h"
 #include "winrt/Windows.Storage.Streams.h"
 #include "winrt/Windows.System.Threading.h"
+#include "winrt/Windows.Globalization.h"
 
 #include "FacebookConstants.h"

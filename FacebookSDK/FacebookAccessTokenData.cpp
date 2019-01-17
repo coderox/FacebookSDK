@@ -4,6 +4,7 @@
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
+using namespace Windows::Globalization;
 
 namespace winrt::FacebookSDK::implementation
 {
@@ -28,35 +29,38 @@ namespace winrt::FacebookSDK::implementation
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
-		std::vector<hstring> vec;
 		auto v{ winrt::single_threaded_vector<hstring>() };
-		//_grantedPermissions = make<FacebookPermissions>(v.GetView());
-		//_declinedPermissions = make<FacebookPermissions>(v.GetView());
+		_grantedPermissions = make<FacebookPermissions>(v.GetView());
+		_declinedPermissions = make<FacebookPermissions>(v.GetView());
 	}
 
 	hstring FacebookAccessTokenData::AccessToken()
 	{
-		throw hresult_not_implemented();
+		return _accessToken.c_str();
 	}
 
 	Windows::Foundation::DateTime FacebookAccessTokenData::ExpirationDate()
 	{
-		throw hresult_not_implemented();
+		return _expirationDate;
 	}
 
 	FacebookSDK::FacebookPermissions FacebookAccessTokenData::GrantedPermissions()
 	{
-		throw hresult_not_implemented();
+		return _grantedPermissions;
 	}
 
 	FacebookSDK::FacebookPermissions FacebookAccessTokenData::DeclinedPermissions()
 	{
-		throw hresult_not_implemented();
+		return _declinedPermissions;
 	}
 
 	bool FacebookAccessTokenData::IsExpired()
 	{
-		throw hresult_not_implemented();
+		bool expired = true;
+		Calendar cal;
+		cal.SetToNow();
+		expired = (cal.CompareDateTime(_expirationDate) >= 0);
+		return expired;
 	}
 
 	void FacebookAccessTokenData::SetPermissions(Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> const& perms)
