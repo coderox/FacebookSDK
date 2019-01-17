@@ -96,7 +96,7 @@ namespace winrt::FacebookSDK::implementation
 		winrt::Windows::Foundation::Uri PrepareRequestUri(
 			::FacebookSDK::HttpMethod httpMethod,
 			winrt::hstring const& path,
-			winrt::Windows::Foundation::Collections::PropertySet const& parameters
+			winrt::Windows::Foundation::Collections::PropertySet parameters
 		);
 
 		/**
@@ -123,7 +123,7 @@ namespace winrt::FacebookSDK::implementation
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		concurrency::task<winrt::hstring> GetTaskInternalAsync(
+		Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
@@ -133,7 +133,7 @@ namespace winrt::FacebookSDK::implementation
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		concurrency::task<winrt::hstring> DeleteTaskInternalAsync(
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
@@ -143,7 +143,7 @@ namespace winrt::FacebookSDK::implementation
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		concurrency::task<winrt::hstring> SimplePostInternalAsync(
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> SimplePostInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
@@ -153,14 +153,13 @@ namespace winrt::FacebookSDK::implementation
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		concurrency::task<winrt::hstring> MultipartPostInternalAsync(
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> MultipartPostInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri,
 			winrt::Windows::Foundation::Collections::PropertySet const& Streams
 		);
 
-		concurrency::task<winrt::hstring> TryReceiveHttpResponse(
-			concurrency::task<winrt::Windows::Web::Http::HttpResponseMessage> httpRequestTask,
-			concurrency::cancellation_token_source cancellationTokenSource
+		Windows::Foundation::IAsyncOperation<winrt::hstring> TryReceiveHttpResponse(
+			winrt::Windows::Web::Http::HttpResponseMessage const& responseMessage
 		);
 
 		winrt::Windows::Foundation::Collections::PropertySet MapViewToPropertySet(

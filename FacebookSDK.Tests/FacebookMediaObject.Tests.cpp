@@ -25,7 +25,7 @@ namespace FacebookSDK_Tests
 			// arrange
 			auto instance = ref new FacebookSDK::FacebookMediaObject();
 			std::vector<unsigned char> vector = { 0,1,2,3 };
-			auto array = ref new Platform::Array<unsigned char>(&vector[0], vector.size());
+			auto array = ref new Platform::Array<unsigned char>(&vector[0], safe_cast<unsigned int>(vector.size()));
 			
 			// act
 			auto secondInstance = instance->SetValue(array);

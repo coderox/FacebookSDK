@@ -66,44 +66,85 @@ namespace winrt::FacebookSDK::implementation
 	{
 		PropertySet modifiableParams = MapViewToPropertySet(parameters);
 		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Get, path, modifiableParams);
-		
+
 		co_await winrt::resume_background();
-		
-		winrt::hstring response = FacebookClient::GetTaskInternalAsync(uri).get();
+
+		winrt::hstring response = co_await FacebookClient::GetTaskInternalAsync(uri);
 
 		if (FacebookClient::IsOAuthErrorResponse(response)) {
 			//auto session = FacebookSession::ActiveSession();
 			//co_await session.TryRefreshAccessToken();
-			co_return FacebookClient::GetTaskInternalAsync(uri).get();
+			response = co_await FacebookClient::GetTaskInternalAsync(uri);
 		}
-		else {
-			co_return response;
-		}
+		co_return response;
 	}
 
-	task<hstring> FacebookClient::GetTaskInternalAsync(Uri const& RequestUri)
-	{
+	IAsyncOperation<hstring> FacebookClient::GetTaskInternalAsync(
+		Uri const& RequestUri
+	) {
 		HttpBaseProtocolFilter filter;
 		HttpClient httpClient(filter);
 		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
-		cancellation_token_source cancellationTokenSource = cancellation_token_source();
 
 		filter.CacheControl().ReadBehavior(HttpCacheReadBehavior::Default);
-		auto asyncCall = httpClient.GetAsync(RequestUri);
-		
-		task<HttpResponseMessage> httpRequestTask = create_task(asyncCall, cancellationTokenSource.get_token());
-		return TryReceiveHttpResponse(httpRequestTask, cancellationTokenSource);
+		auto response = co_await httpClient.GetAsync(RequestUri);
+		auto result = co_await TryReceiveHttpResponse(response);
+		co_return result;
 	}
 
+	IAsyncOperation<hstring> FacebookClient::TryReceiveHttpResponse(
+		HttpResponseMessage const& responseMessage)
+	{
+		hstring result;
+		try
+		{
+			if (responseMessage && responseMessage.IsSuccessStatusCode())
+			{
+				result = co_await responseMessage.Content().ReadAsStringAsync();
+			}
+		}
+		catch (hresult_error e)
+		{
+			OutputDebugString(e.message().data());
+		}
+		co_return result;
+	}
 
 	IAsyncOperation<hstring> FacebookClient::PostTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
-		throw hresult_not_implemented();
+		PropertySet modifiableParams = MapViewToPropertySet(parameters);
+		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Get, path, modifiableParams);
+		hstring result;
+
+		co_await winrt::resume_background();
+		PropertySet streams = GetStreamsToUpload(modifiableParams);
+		if (streams) {
+			result = co_await FacebookClient::MultipartPostAsync(path, modifiableParams, streams);
+		}
+		else {
+			result = co_await FacebookClient::SimplePostAsync(path, modifiableParams);
+		}
+		co_return result;
 	}
 
 	IAsyncOperation<hstring> FacebookClient::DeleteTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
-		throw hresult_not_implemented();
+		PropertySet modifiableParams = MapViewToPropertySet(parameters);
+		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Delete, path, modifiableParams);
+
+		hstring result;
+		hstring response = co_await FacebookClient::DeleteTaskInternalAsync(uri);
+
+		if (FacebookClient::IsOAuthErrorResponse(response)) {
+			//FBSession^ sess = FBSession::ActiveSession;
+			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			result = co_await FacebookClient::DeleteTaskInternalAsync(uri);
+		}
+		else {
+			result = response;
+		}
+
+		co_return result;
 	}
 
 	hstring FacebookClient::ParametersToQueryString(IMapView<hstring, IInspectable> const& parameters)
@@ -112,14 +153,25 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	/**
-		 * Finds all FBMediaStream object in parameters.
-		 * @param parameters The PropertySet to search for FBMediaStream objects in
-		 * @return PropertySet containing all FBMediaStream objects found. If
-		 * none are found, nullptr is instead returned.
-		 */
-	PropertySet FacebookClient::GetStreamsToUpload(PropertySet const& parameters) 
+	 * Finds all FBMediaStream object in parameters.
+	 * @param parameters The PropertySet to search for FBMediaStream objects in
+	 * @return PropertySet containing all FBMediaStream objects found. If
+	 * none are found, nullptr is instead returned.
+	 */
+	PropertySet FacebookClient::GetStreamsToUpload(PropertySet const& parameters)
 	{
-		throw hresult_not_implemented();
+		PropertySet streams = nullptr;
+
+		// Enumerate through all the parameters
+		for (auto const& current : parameters)
+		{
+			if (!streams) {
+				streams = PropertySet();
+			}
+			streams.Insert(current.Key(), current.Value());
+		}
+
+		return streams;
 	}
 
 	/**
@@ -130,7 +182,18 @@ namespace winrt::FacebookSDK::implementation
 	 * @param Form The form to attach FBMediaStream objects to.
 	 */
 	void FacebookClient::AddStreamsToForm(PropertySet const& Parameters, HttpMultipartFormDataContent const& Form) {
-
+		HttpStreamContent fileContent = nullptr;
+		// Enumerate through all the parameters
+		for (auto const& current : Parameters) {
+			hstring key(current.Key());
+			FacebookMediaStream stream = current.Value().as<FacebookMediaStream>();
+			if (stream) {
+				fileContent = HttpStreamContent(stream.Stream());
+				HttpContentHeaderCollection headers(fileContent.Headers());
+				headers.Insert(L"Content-Type", stream.Stream().ContentType());
+				Form.Add(fileContent, key, stream.FileName());
+			}
+		}
 	}
 
 	/**
@@ -141,7 +204,20 @@ namespace winrt::FacebookSDK::implementation
 	 * @exception Can throw any exception that is thrown by SimplePlostInternalAsync
 	 */
 	IAsyncOperation<hstring> FacebookClient::SimplePostAsync(hstring const& path, PropertySet const& parameters) {
-		throw hresult_not_implemented();
+		Uri uri(FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Post, path, parameters));
+
+		hstring result;
+		hstring response = co_await FacebookClient::SimplePostInternalAsync(uri);
+		if (FacebookClient::IsOAuthErrorResponse(response)) {
+			//FBSession^ sess = FBSession::ActiveSession;
+			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			result = co_await FacebookClient::SimplePostInternalAsync(uri);
+		}
+		else {
+			result = response;
+		}
+
+		co_return result;
 	}
 
 	/**
@@ -155,9 +231,22 @@ namespace winrt::FacebookSDK::implementation
 	IAsyncOperation<hstring> FacebookClient::MultipartPostAsync(
 		hstring const& path,
 		PropertySet const& streams,
-		PropertySet const& parameters) 
+		PropertySet const& parameters)
 	{
-		throw hresult_not_implemented();
+		Uri uri(FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Post, path, parameters));
+
+		hstring result;
+		hstring response = co_await FacebookClient::SimplePostInternalAsync(uri);
+		if (FacebookClient::IsOAuthErrorResponse(response)) {
+			//FBSession^ sess = FBSession::ActiveSession;
+			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			result = co_await FacebookClient::MultipartPostInternalAsync(uri, streams);
+		}
+		else {
+			result = response;
+		}
+
+		co_return result;
 	}
 
 
@@ -174,9 +263,55 @@ namespace winrt::FacebookSDK::implementation
 	Uri FacebookClient::PrepareRequestUri(
 		::FacebookSDK::HttpMethod httpMethod,
 		hstring const& path,
-		PropertySet const& parameters
+		PropertySet parameters
 	) {
-		throw hresult_not_implemented();
+		FacebookSession sess = FacebookSession::ActiveSession();
+		GraphUriBuilder uriBuilder(path);
+
+		if (parameters == nullptr)
+		{
+			parameters = PropertySet();
+		}
+
+		PropertySet mediaObjects;
+		PropertySet mediaStreams;
+		PropertySet parametersWithoutMediaObjects = ToDictionary(parameters, mediaObjects, mediaStreams);
+		// ensure that media items are in valid states
+		ValidateMediaStreams(mediaStreams);
+		ValidateMediaObjects(mediaObjects);
+
+		if (parametersWithoutMediaObjects == nullptr)
+		{
+			parametersWithoutMediaObjects = PropertySet();
+		}
+
+		if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
+			(sess.AccessTokenData() != nullptr) &&
+			(sess.AccessTokenData().AccessToken().data() != nullptr) &&
+			(sess.AccessTokenData().AccessToken().size() > 0))
+		{
+			parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess.AccessTokenData().AccessToken()));
+		}
+
+		if (parametersWithoutMediaObjects.HasKey(L"format"))
+		{
+			parametersWithoutMediaObjects.Insert(L"format", box_value(L"json-strings"));
+		}
+
+		SerializeParameters(parametersWithoutMediaObjects);
+
+		// Add remaining parameters to query string.  Note that parameters that
+		// do not need to be uploaded as multipart, i.e. any which is are not
+		// binary data, are required to be in the query string, even for POST
+		// requests!
+		auto kvp = parametersWithoutMediaObjects.First();
+		while (kvp.HasCurrent())
+		{
+			uriBuilder.AddQueryParam(kvp.Current().Key(), unbox_value<hstring>(kvp.Current().Value()));
+			kvp.MoveNext();
+		}
+
+		return uriBuilder.MakeUri();
 	}
 
 	/**
@@ -184,7 +319,7 @@ namespace winrt::FacebookSDK::implementation
 	 * this function modifies parameters.
 	 * @param parameters The PropertySet to modify
 	 */
-	void FacebookClient::SerializeParameters(PropertySet const& parameters) 
+	void FacebookClient::SerializeParameters(PropertySet const& parameters)
 	{
 
 	}
@@ -206,9 +341,15 @@ namespace winrt::FacebookSDK::implementation
 	 * @return The response content
 	 * @exception Exception Any exception that can occur during the request
 	 */
-	task<hstring> FacebookClient::DeleteTaskInternalAsync(Uri const& RequestUri)
+	IAsyncOperation<hstring> FacebookClient::DeleteTaskInternalAsync(Uri const& RequestUri)
 	{
-		throw hresult_not_implemented();
+		HttpBaseProtocolFilter filter;
+		HttpClient httpClient(filter);
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+
+		auto response = co_await httpClient.DeleteAsync(RequestUri);
+		auto result = co_await TryReceiveHttpResponse(response);
+		co_return result;
 	}
 
 	/**
@@ -217,9 +358,15 @@ namespace winrt::FacebookSDK::implementation
 	 * @return The response content
 	 * @exception Exception Any exception that can occur during the request
 	 */
-	task<hstring> FacebookClient::SimplePostInternalAsync(Uri const& RequestUri)
+	IAsyncOperation<hstring> FacebookClient::SimplePostInternalAsync(Uri const& RequestUri)
 	{
-		throw hresult_not_implemented();
+		HttpBaseProtocolFilter filter;
+		HttpClient httpClient(filter);
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+
+		auto response = co_await httpClient.PostAsync(RequestUri, HttpStringContent(L""));
+		auto result = co_await TryReceiveHttpResponse(response);
+		co_return result;
 	}
 
 	/**
@@ -228,31 +375,32 @@ namespace winrt::FacebookSDK::implementation
 	 * @return The response content
 	 * @exception Exception Any exception that can occur during the request
 	 */
-	task<hstring> FacebookClient::MultipartPostInternalAsync(
+	IAsyncOperation<hstring> FacebookClient::MultipartPostInternalAsync(
 		Uri const& RequestUri,
 		PropertySet const& Streams
 	) {
-		throw hresult_not_implemented();
+		HttpClient httpClient;
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+		HttpMultipartFormDataContent form;
+
+		FacebookClient::AddStreamsToForm(Streams, form);
+
+		auto response = co_await httpClient.PostAsync(RequestUri, form);
+		auto result = co_await TryReceiveHttpResponse(response);
+		co_return result;
 	}
 
-	task<hstring> FacebookClient::TryReceiveHttpResponse(
-		task<HttpResponseMessage> httpRequestTask,
-		cancellation_token_source cancellationTokenSource
-	) {
-		throw hresult_not_implemented();
-	}
-
-	PropertySet FacebookClient::MapViewToPropertySet(IMapView<hstring, IInspectable> const& mapView) 
+	PropertySet FacebookClient::MapViewToPropertySet(IMapView<hstring, IInspectable> const& mapView)
 	{
 		throw hresult_not_implemented();
 	}
 
-	void ValidateMediaStreams(PropertySet const& mediaStreams)
+	void FacebookClient::ValidateMediaStreams(PropertySet const& mediaStreams)
 	{
 
 	}
 
-	void ValidateMediaObjects(PropertySet const& mediaObjects)
+	void FacebookClient::ValidateMediaObjects(PropertySet const& mediaObjects)
 	{
 
 	}

@@ -110,6 +110,7 @@
     <ClInclude Include="HttpMethod.h" />
     <ClInclude Include="FacebookClient.h" />
     <ClInclude Include="FacebookMediaObject.h" />
+    <ClInclude Include="FacebookConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -281,6 +282,10 @@
     <Midl Include="FacebookClient.idl" />
     <Midl Include="FacebookMediaObject.idl" />
     <Midl Include="FacebookMediaStream.idl" />
+    <Midl Include="GraphUriBuilder.idl" />
+    <Midl Include="FacebookSession.idl" />
+    <Midl Include="FacebookAccessTokenData.idl" />
+    <Midl Include="FacebookPermissions.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -316,5 +321,8 @@
     <Xml Include="Graph.FBPaging.xml">
       <Filter>Object Templates</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FacebookDialog.xaml" />
   </ItemGroup>
 </Project>

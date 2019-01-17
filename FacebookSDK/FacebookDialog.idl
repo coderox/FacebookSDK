@@ -1,0 +1,9 @@
+namespace FacebookSDK
+{
+    [default_interface]
+    runtimeclass FacebookDialog : Windows.UI.Xaml.Controls.UserControl
+    {
+        FacebookDialog();
+        Int32 MyProperty;
+    }
+}

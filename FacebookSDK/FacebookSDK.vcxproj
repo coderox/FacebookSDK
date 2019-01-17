@@ -148,8 +148,17 @@ call codegen.cmd</Command>
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookAccessTokenData.h">
+      <DependentUpon>FacebookAccessTokenData.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookClient.h">
       <DependentUpon>FacebookClient.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="FacebookConstants.h" />
+    <ClInclude Include="FacebookDialog.h">
+      <DependentUpon>FacebookDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FacebookMediaObject.h">
@@ -158,6 +167,14 @@ call codegen.cmd</Command>
     </ClInclude>
     <ClInclude Include="FacebookMediaStream.h">
       <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="FacebookPermissions.h">
+      <DependentUpon>FacebookPermissions.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="FacebookSession.h">
+      <DependentUpon>FacebookSession.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Generated\Graph.FBAppRequest.h" />
@@ -171,6 +188,10 @@ call codegen.cmd</Command>
     <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
     <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
     <ClInclude Include="Generated\Graph.FBUser.h" />
+    <ClInclude Include="GraphUriBuilder.h">
+      <DependentUpon>GraphUriBuilder.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="HttpManager.h">
       <DependentUpon>HttpManager.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -208,12 +229,20 @@ call codegen.cmd</Command>
     <ClCompile Include="ColorLuminosityConverter.cpp">
       <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="FacebookAccessTokenData.cpp">
+      <DependentUpon>FacebookAccessTokenData.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookAppRequest.cpp">
       <DependentUpon>FacebookAppRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookClient.cpp">
       <DependentUpon>FacebookClient.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="FacebookDialog.cpp">
+      <DependentUpon>FacebookDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookMediaObject.cpp">
@@ -224,8 +253,16 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookMediaStream.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FacebookPermissions.cpp">
+      <DependentUpon>FacebookPermissions.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
       <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="FacebookSession.cpp">
+      <DependentUpon>FacebookSession.idl</DependentUpon>
+      <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookSingleValue.cpp">
       <DependentUpon>FacebookSingleValue.idl</DependentUpon>
@@ -242,6 +279,10 @@ call codegen.cmd</Command>
     <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
     <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
     <ClCompile Include="Generated\Graph.FBUser.cpp" />
+    <ClCompile Include="GraphUriBuilder.cpp">
+      <DependentUpon>GraphUriBuilder.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="HlsColor.cpp">
       <DependentUpon>HlsColor.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -264,17 +305,30 @@ call codegen.cmd</Command>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="ColorLuminosityConverter.idl" />
+    <Midl Include="FacebookAccessTokenData.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="FacebookAppRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookClient.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="FacebookDialog.idl">
+      <DependentUpon>FacebookDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="FacebookError.idl" />
     <Midl Include="FacebookMediaObject.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookMediaStream.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="FacebookPermissions.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="FacebookSession.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="Generated\Graph.FBAppRequest.idl" />
@@ -288,6 +342,9 @@ call codegen.cmd</Command>
     <Midl Include="Generated\Graph.FBProfilePicture.idl" />
     <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
     <Midl Include="Generated\Graph.FBUser.idl" />
+    <Midl Include="GraphUriBuilder.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="HttpManager.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -367,6 +424,11 @@ call codegen.cmd</Command>
     <Xml Include="Graph.FBProfilePicture.xml" />
     <Xml Include="Graph.FBProfilePictureData.xml" />
     <Xml Include="Graph.FBUser.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FacebookDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
