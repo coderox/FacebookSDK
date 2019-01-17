@@ -6,7 +6,7 @@ namespace winrt::FacebookSDK::implementation
 {
 	struct FacebookPermissions : FacebookPermissionsT<FacebookPermissions>
 	{
-		FacebookPermissions() = delete;
+		FacebookPermissions() = default;
 		FacebookPermissions(Windows::Foundation::Collections::IVectorView<hstring> const& Permissions);
 
 		Windows::Foundation::Collections::IVectorView<hstring> Values();

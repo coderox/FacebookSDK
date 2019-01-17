@@ -35,7 +35,7 @@ namespace FacebookSDK_Tests
 			Assert::IsNotNull(instance);
 			Assert::IsNotNull(secondInstance);
 			Assert::AreEqual(instance, secondInstance);
-			for (int i = 0; i < array->Length; i++) {
+			for (unsigned int i = 0; i < array->Length; i++) {
 				Assert::AreEqual(array[i], resultValue[i]);
 			}
 		}
