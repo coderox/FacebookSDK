@@ -232,6 +232,7 @@
     <ClCompile Include="FacebookMediaStream.Tests.cpp" />
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="FacebookSingleValue.Tests.cpp" />
+    <ClCompile Include="GraphUriBuilder.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
     <ClCompile Include="HttpClientFake.cpp" />
     <ClCompile Include="ScaleConverter.Tests.cpp" />

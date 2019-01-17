@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "GraphUriBuilder.h"
 
+using namespace winrt;
+using namespace Windows::Foundation;
+
 namespace winrt::FacebookSDK::implementation
 {
 	GraphUriBuilder::GraphUriBuilder(hstring const& path)
@@ -8,7 +11,7 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	Windows::Foundation::Uri GraphUriBuilder::MakeUri()
+	Uri GraphUriBuilder::MakeUri()
 	{
 		throw hresult_not_implemented();
 	}
@@ -17,4 +20,17 @@ namespace winrt::FacebookSDK::implementation
 	{
 		throw hresult_not_implemented();
 	}
+
+	void GraphUriBuilder::BuildApiVersionString() {
+	
+	}
+	
+	void GraphUriBuilder::FixPathDelimiters() { 
+	
+	}
+
+	void GraphUriBuilder::DecodeQueryParams(Uri const& uri) {
+
+	}
+
 }
