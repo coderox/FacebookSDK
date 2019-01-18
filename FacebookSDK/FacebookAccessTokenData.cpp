@@ -132,7 +132,7 @@ namespace winrt::FacebookSDK::implementation
 
 		if (gotToken && gotExpiration && !gotBadField)
 		{
-			data = FacebookAccessTokenData(token.c_str(), expiration.c_str());
+			data = make<FacebookAccessTokenData>(token.c_str(), expiration.c_str());
 		}
 
 		return data;

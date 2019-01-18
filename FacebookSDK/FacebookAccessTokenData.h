@@ -19,12 +19,12 @@ namespace winrt::FacebookSDK::implementation
 
 		static FacebookSDK::FacebookAccessTokenData FromUri(Windows::Foundation::Uri const& Response);
 
-	private:
-
 		FacebookAccessTokenData(
 			std::wstring accessToken,
 			std::wstring expiration
 		);
+
+	private:
 
 		/**
 		 * Converts expiration string to DateTime object that indicates when

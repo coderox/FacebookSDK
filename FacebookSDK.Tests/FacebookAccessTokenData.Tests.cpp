@@ -23,7 +23,7 @@ namespace FacebookSDK_Tests
 		TEST_METHOD(TestCreateInstanceFromUri)
 		{
 			// arrange
-			auto uri = ref new Uri("https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN");
+			auto uri = ref new Uri("https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456");
 
 			// act
 			auto instance = FacebookSDK::FacebookAccessTokenData::FromUri(uri);
