@@ -173,6 +173,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookMediaStream.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookPaginatedArray.h">
+      <DependentUpon>FacebookPaginatedArray.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookPermissions.h">
       <DependentUpon>FacebookPermissions.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -228,6 +232,7 @@ call codegen.cmd</Command>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SDKMessage.h" />
+    <ClInclude Include="StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
@@ -259,6 +264,10 @@ call codegen.cmd</Command>
     </ClCompile>
     <ClCompile Include="FacebookMediaStream.cpp">
       <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="FacebookPaginatedArray.cpp">
+      <DependentUpon>FacebookPaginatedArray.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookPermissions.cpp">
@@ -310,6 +319,7 @@ call codegen.cmd</Command>
       <DependentUpon>ScaleConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="ColorLuminosityConverter.idl" />
@@ -334,6 +344,9 @@ call codegen.cmd</Command>
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookMediaStream.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="FacebookPaginatedArray.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookPermissions.idl">

@@ -3,6 +3,7 @@
 #include "Generated\Graph.FBPermission.h"
 #include <algorithm>
 #include <string>
+#include "StringUtility.h"
 
 using namespace winrt;
 using namespace std;
@@ -66,12 +67,6 @@ namespace winrt::FacebookSDK::implementation
 		cal.SetToNow();
 		expired = (cal.CompareDateTime(_expirationDate) >= 0);
 		return expired;
-	}
-
-	int compare_ordinal(wstring strA, wstring strB) {
-		transform(strA.begin(), strA.end(), strA.begin(), ::towlower);
-		transform(strB.begin(), strB.end(), strB.begin(), ::towlower);
-		return strA.compare(strB);
 	}
 
 	void FacebookAccessTokenData::SetPermissions(Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> const& perms)

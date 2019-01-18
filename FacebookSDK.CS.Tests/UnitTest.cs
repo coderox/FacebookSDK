@@ -677,25 +677,25 @@ namespace FacebookSDK.CS.Tests
         //    }
         //}
 
-        //[TestMethod]
-        //public async Task testFBPaginatedArray()
-        //{
-        //    MockHttpClient mockHttpClient = new MockHttpClient();
-        //    HttpManager.Instance.SetHttpClient(mockHttpClient);
-        //    // test no values returned from request
-        //    mockHttpClient.ResponseData = @"{""data"":[]}";
-        //    String graphPath = @"/12345/likes";
-        //    Func<string, string> dumbFunc = (string a) => { return a; };
+        [TestMethod]
+        public async Task testFBPaginatedArray()
+        {
+            MockHttpClient mockHttpClient = new MockHttpClient();
+            HttpManager.Instance.SetHttpClient(mockHttpClient);
+            // test no values returned from request
+            mockHttpClient.ResponseData = @"{""data"":[]}";
+            String graphPath = @"/12345/likes";
+            Func<string, string> dumbFunc = (string a) => { return a; };
 
-        //    JsonClassFactory fact = new JsonClassFactory(
-        //        (JsonText) => dumbFunc(JsonText));
+            JsonClassFactory fact = new JsonClassFactory(
+                (JsonText) => dumbFunc(JsonText));
 
-        //    FBPaginatedArray likes = new FBPaginatedArray(graphPath, null, fact);
-        //    FacebookResult result = await likes.FirstAsync();
-        //    Assert.IsTrue(likes.HasCurrent);
-        //    Assert.IsFalse(likes.HasNext);
-        //    Assert.IsFalse(likes.HasPrevious);
-        //    // test with next but no previous
-        //}
+            FacebookPaginatedArray likes = new FacebookPaginatedArray(graphPath, null, fact);
+            FacebookResult result = await likes.FirstAsync();
+            Assert.IsTrue(likes.HasCurrent);
+            Assert.IsFalse(likes.HasNext);
+            Assert.IsFalse(likes.HasPrevious);
+            // test with next but no previous
+        }
     }
 }

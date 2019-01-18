@@ -67,6 +67,7 @@
     <ClCompile Include="FacebookPermissions.cpp" />
     <ClCompile Include="FacebookSession.cpp" />
     <ClCompile Include="GraphUriBuilder.cpp" />
+    <ClCompile Include="StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="FacebookPermissions.h" />
     <ClInclude Include="FacebookSession.h" />
     <ClInclude Include="GraphUriBuilder.h" />
+    <ClInclude Include="StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -300,6 +302,7 @@
     <Midl Include="FacebookPermissions.idl" />
     <Midl Include="FacebookDialog.idl" />
     <Midl Include="FacebookFeedRequest.idl" />
+    <Midl Include="FacebookPaginatedArray.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
