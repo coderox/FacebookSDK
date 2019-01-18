@@ -194,7 +194,7 @@ namespace winrt::FacebookSDK::implementation
 	) {
 		DateTimeFormatter dtfDay(YearFormat::Default, MonthFormat::Default, DayFormat::Default, DayOfWeekFormat::Default);
 		DateTimeFormatter dtfTime(HourFormat::Default, MinuteFormat::Default, SecondFormat::Default);
-		hstring msgString = L"Token expires at " + dtfDay.Format(_expirationDate) + L", " + dtfTime.Format(_expirationDate) = L"\n";
+		hstring msgString = L"Token expires at " + dtfDay.Format(_expirationDate) + L", " + dtfTime.Format(_expirationDate) + L"\n";
 		OutputDebugString(msgString.c_str());
 	}
 #endif

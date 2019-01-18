@@ -31,6 +31,20 @@ namespace FacebookSDK_Tests
 			// assert
 			Assert::IsNotNull(instance);
 			Assert::AreEqual("ACCESS_TOKEN", instance->AccessToken);
+			Assert::IsFalse(instance->IsExpired);
+		}
+
+		TEST_METHOD(TestIsExpiredYesterdayShouldBeTrue)
+		{
+			// arrange
+			auto uri = ref new Uri("https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=-123456");
+
+			// act
+			auto instance = FacebookSDK::FacebookAccessTokenData::FromUri(uri);
+
+			// assert
+			Assert::IsNotNull(instance);
+			Assert::IsTrue(instance->IsExpired);
 		}
 
 	};
