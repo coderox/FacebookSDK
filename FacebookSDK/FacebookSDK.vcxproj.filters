@@ -68,6 +68,8 @@
     <ClCompile Include="FacebookSession.cpp" />
     <ClCompile Include="GraphUriBuilder.cpp" />
     <ClCompile Include="StringUtility.cpp" />
+    <ClCompile Include="FacebookFeedRequest.cpp" />
+    <ClCompile Include="FacebookPaginatedArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -125,6 +127,8 @@
     <ClInclude Include="FacebookSession.h" />
     <ClInclude Include="GraphUriBuilder.h" />
     <ClInclude Include="StringUtility.h" />
+    <ClInclude Include="FacebookFeedRequest.h" />
+    <ClInclude Include="FacebookPaginatedArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -341,5 +345,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="FacebookDialog.xaml" />
+    <Page Include="Themes\Styles.xaml" />
   </ItemGroup>
 </Project>

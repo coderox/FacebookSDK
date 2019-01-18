@@ -23,5 +23,7 @@
               Path=ActualWidth,
               Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
+        
+        <facebook:FacebookDialog VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
     </Grid>
 </Page>

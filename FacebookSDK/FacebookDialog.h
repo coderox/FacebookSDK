@@ -1,30 +1,37 @@
-﻿//
-// Declaration of the FacebookDialog class.
-//
+﻿#pragma once
 
-#pragma once
-
-#include "winrt/Windows.UI.Xaml.h"
-#include "winrt/Windows.UI.Xaml.Markup.h"
-#include "winrt/Windows.UI.Xaml.Interop.h"
 #include "FacebookDialog.g.h"
 
 namespace winrt::FacebookSDK::implementation
 {
-    struct FacebookDialog : FacebookDialogT<FacebookDialog>
-    {
-        FacebookDialog();
+	struct FacebookDialog : FacebookDialogT<FacebookDialog>
+	{
+		FacebookDialog() = default;
 
-        int32_t MyProperty();
-        void MyProperty(int32_t value);
+		void InitDialog();
+		void UninitDialog();
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowLoginDialogAsync(Windows::Foundation::Collections::PropertySet const parameters);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowFeedDialogAsync(Windows::Foundation::Collections::PropertySet const parameters);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const parameters);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const parameters);
 
-        void ClickHandler(Windows::Foundation::IInspectable const& sender, Windows::UI::Xaml::RoutedEventArgs const& args);
-    };
+		static hstring GetFBServerUrl();
+		static void DeleteCookies();
+	
+		void CloseDialogButton_OnClick(
+			Windows::Foundation::IInspectable const& sender,
+			Windows::UI::Xaml::RoutedEventArgs const& e
+		) {
+			throw hresult_not_implemented();
+		}
+	private:
+
+	};
 }
 
 namespace winrt::FacebookSDK::factory_implementation
 {
-    struct FacebookDialog : FacebookDialogT<FacebookDialog, implementation::FacebookDialog>
-    {
-    };
+	struct FacebookDialog : FacebookDialogT<FacebookDialog, implementation::FacebookDialog>
+	{
+	};
 }
