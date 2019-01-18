@@ -36,11 +36,11 @@ namespace winrt::FacebookSDK::implementation
 		);
 
 		std::wstring _currentDataString;
-		Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> _current;
-		FacebookSDK::Graph::FBPaging _paging{ nullptr };
 		std::wstring _request;
-		Windows::Foundation::Collections::PropertySet _parameters;
-		FacebookSDK::JsonClassFactory _objectFactory;
+		Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> _current{ nullptr };
+		FacebookSDK::Graph::FBPaging _paging{ nullptr };
+		Windows::Foundation::Collections::PropertySet _parameters = nullptr;
+		FacebookSDK::JsonClassFactory _objectFactory = nullptr;
 	};
 }
 

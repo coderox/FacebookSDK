@@ -40,7 +40,6 @@
     <ClCompile Include="FacebookSingleValue.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="HttpClientFake.cpp" />
     <ClCompile Include="FacebookAppRequest.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
@@ -56,11 +55,13 @@
     <ClCompile Include="GraphUriBuilder.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="MockHttpClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h" />
     <ClInclude Include="BlankPage.xaml.h" />
+    <ClInclude Include="MockHttpClient.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />

@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "BlankPage.xaml.h"
+#include "MockHttpClient.h"
 
 using namespace FacebookSDK_Tests;
 
@@ -24,4 +25,18 @@ using namespace Windows::UI::Xaml::Navigation;
 BlankPage::BlankPage()
 {
 	InitializeComponent();
+
+	MockHttpClient^ mockHttpClient = ref new MockHttpClient();
+	FacebookSDK::HttpManager::Instance->SetHttpClient(mockHttpClient);
+	// test no values returned from request
+	mockHttpClient->ResponseData = L"{\"data\":[]}";
+	String^ graphPath = L"/12345 / likes";
+
+	auto fact = ref new FacebookSDK::JsonClassFactory([=](Platform::String^ JsonText)
+	{ 
+		return JsonText; 
+	});
+
+	auto likes = ref new FacebookSDK::FacebookPaginatedArray(graphPath, nullptr, fact);
+	auto result = concurrency::create_task(likes->FirstAsync()).get();
 }

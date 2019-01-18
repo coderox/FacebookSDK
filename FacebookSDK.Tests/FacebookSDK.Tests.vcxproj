@@ -197,6 +197,7 @@
     <ClInclude Include="BlankPage.xaml.h">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="MockHttpClient.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -235,7 +236,7 @@
     <ClCompile Include="FacebookSingleValue.Tests.cpp" />
     <ClCompile Include="GraphUriBuilder.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
-    <ClCompile Include="HttpClientFake.cpp" />
+    <ClCompile Include="MockHttpClient.cpp" />
     <ClCompile Include="ScaleConverter.Tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>

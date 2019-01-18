@@ -83,10 +83,12 @@ namespace winrt::FacebookSDK::implementation
 		}
 		else
 		{
-			auto sess = FacebookSession::ActiveSession();
-			if (sess.APIMajorVersion())
+			auto session = FacebookSession::ActiveSession();
+			if (session.APIMajorVersion())
 			{
-				//_apiVersion = "v" + sess.APIMajorVersion().ToString() + "." + sess.APIMinorVersion.ToString();
+				std::wstringstream wstringstream;
+				wstringstream << L"v" << session.APIMajorVersion() << L"." << session.APIMinorVersion();
+				_apiVersion = wstringstream.str().c_str();
 			}
 		}
 	}

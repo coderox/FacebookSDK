@@ -1,34 +1,33 @@
-#include "pch.h"
+#pragma once
+
 
 namespace FacebookSDK_Tests
 {
-	public ref class HttpClientFake sealed : FacebookSDK::IHttpClient {
+	public ref class MockHttpClient sealed : FacebookSDK::IHttpClient {
 	public:
-		virtual Windows::Foundation::IAsyncOperation<Platform::String^>^ GetTaskAsync(
-			Platform::String^ path,
-			Windows::Foundation::Collections::IMapView<Platform::String^, Platform::Object^>^ parameters
-		) {
-			throw ref new Platform::NotImplementedException();
+
+		property Platform::String^ ResponseData {
+			Platform::String^ get() { return responseData; }
+			void set(Platform::String^ value) { responseData = value; }
 		}
+
+		virtual Windows::Foundation::IAsyncOperation<Platform::String^>^ GetTaskAsync(Platform::String^ path, Windows::Foundation::Collections::IMapView<Platform::String^, Platform::Object^>^ parameters);
 
 		virtual Windows::Foundation::IAsyncOperation<Platform::String^>^ PostTaskAsync(
 			Platform::String^ path,
 			Windows::Foundation::Collections::IMapView<Platform::String^, Platform::Object^>^ parameters
-		) {
-			throw ref new Platform::NotImplementedException();
-		}
+		);
 
 		virtual Windows::Foundation::IAsyncOperation<Platform::String^>^ DeleteTaskAsync(
 			Platform::String^ path,
 			Windows::Foundation::Collections::IMapView<Platform::String^, Platform::Object^>^ parameters
-		) {
-			throw ref new Platform::NotImplementedException();
-		}
+		);
 
 		virtual Platform::String^ ParametersToQueryString(
 			Windows::Foundation::Collections::IMapView<Platform::String^, Platform::Object^>^ parameters
-		) {
-			throw ref new Platform::NotImplementedException();
-		}
+		);
+
+	private:
+		Platform::String^ responseData;
 	};
 }

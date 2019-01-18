@@ -7,7 +7,7 @@ namespace winrt::FacebookSDK::implementation
 		: _error(nullptr)
 		, _object(nullptr)
     {
-		_error = Object.as<winrt::FacebookSDK::FacebookError>();
+		_error = Object.try_as<winrt::FacebookSDK::FacebookError>();
 		if (!_error) {
 			// Not an error, save as our object
 			_object = Object;

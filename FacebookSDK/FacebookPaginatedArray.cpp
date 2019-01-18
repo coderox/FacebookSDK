@@ -19,7 +19,7 @@ namespace winrt::FacebookSDK::implementation
 {
 	FacebookPaginatedArray::FacebookPaginatedArray(hstring const& request, PropertySet const& parameters, FacebookSDK::JsonClassFactory const& objectFactory)
 		: _current(nullptr)
-		, _currentDataString(nullptr)
+		, _currentDataString(L"")
 		, _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
@@ -150,14 +150,14 @@ namespace winrt::FacebookSDK::implementation
 				IIterator<IKeyValuePair<hstring, IJsonValue>> it = nullptr;
 				for (it = obj.First(); it.HasCurrent(); it.MoveNext())
 				{
-					if (compare_ordinal(it.Current().Key().c_str(), L"error") != 0)
+					if (compare_ordinal(it.Current().Key().c_str(), L"error") == 0)
 					{
 						auto err = FacebookError::FromJson(it.Current().Value().Stringify());
 						result = make<FacebookResult>(err);
 						foundError = true;
 						break;
 					}
-					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") != 0)
+					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") == 0)
 					{
 						_paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify()).as<Graph::FBPaging>();
 						if (_paging)
@@ -165,14 +165,14 @@ namespace winrt::FacebookSDK::implementation
 							foundPaging = true;
 						}
 					}
-					else if (compare_ordinal(it.Current().Key().c_str(), L"data") != 0)
+					else if (compare_ordinal(it.Current().Key().c_str(), L"data") == 0)
 					{
 						if (it.Current().Value().ValueType() != JsonValueType::Array)
 						{
 							throw hresult_invalid_argument(SDKMessageBadObject);
 						}
 
-						_currentDataString = it.Current().Value().GetString();
+						_currentDataString = it.Current().Value().as<IStringable>().ToString();
 						_current = ObjectArrayFromJsonArray(it.Current().Value().GetArray(), _objectFactory);
 						if (_current)
 						{

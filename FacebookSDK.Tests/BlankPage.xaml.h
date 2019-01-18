@@ -16,6 +16,6 @@ namespace FacebookSDK_Tests
 	public ref class BlankPage sealed
 	{
 	public:
-		BlankPage();
+		BlankPage();		
 	};
 }

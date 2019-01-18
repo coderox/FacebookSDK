@@ -48,12 +48,12 @@ namespace winrt::FacebookSDK::implementation
 
 	int32_t FacebookSession::APIMajorVersion()
 	{
-		throw hresult_not_implemented();
+		return 0;
 	}
 
 	int32_t FacebookSession::APIMinorVersion()
 	{
-		throw hresult_not_implemented();
+		return 1;
 	}
 
 	FacebookSDK::Graph::FBUser FacebookSession::User()
