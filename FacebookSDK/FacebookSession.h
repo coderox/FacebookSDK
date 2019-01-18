@@ -47,7 +47,7 @@ namespace winrt::FacebookSDK::implementation
 
 		hstring GetWebAuthRedirectUriString();
 
-		concurrency::task<FacebookSDK::FacebookResult> GetUserInfo(
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetUserInfo(
 			FacebookSDK::FacebookAccessTokenData const& tokenData
 		);
 
@@ -61,7 +61,7 @@ namespace winrt::FacebookSDK::implementation
 				hstring itemName
 			);
 
-		concurrency::task<FacebookSDK::FacebookResult> CheckForExistingToken();
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> CheckForExistingTokenAsync();
 
 		void TrySaveTokenData();
 

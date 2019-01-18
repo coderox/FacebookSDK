@@ -17,6 +17,7 @@
 
 using namespace std;
 using namespace winrt;
+using namespace concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel::Activation;
 using namespace Windows::ApplicationModel::Core;
@@ -70,7 +71,7 @@ namespace winrt::FacebookSDK::implementation
 	FacebookSession::FacebookSession()
 
 		: _AccessTokenData(nullptr)
-		, _AppResponse(nullptr) 
+		, _AppResponse(nullptr)
 		, _loggedIn(false)
 		, _FBAppId(nullptr)
 		, _WinAppId(nullptr)
@@ -174,7 +175,7 @@ namespace winrt::FacebookSDK::implementation
 		return _webViewRedirectPath.c_str();
 	}
 
-	Windows::Foundation::IAsyncAction FacebookSession::LogoutAsync()
+	IAsyncAction FacebookSession::LogoutAsync()
 	{
 		_user = nullptr;
 		_FBAppId.clear();
@@ -188,7 +189,7 @@ namespace winrt::FacebookSDK::implementation
 		return TryDeleteTokenData();
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowFeedDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowFeedDialogAsync(PropertySet const Parameters)
 	{
 		throw hresult_not_implemented();
 	}
@@ -257,32 +258,120 @@ namespace winrt::FacebookSDK::implementation
 	hstring FacebookSession::GetWebAuthRedirectUriString() {
 		throw hresult_not_implemented();
 	}
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::GetUserInfo(
+
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetUserInfo(
 		FacebookSDK::FacebookAccessTokenData const& tokenData
 	) {
+		PropertySet parameters;
+		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
+		FacebookSingleValue value = FacebookSingleValue(
+			L"/me",
+			parameters,
+			JsonClassFactory([](hstring jsonText) -> IInspectable
+		{
+			return Graph::FBUser::FromJson(jsonText);
+		}));
+
+		return value.GetAsync();
+	}
+
+	void FacebookSession::ParseOAuthResponse(Uri ResponseUri) {
 		throw hresult_not_implemented();
 	}
 
-	void FacebookSession::ParseOAuthResponse(
-		Windows::Foundation::Uri ResponseUri
-	) {
-		throw hresult_not_implemented();
+	IAsyncOperation<IStorageItem> FacebookSession::MyTryGetItemAsync(StorageFolder folder, hstring itemName)
+	{
+		try
+		{
+#if defined(_WIN32_WINNT_WIN10)
+			return folder.TryGetItemAsync(itemName);
+#else
+			return folder.GetItemAsync(itemName);
+#endif
+		}
+		catch (hresult_error e)
+		{
+			return nullptr;
+		}
 	}
 
-	Windows::Foundation::IAsyncOperation<Windows::Storage::IStorageItem>
-		FacebookSession::MyTryGetItemAsync(
-			Windows::Storage::StorageFolder folder,
-			hstring itemName
-		) {
-		throw hresult_not_implemented();
-	}
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckForExistingTokenAsync()
+	{
+		FacebookSDK::FacebookResult result{ nullptr };
+		if (LoggedIn())
+		{
+			result = make<FacebookResult>(this->AccessTokenData());
+		}
+		else
+		{
+			try {
+				auto folder = ApplicationData::Current().LocalFolder();
+				IStorageItem item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
+				auto file = item.as<StorageFile>();
+				auto protectedBuffer = co_await FileIO::ReadBufferAsync(file);
+				DataProtectionProvider provider;
+				auto clearBuffer = co_await provider.UnprotectAsync(protectedBuffer);
+				auto clearText = CryptographicBuffer::ConvertBinaryToString(BinaryStringEncoding::Utf16LE, clearBuffer);
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::CheckForExistingToken() {
-		throw hresult_not_implemented();
+				wstring vals(clearText.c_str());
+				size_t pos = vals.find(L",");
+
+				if (pos != wstring::npos)
+				{
+					hstring accessToken(vals.substr(0, pos).c_str());
+					hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
+					DateTime expirationTime;
+
+					hstring msg(L"Access Token: " + accessToken + L"\n");
+					OutputDebugString(msg.c_str());
+
+					//expirationTime.UniversalTime = _wtoi64(expirationString.c_str());
+					FacebookSDK::FacebookAccessTokenData cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+					result = make<FacebookResult>(cachedData);
+				}
+			}
+			catch (hresult_error e) {
+#ifdef _DEBUG
+				OutputDebugString(L"Couldn't decrypt cached token.  Continuing without cached token data.\n");
+#endif
+			}
+		}
+		co_return result;
 	}
 
 	void FacebookSession::TrySaveTokenData() {
-		throw hresult_not_implemented();
+		//if (LoggedIn())
+		//{
+		//	wchar_t buffer[INT64_STRING_BUFSIZE];
+		//	DataProtectionProvider provider(L"LOCAL=user");
+		//	_i64tow_s(
+		//		this->AccessTokenData().ExpirationDate().UniversalTime,
+		//		buffer, INT64_STRING_BUFSIZE, 10);
+		//	hstring tokenData = this->AccessTokenData->AccessToken +
+		//		"," + ref new String(buffer);
+		//	IBuffer^ dataBuff =
+		//		CryptographicBuffer::ConvertStringToBinary(tokenData,
+		//			BinaryStringEncoding::Utf16LE);
+
+		//	IAsyncOperation<IBuffer^>^ protectOp = provider->ProtectAsync(dataBuff);
+		//	return create_task(protectOp);
+
+		//})
+		//		.then([](IBuffer^ protectedData)
+		//	{
+		//		StorageFolder^ folder = ApplicationData::Current->LocalFolder;
+
+		//		return create_task(folder->CreateFileAsync("FBSDKData",
+		//			CreationCollisionOption::OpenIfExists))
+		//			.then([protectedData](StorageFile^ file)
+		//		{
+		//			if (file)
+		//			{
+		//				FileIO::WriteBufferAsync(file, protectedData);
+		//			}
+		//		});
+		//	});
+		//}
 	}
 
 	Windows::Foundation::IAsyncAction FacebookSession::TryDeleteTokenData() {
