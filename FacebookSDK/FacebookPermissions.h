@@ -7,13 +7,20 @@ namespace winrt::FacebookSDK::implementation
 	struct FacebookPermissions : FacebookPermissionsT<FacebookPermissions>
 	{
 		FacebookPermissions() = default;
-		FacebookPermissions(Windows::Foundation::Collections::IVectorView<hstring> const& Permissions);
+		FacebookPermissions(Windows::Foundation::Collections::IVectorView<winrt::hstring> const& Permissions);
 
-		Windows::Foundation::Collections::IVectorView<hstring> Values();
-		hstring ToString();
+		Windows::Foundation::Collections::IVectorView<winrt::hstring> Values();
+		winrt::hstring ToString();
 
-		static FacebookSDK::FacebookPermissions FromString(hstring const& Permissions);
+		static FacebookSDK::FacebookPermissions FromString(winrt::hstring const& Permissions);
 		static FacebookSDK::FacebookPermissions Difference(FacebookSDK::FacebookPermissions const& Minuend, FacebookSDK::FacebookPermissions const& Subtrahend);
+
+	private:
+		static Windows::Foundation::Collections::IVectorView<winrt::hstring> ParsePermissionsFromString(
+			winrt::hstring const& permissions
+		);
+
+		Windows::Foundation::Collections::IVectorView<winrt::hstring> _values;
 	};
 }
 
