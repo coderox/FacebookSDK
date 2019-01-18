@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Windows::Foundation;
 
 namespace FacebookSDK_Tests
 {
@@ -18,5 +19,19 @@ namespace FacebookSDK_Tests
 			// assert
 			Assert::IsNotNull(instance);
 		}
+
+		TEST_METHOD(TestCreateInstanceFromUri)
+		{
+			// arrange
+			auto uri = ref new Uri("https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN");
+
+			// act
+			auto instance = FacebookSDK::FacebookAccessTokenData::FromUri(uri);
+
+			// assert
+			Assert::IsNotNull(instance);
+			Assert::AreEqual("ACCESS_TOKEN", instance->AccessToken);
+		}
+
 	};
 }

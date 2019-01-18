@@ -19,5 +19,6 @@
 #include "winrt/Windows.Storage.Streams.h"
 #include "winrt/Windows.System.Threading.h"
 #include "winrt/Windows.Globalization.h"
+#include "winrt/Windows.Globalization.DateTimeFormatting.h"
 
 #include "FacebookConstants.h"
