@@ -94,7 +94,6 @@ namespace winrt::FacebookSDK::implementation
 		 * @exception InvalidArgumentException if httpMethod is POST and improperly formatted/empty media object is attached.
 		 */
 		winrt::Windows::Foundation::Uri PrepareRequestUri(
-			::FacebookSDK::HttpMethod httpMethod,
 			winrt::hstring const& path,
 			winrt::Windows::Foundation::Collections::PropertySet parameters
 		);

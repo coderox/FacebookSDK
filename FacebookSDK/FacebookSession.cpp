@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "FacebookSession.h"
 
+using namespace winrt;
+using namespace Windows::Foundation;
+
 namespace winrt::FacebookSDK::implementation
 {
 	hstring FacebookSession::FacebookAppId()
@@ -119,6 +122,11 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	Windows::Storage::ApplicationDataContainer FacebookSession::DataContainer()
+	{
+		throw hresult_not_implemented();
+	}
+
+	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryRefreshAccessTokenAsync()
 	{
 		throw hresult_not_implemented();
 	}

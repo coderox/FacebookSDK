@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "FacebookClient.h"
+#include "FacebookSession.h"
 #include "JsonClassFactory.h"
 #include "SDKMessage.h"
 
@@ -17,12 +18,12 @@ using namespace Windows::Web::Http::Filters;
 using namespace Windows::Web::Http::Headers;
 
 #define BufferSize (1024 * 4) // 4kb
-#define AttachmentMustHavePropertiesSetError "Attachment (FBMediaObject/FBMediaStream) must have a content type, file name, and value set."
-#define AttachmentValueIsNull "The value of attachment (FBMediaObject/FBMediaStream) is null."
-#define UnknownResponse = "Unknown facebook response."
-#define ETagKey "_etag_"
-#define MultiPartFormPrefix "--"
-#define MultiPartNewLine "\r\n"
+#define AttachmentMustHavePropertiesSetError L"Attachment (FBMediaObject/FBMediaStream) must have a content type, file name, and value set."
+#define AttachmentValueIsNull L"The value of attachment (FBMediaObject/FBMediaStream) is null."
+#define UnknownResponse = L"Unknown facebook response."
+#define ETagKey L"_etag_"
+#define MultiPartFormPrefix L"--"
+#define MultiPartNewLine L"\r\n"
 #define MultiPartContentType L"Content-Type: multipart/form-data; "
 #define MultiPartBoundary L"------------------------------fbsdk1234567890"
 #define UserAgent L"User-Agent"
@@ -65,15 +66,15 @@ namespace winrt::FacebookSDK::implementation
 	IAsyncOperation<hstring> FacebookClient::GetTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
 		PropertySet modifiableParams = MapViewToPropertySet(parameters);
-		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Get, path, modifiableParams);
+		Uri uri = FacebookClient::PrepareRequestUri(path, modifiableParams);
 
 		co_await winrt::resume_background();
 
-		winrt::hstring response = co_await FacebookClient::GetTaskInternalAsync(uri);
+		auto response = co_await FacebookClient::GetTaskInternalAsync(uri);
 
 		if (FacebookClient::IsOAuthErrorResponse(response)) {
-			//auto session = FacebookSession::ActiveSession();
-			//co_await session.TryRefreshAccessToken();
+			auto sess = FacebookSession::ActiveSession();
+			co_await sess.TryRefreshAccessTokenAsync();
 			response = co_await FacebookClient::GetTaskInternalAsync(uri);
 		}
 		co_return response;
@@ -113,7 +114,7 @@ namespace winrt::FacebookSDK::implementation
 	IAsyncOperation<hstring> FacebookClient::PostTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
 		PropertySet modifiableParams = MapViewToPropertySet(parameters);
-		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Get, path, modifiableParams);
+		Uri uri = FacebookClient::PrepareRequestUri(path, modifiableParams);
 		hstring result;
 
 		co_await winrt::resume_background();
@@ -130,14 +131,14 @@ namespace winrt::FacebookSDK::implementation
 	IAsyncOperation<hstring> FacebookClient::DeleteTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
 	{
 		PropertySet modifiableParams = MapViewToPropertySet(parameters);
-		Uri uri = FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Delete, path, modifiableParams);
+		Uri uri = FacebookClient::PrepareRequestUri(path, modifiableParams);
 
 		hstring result;
 		hstring response = co_await FacebookClient::DeleteTaskInternalAsync(uri);
 
 		if (FacebookClient::IsOAuthErrorResponse(response)) {
-			//FBSession^ sess = FBSession::ActiveSession;
-			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			auto sess = FacebookSession::ActiveSession();
+			co_await sess.TryRefreshAccessTokenAsync();
 			result = co_await FacebookClient::DeleteTaskInternalAsync(uri);
 		}
 		else {
@@ -149,7 +150,26 @@ namespace winrt::FacebookSDK::implementation
 
 	hstring FacebookClient::ParametersToQueryString(IMapView<hstring, IInspectable> const& parameters)
 	{
-		throw hresult_not_implemented();
+		hstring queryString;
+
+		// Add remaining parameters to query string.  Note that parameters that
+		// do not need to be uploaded as multipart, i.e. any which is are not
+		// binary data, are required to be in the query string, even for POST
+		// requests!
+		for (auto const& current : parameters)
+		{
+			auto key = Uri::EscapeComponent(current.Key());
+			auto value = Uri::EscapeComponent(unbox_value<hstring>(current.Value()));
+
+			if (queryString.size() > 0)
+			{
+				queryString = queryString + L"&";
+			}
+
+			queryString = queryString + key + L"=" + value;
+		}
+
+		return queryString;
 	}
 
 	/**
@@ -204,7 +224,7 @@ namespace winrt::FacebookSDK::implementation
 	 * @exception Can throw any exception that is thrown by SimplePlostInternalAsync
 	 */
 	IAsyncOperation<hstring> FacebookClient::SimplePostAsync(hstring const& path, PropertySet const& parameters) {
-		Uri uri(FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Post, path, parameters));
+		Uri uri(FacebookClient::PrepareRequestUri(path, parameters));
 
 		hstring result;
 		hstring response = co_await FacebookClient::SimplePostInternalAsync(uri);
@@ -233,13 +253,13 @@ namespace winrt::FacebookSDK::implementation
 		PropertySet const& streams,
 		PropertySet const& parameters)
 	{
-		Uri uri(FacebookClient::PrepareRequestUri(::FacebookSDK::HttpMethod::Post, path, parameters));
+		Uri uri(FacebookClient::PrepareRequestUri(path, parameters));
 
 		hstring result;
 		hstring response = co_await FacebookClient::SimplePostInternalAsync(uri);
 		if (FacebookClient::IsOAuthErrorResponse(response)) {
-			//FBSession^ sess = FBSession::ActiveSession;
-			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			auto sess = FacebookSession::ActiveSession();
+			co_await sess.TryRefreshAccessTokenAsync();
 			result = co_await FacebookClient::MultipartPostInternalAsync(uri, streams);
 		}
 		else {
@@ -261,11 +281,10 @@ namespace winrt::FacebookSDK::implementation
 	 * @exception InvalidArgumentException if httpMethod is POST and improperly formatted/empty media object is attached.
 	 */
 	Uri FacebookClient::PrepareRequestUri(
-		::FacebookSDK::HttpMethod httpMethod,
 		hstring const& path,
 		PropertySet parameters
 	) {
-		FacebookSession sess = FacebookSession::ActiveSession();
+		auto sess = FacebookSession::ActiveSession();
 		GraphUriBuilder uriBuilder(path);
 
 		if (parameters == nullptr)
@@ -321,7 +340,23 @@ namespace winrt::FacebookSDK::implementation
 	 */
 	void FacebookClient::SerializeParameters(PropertySet const& parameters)
 	{
+		IVector<hstring> keysThatAreNotString = { winrt::single_threaded_vector<hstring>() };
 
+		for (auto const& current : parameters)
+		{
+			if (winrt::unbox_value_or<hstring>(current.Value(),L"") == L"") {
+				keysThatAreNotString.Append(current.Key());
+			}
+		}
+
+		for (auto const& current : keysThatAreNotString)
+		{
+			auto val = parameters.Lookup(current);
+			hstring newValue = unbox_value<hstring>(val);
+			
+			parameters.Remove(current);
+			parameters.Insert(current, box_value(newValue));
+		}
 	}
 
 	/**
@@ -329,9 +364,10 @@ namespace winrt::FacebookSDK::implementation
 	 * @param Response response to check
 	 * @return true if Response does indicate an OAuth error, false otherwise.
 	 */
-	bool FacebookClient::IsOAuthErrorResponse(hstring const& Response)
+	bool FacebookClient::IsOAuthErrorResponse(hstring const& response)
 	{
-		throw hresult_not_implemented();
+		auto err = FacebookError::FromJson(response);
+		return (err && err.Code() == 190);
 	}
 
 
@@ -392,16 +428,60 @@ namespace winrt::FacebookSDK::implementation
 
 	PropertySet FacebookClient::MapViewToPropertySet(IMapView<hstring, IInspectable> const& mapView)
 	{
-		throw hresult_not_implemented();
+		PropertySet propertySet;
+		for (auto const & current : mapView)
+		{
+			propertySet.Insert(current.Key(), current.Value());
+		}
+		return propertySet;
 	}
 
 	void FacebookClient::ValidateMediaStreams(PropertySet const& mediaStreams)
 	{
+		if (mediaStreams.Size() > 0)
+		{
+			for (auto const& current : mediaStreams)
+			{
+				FacebookMediaStream mediaStream = unbox_value<FacebookMediaStream>(current.Value());
 
+				IRandomAccessStream stream(mediaStream.Stream());
+				if (stream == nullptr)
+				{
+					throw hresult_invalid_argument(AttachmentValueIsNull);
+				}
+
+				if ((mediaStream.Stream() == nullptr) ||
+					(mediaStream.Stream().ContentType().empty()) ||
+					(mediaStream.FileName().empty()))
+				{
+					throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
+				}
+
+			}
+		}
 	}
 
 	void FacebookClient::ValidateMediaObjects(PropertySet const& mediaObjects)
 	{
+		if (mediaObjects.Size() > 0)
+		{
+			for (auto const& current : mediaObjects)
+			{
+				FacebookMediaObject mediaObject = unbox_value<FacebookMediaObject>(current.Value());
 
+				if (mediaObject.GetValue().empty())
+				{
+					throw hresult_invalid_argument(AttachmentValueIsNull);
+				}
+
+				if ((mediaObject.GetValue().empty()) ||
+					(mediaObject.ContentType().empty()) ||
+					(mediaObject.FileName().empty()))
+				{
+					throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
+				}
+
+			}
+		}
 	}
 }

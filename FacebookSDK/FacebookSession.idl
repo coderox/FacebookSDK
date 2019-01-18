@@ -52,5 +52,7 @@ namespace FacebookSDK
 
 		void SetApiVersion(Int32 major, Int32 minor);
 		void SetWebViewRedirectUrl(String domain, String Path);
+
+		Windows.Foundation.IAsyncOperation<FacebookSDK.FacebookResult> TryRefreshAccessTokenAsync();
 	}
 }

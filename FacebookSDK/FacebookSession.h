@@ -33,6 +33,8 @@ namespace winrt::FacebookSDK::implementation
 
 		static FacebookSDK::FacebookSession ActiveSession();
 		static Windows::Storage::ApplicationDataContainer DataContainer();
+
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> TryRefreshAccessTokenAsync();
 	};
 }
 
