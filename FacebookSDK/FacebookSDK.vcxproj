@@ -161,6 +161,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookFeedRequest.h">
+      <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookMediaObject.h">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -245,6 +249,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FacebookFeedRequest.cpp">
+      <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookMediaObject.cpp">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -319,6 +327,9 @@ call codegen.cmd</Command>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FacebookError.idl" />
+    <Midl Include="FacebookFeedRequest.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="FacebookMediaObject.idl">
       <SubType>Designer</SubType>
     </Midl>

@@ -61,6 +61,12 @@
     <ClCompile Include="HttpManager.cpp" />
     <ClCompile Include="FacebookClient.cpp" />
     <ClCompile Include="FacebookMediaObject.cpp" />
+    <ClCompile Include="FacebookAccessTokenData.cpp" />
+    <ClCompile Include="FacebookDialog.cpp" />
+    <ClCompile Include="FacebookMediaStream.cpp" />
+    <ClCompile Include="FacebookPermissions.cpp" />
+    <ClCompile Include="FacebookSession.cpp" />
+    <ClCompile Include="GraphUriBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -111,6 +117,12 @@
     <ClInclude Include="FacebookClient.h" />
     <ClInclude Include="FacebookMediaObject.h" />
     <ClInclude Include="FacebookConstants.h" />
+    <ClInclude Include="FacebookAccessTokenData.h" />
+    <ClInclude Include="FacebookDialog.h" />
+    <ClInclude Include="FacebookMediaStream.h" />
+    <ClInclude Include="FacebookPermissions.h" />
+    <ClInclude Include="FacebookSession.h" />
+    <ClInclude Include="GraphUriBuilder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -286,6 +298,8 @@
     <Midl Include="FacebookSession.idl" />
     <Midl Include="FacebookAccessTokenData.idl" />
     <Midl Include="FacebookPermissions.idl" />
+    <Midl Include="FacebookDialog.idl" />
+    <Midl Include="FacebookFeedRequest.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
