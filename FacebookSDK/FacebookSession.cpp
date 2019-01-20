@@ -325,7 +325,7 @@ namespace winrt::FacebookSDK::implementation
 					hstring msg(L"Access Token: " + accessToken + L"\n");
 					OutputDebugString(msg.c_str());
 
-					//expirationTime.UniversalTime = _wtoi64(expirationString.c_str());
+					expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
 					FacebookSDK::FacebookAccessTokenData cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
 					result = make<FacebookResult>(cachedData);
 				}

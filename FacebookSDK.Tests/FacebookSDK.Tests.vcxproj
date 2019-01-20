@@ -228,6 +228,7 @@
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="ColorLuminosityConverter.Tests.cpp" />
+    <ClCompile Include="DateTime.Tests.cpp" />
     <ClCompile Include="FacebookAccessTokenData.Tests.cpp" />
     <ClCompile Include="FacebookAppRequest.Tests.cpp" />
     <ClCompile Include="FacebookMediaObject.Tests.cpp" />
