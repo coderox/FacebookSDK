@@ -232,7 +232,7 @@ call codegen.cmd</Command>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="SDKMessage.h" />
-    <ClInclude Include="StringUtility.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColorLuminosityConverter.cpp">
@@ -319,7 +319,7 @@ call codegen.cmd</Command>
       <DependentUpon>ScaleConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="StringUtility.cpp" />
+    <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="ColorLuminosityConverter.idl" />

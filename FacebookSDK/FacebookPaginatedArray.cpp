@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "StringUtility.h"
+#include "Utilities.h"
 #include "SDKMessage.h"
 #include "FacebookPaginatedArray.h"
 #include "FacebookResult.h"
@@ -102,7 +102,7 @@ namespace winrt::FacebookSDK::implementation
 				hstring key = it.Current().Key();
 				JsonValueType t = it.Current().Value().ValueType();
 
-				if ((compare_ordinal(it.Current().Key().c_str(), L"data") != 0) &&
+				if ((compare_ordinal(key.c_str(), L"data") == 0) &&
 					(t == JsonValueType::Array))
 				{
 					result = ObjectArrayFromJsonArray(it.Current().Value().GetArray(), classFactory);

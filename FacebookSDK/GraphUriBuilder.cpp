@@ -23,6 +23,9 @@ namespace winrt::FacebookSDK::implementation
 		{
 			buildDomain = true;
 		}
+		catch (hresult_error e) {
+			buildDomain = true;
+		}
 
 		if (buildDomain)
 		{

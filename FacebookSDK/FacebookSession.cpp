@@ -14,6 +14,9 @@
 #include "Generated/Graph.FBUser.h"
 #include "SDKMessage.h"
 #include <regex>
+#include "Utilities.h"
+#include <sstream>
+#include <string>
 
 using namespace std;
 using namespace winrt;
@@ -69,15 +72,9 @@ namespace FacebookSDK
 namespace winrt::FacebookSDK::implementation
 {
 	FacebookSession::FacebookSession()
-
 		: _AccessTokenData(nullptr)
-		, _AppResponse(nullptr)
 		, _loggedIn(false)
-		, _FBAppId(nullptr)
-		, _WinAppId(nullptr)
 		, _user(nullptr)
-		, _webViewRedirectDomain(nullptr)
-		, _webViewRedirectPath(nullptr)
 	{
 		if (!::FacebookSDK::login_evt)
 		{
@@ -152,12 +149,12 @@ namespace winrt::FacebookSDK::implementation
 
 	int32_t FacebookSession::APIMajorVersion()
 	{
-		throw hresult_not_implemented();
+		return _APIMajorVersion;
 	}
 
 	int32_t FacebookSession::APIMinorVersion()
 	{
-		throw hresult_not_implemented();
+		return _APIMinorVersion;
 	}
 
 	FacebookSDK::Graph::FBUser FacebookSession::User()
@@ -191,17 +188,47 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowFeedDialogAsync(PropertySet const Parameters)
 	{
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		FacebookDialog dialog;
+		try {
+			result = co_await dialog.ShowFeedDialogAsync(Parameters);
+		}
+		catch (hresult_error e) {
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+			result = make<FacebookResult>(err);
+		}
+
+		co_return result;
 	}
 
 	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters)
 	{
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		FacebookDialog dialog;
+		try {
+			result = co_await dialog.ShowRequestsDialogAsync(Parameters);
+		}
+		catch (hresult_error e) {
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+			result = make<FacebookResult>(err);
+		}
+
+		co_return result;
 	}
 
 	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters)
 	{
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		FacebookDialog dialog;
+		try {
+			result = co_await dialog.ShowSendDialogAsync(Parameters);
+		}
+		catch (hresult_error e) {
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+			result = make<FacebookResult>(err);
+		}
+
+		co_return result;
 	}
 
 	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync()
@@ -231,7 +258,8 @@ namespace winrt::FacebookSDK::implementation
 
 	FacebookSDK::FacebookSession FacebookSession::ActiveSession()
 	{
-		throw hresult_not_implemented();
+		static FacebookSDK::FacebookSession activeFBSession = make<FacebookSession>();
+		return activeFBSession;
 	}
 
 	Windows::Storage::ApplicationDataContainer FacebookSession::DataContainer()
@@ -297,6 +325,8 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckForExistingTokenAsync()
 	{
+		co_await winrt::resume_background();
+
 		FacebookSDK::FacebookResult result{ nullptr };
 		if (LoggedIn())
 		{
@@ -339,43 +369,51 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	void FacebookSession::TrySaveTokenData() {
-		//if (LoggedIn())
-		//{
-		//	wchar_t buffer[INT64_STRING_BUFSIZE];
-		//	DataProtectionProvider provider(L"LOCAL=user");
-		//	_i64tow_s(
-		//		this->AccessTokenData().ExpirationDate().UniversalTime,
-		//		buffer, INT64_STRING_BUFSIZE, 10);
-		//	hstring tokenData = this->AccessTokenData->AccessToken +
-		//		"," + ref new String(buffer);
-		//	IBuffer^ dataBuff =
-		//		CryptographicBuffer::ConvertStringToBinary(tokenData,
-		//			BinaryStringEncoding::Utf16LE);
+	fire_and_forget FacebookSession::TrySaveTokenData() {
+		if (LoggedIn())
+		{
+			co_await winrt::resume_background();
 
-		//	IAsyncOperation<IBuffer^>^ protectOp = provider->ProtectAsync(dataBuff);
-		//	return create_task(protectOp);
+			wchar_t buffer[INT64_STRING_BUFSIZE];
+			DataProtectionProvider provider(L"LOCAL=user");
+			_i64tow_s(
+				WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
+				buffer, INT64_STRING_BUFSIZE, 10);
+			wstringstream tokenStream;
+			tokenStream << AccessTokenData().AccessToken().c_str() << L"," << hstring(buffer).c_str();
+			hstring tokenData(tokenStream.str().c_str());
+			IBuffer dataBuff = CryptographicBuffer::ConvertStringToBinary(tokenData, BinaryStringEncoding::Utf16LE);
 
-		//})
-		//		.then([](IBuffer^ protectedData)
-		//	{
-		//		StorageFolder^ folder = ApplicationData::Current->LocalFolder;
-
-		//		return create_task(folder->CreateFileAsync("FBSDKData",
-		//			CreationCollisionOption::OpenIfExists))
-		//			.then([protectedData](StorageFile^ file)
-		//		{
-		//			if (file)
-		//			{
-		//				FileIO::WriteBufferAsync(file, protectedData);
-		//			}
-		//		});
-		//	});
-		//}
+			auto protectedData = co_await provider.ProtectAsync(dataBuff);
+			StorageFolder folder = ApplicationData::Current().LocalFolder();
+			auto file = co_await folder.CreateFileAsync(L"FBSDKData", CreationCollisionOption::OpenIfExists);
+			co_await FileIO::WriteBufferAsync(file, protectedData);
+		}
 	}
 
 	Windows::Foundation::IAsyncAction FacebookSession::TryDeleteTokenData() {
-		throw hresult_not_implemented();
+		StorageFolder folder = ApplicationData::Current().LocalFolder();
+#ifdef _DEBUG
+		wstringstream msgStream;
+		msgStream << L"Deleting cached token from " << folder.Path().c_str() << L"\n";
+		hstring msg(msgStream.str().c_str());
+		OutputDebugString(msg.c_str());
+#endif
+		co_await winrt::resume_background();
+
+		try {
+			auto item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
+			item.DeleteAsync();
+		}
+		catch (...) {
+			//Do nothing here, trying to delete the cache file is a "fire and
+			//forget" operation.  If it fails, we'll pick up bad token data at
+			//next login, fail the login and retry, then attempt to cache new
+			//valid token data.
+#ifdef _DEBUG
+			OutputDebugString(L"Deleting cached token file failed!\n");
+#endif
+		}
 	}
 
 	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissions(
@@ -414,10 +452,25 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialog(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(
+		Windows::Foundation::Collections::PropertySet const& Parameters
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		FacebookDialog dialog;
+		try {
+			result = co_await dialog.ShowRequestsDialogAsync(Parameters);
+		}
+		catch (hresult_error e) {
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+			result = make<FacebookResult>(err);
+		}
+		
+		if (result.Succeeded())
+		{
+			AccessTokenData(result.Object().as<FacebookSDK::FacebookAccessTokenData>());
+		}
+
+		co_return result;
 	}
 
 	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebView(

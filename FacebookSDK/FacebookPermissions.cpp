@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "FacebookPermissions.h"
 #include <sstream>
-#include "StringUtility.h"
+#include "Utilities.h"
 
 using namespace winrt;
 using namespace std;

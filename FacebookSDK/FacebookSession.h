@@ -63,7 +63,7 @@ namespace winrt::FacebookSDK::implementation
 
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> CheckForExistingTokenAsync();
 
-		void TrySaveTokenData();
+		winrt::fire_and_forget TrySaveTokenData();
 
 		Windows::Foundation::IAsyncAction TryDeleteTokenData();
 
@@ -91,8 +91,8 @@ namespace winrt::FacebookSDK::implementation
 			Windows::Foundation::Collections::PropertySet Parameters
 		);
 
-		concurrency::task<FacebookSDK::FacebookResult> ShowLoginDialog(
-			Windows::Foundation::Collections::PropertySet Parameters
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowLoginDialogAsync(
+			Windows::Foundation::Collections::PropertySet const& Parameters
 		);
 
 		concurrency::task<FacebookSDK::FacebookResult> TryLoginViaWebView(
@@ -146,20 +146,19 @@ namespace winrt::FacebookSDK::implementation
 			Windows::Foundation::Collections::PropertySet Parameters
 		);
 
-		std::wstring _FBAppId;
-		std::wstring _WinAppId;
 		bool _loggedIn;
-		std::wstring _AppResponse;
-		FacebookSDK::FacebookAccessTokenData _AccessTokenData;
-		FacebookSDK::Graph::FBUser _user;
-		concurrency::task<FacebookSDK::FacebookResult> _loginTask;
-		FacebookSDK::FacebookDialog _dialog;
 		int _APIMajorVersion;
 		int _APIMinorVersion;
+		std::wstring _FBAppId;
+		std::wstring _WinAppId;
+		std::wstring _AppResponse;
 		std::wstring _webViewRedirectDomain;
 		std::wstring _webViewRedirectPath;
-	
-	};
+		FacebookSDK::FacebookAccessTokenData _AccessTokenData{ nullptr };
+		FacebookSDK::Graph::FBUser _user{ nullptr };
+		concurrency::task<FacebookSDK::FacebookResult> _loginTask;
+		FacebookSDK::FacebookDialog _dialog{ nullptr };	
+};
 }
 
 namespace winrt::FacebookSDK::factory_implementation

@@ -3,7 +3,7 @@
 #include "Generated\Graph.FBPermission.h"
 #include <algorithm>
 #include <string>
-#include "StringUtility.h"
+#include "Utilities.h"
 
 using namespace winrt;
 using namespace std;

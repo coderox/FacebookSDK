@@ -88,8 +88,14 @@ namespace winrt::FacebookSDK::implementation
 		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
 
 		filter.CacheControl().ReadBehavior(HttpCacheReadBehavior::Default);
-		auto response = co_await httpClient.GetAsync(RequestUri);
-		auto result = co_await TryReceiveHttpResponse(response);
+		hstring result;
+		try {
+			auto response = co_await httpClient.GetAsync(RequestUri);
+			result = co_await TryReceiveHttpResponse(response);
+		}
+		catch (hresult_error e) {
+			OutputDebugString(e.message().data());
+		}
 		co_return result;
 	}
 
@@ -256,7 +262,7 @@ namespace winrt::FacebookSDK::implementation
 		Uri uri(FacebookClient::PrepareRequestUri(path, parameters));
 
 		hstring result;
-		hstring response = co_await FacebookClient::SimplePostInternalAsync(uri);
+		hstring response = co_await FacebookClient::MultipartPostInternalAsync(uri, streams);
 		if (FacebookClient::IsOAuthErrorResponse(response)) {
 			auto sess = FacebookSession::ActiveSession();
 			co_await sess.TryRefreshAccessTokenAsync();

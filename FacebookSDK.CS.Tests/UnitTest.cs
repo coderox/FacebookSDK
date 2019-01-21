@@ -28,7 +28,7 @@ using FacebookSDK.Graph;
 namespace FacebookSDK.CS.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTests
     {
         const int SAMPLE_PAGE_INDEX = 0;
         const int SAMPLE_PAGE2_INDEX = 1;
@@ -114,7 +114,7 @@ namespace FacebookSDK.CS.Tests
 
         // TODO: May need to change this at some point in the future.  This is 
         // the app Id for the LoginTester app in the FBSDK project 
-        const string TestAppId = "1406183856361054";
+        const string TestAppId = "719494811465102";
 
         const string FBSDKTokenServiceHost = "fbwinsdk.azure-mobile.net";
         const string FBSDKTokenApiPath = "/api/get_token";
@@ -190,32 +190,32 @@ namespace FacebookSDK.CS.Tests
             Assert.IsNotNull(paging);
         }
 
-        //[TestMethod]
-        //public void parseArrayOfLikes()
-        //{
-        //    string FBArrayOfLikes =
-        //        "{\"data\":[" + SampleJsonPage + "," + SampleJsonPage2 + "," +
-        //        SampleJsonPage3 + "," + SampleJsonPage4 + "],\"paging\":" +
-        //        PagingObjectJson + "}";
+        [TestMethod]
+        public void parseArrayOfLikes()
+        {
+            string FBArrayOfLikes =
+                "{\"data\":[" + SampleJsonPage + "," + SampleJsonPage2 + "," +
+                SampleJsonPage3 + "," + SampleJsonPage4 + "],\"paging\":" +
+                PagingObjectJson + "}";
 
-        //    string fbResponse = FBArrayOfLikes;
-        //    FBPaginatedArray arr = new FBPaginatedArray("Unused", null,
-        //        new JsonClassFactory(
-        //            (JsonText) => FBPage.FromJson(JsonText)));
+            string fbResponse = FBArrayOfLikes;
+            FacebookPaginatedArray arr = new FacebookPaginatedArray("Unused", null,
+                new JsonClassFactory(
+                    (JsonText) => FBPage.FromJson(JsonText)));
 
-        //    IReadOnlyList<object> result = arr.ObjectArrayFromWebResponse(
-        //        fbResponse,
-        //        new JsonClassFactory(
-        //            (JsonText) => FBPage.FromJson(JsonText)));
-        //    for (int i = 0; i < result.Count; i++)
-        //    {
-        //        object obj = result[i];
-        //        FBPage page = (FBPage)result[i];
-        //        Assert.IsNotNull(obj);
-        //        Assert.IsNotNull(page);
-        //        StringAssert.Equals(page.Name, PageNames[i]);
-        //    }
-        //}
+            IReadOnlyList<object> result = arr.ObjectArrayFromWebResponse(
+                fbResponse,
+                new JsonClassFactory(
+                    (JsonText) => FBPage.FromJson(JsonText)));
+            for (int i = 0; i < result.Count; i++)
+            {
+                object obj = result[i];
+                FBPage page = (FBPage)result[i];
+                Assert.IsNotNull(obj);
+                Assert.IsNotNull(page);
+                StringAssert.Equals(page.Name, PageNames[i]);
+            }
+        }
 
         [TestMethod]
         public void parseErrorFromJson()
@@ -243,41 +243,41 @@ namespace FacebookSDK.CS.Tests
             Assert.AreEqual(FBCanceledRequestMessage, err.Message);
         }
 
-        //private async Task<string> getAppToken()
-        //{
-        //    PropertySet parameters = new PropertySet();
-        //    string result = null;
+        private async Task<string> getAppToken()
+        {
+            PropertySet parameters = new PropertySet();
+            string result = null;
 
-        //    parameters.Add("request_host", FBSDKTokenServiceHost);
-        //    parameters.Add("access_token", "");
-        //    parameters.Add("id", TestAppId);
+            parameters.Add("request_host", FBSDKTokenServiceHost);
+            parameters.Add("access_token", "");
+            parameters.Add("id", TestAppId);
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(FBSDKTokenApiPath,
-        //        parameters,
-        //        new JsonClassFactory((JsonText) =>
-        //        {
-        //            JsonObject obj = null;
-        //            if (!JsonObject.TryParse(JsonText, out obj))
-        //            {
-        //                obj = null;
-        //            }
+            FacebookSingleValue sval = new FacebookSingleValue(FBSDKTokenApiPath,
+                parameters,
+                new JsonClassFactory((JsonText) =>
+                {
+                    JsonObject obj = null;
+                    if (!JsonObject.TryParse(JsonText, out obj))
+                    {
+                        obj = null;
+                    }
 
-        //            return obj;
-        //        }));
+                    return obj;
+                }));
 
-        //    FacebookResult fbresult = await sval.GetAsync();
+            FacebookResult fbresult = await sval.GetAsync();
 
-        //    if (fbresult.Succeeded)
-        //    {
-        //        JsonObject obj = (JsonObject)fbresult.Object;
-        //        if (obj.Keys.Contains("access_token"))
-        //        {
-        //            result = obj.GetNamedString("access_token");
-        //        }
-        //    }
+            if (fbresult.Succeeded)
+            {
+                JsonObject obj = (JsonObject)fbresult.Object;
+                if (obj.Keys.Contains("access_token"))
+                {
+                    result = obj.GetNamedString("access_token");
+                }
+            }
 
-        //    return result;
-        //}
+            return result;
+        }
 
         //private async Task<FBTestUser> createTestUser(
         //    PropertySet Parameters

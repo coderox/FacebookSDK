@@ -98,26 +98,24 @@ namespace winrt::FacebookSDK::implementation
 		}
 		co_await winrt::resume_background();
 		
-		task<hstring> innerTask;
+		hstring responseString;
 		switch (httpMethod)
 		{
 		case ::FacebookSDK::HttpMethod::Get:
-			innerTask = create_task([]() -> hstring { return L""; });
-			//innerTask = create_task(HttpManager::Instance().GetTaskAsync(_request, _parameters.GetView()));
+			responseString = co_await HttpManager::Instance().GetTaskAsync(_request, _parameters.GetView());
 			break;
-		//case ::FacebookSDK::HttpMethod::Post:
-		//	//innerTask = create_task(HttpManager::Instance().PostTaskAsync(_request, _parameters.GetView()));
-		//	break;
-		//case ::FacebookSDK::HttpMethod::Delete:
-		//	//innerTask = create_task(HttpManager::Instance().DeleteTaskAsync(_request, _parameters.GetView()));
-		//	break;
+		case ::FacebookSDK::HttpMethod::Post:
+			responseString = co_await HttpManager::Instance().PostTaskAsync(_request, _parameters.GetView());
+			break;
+		case ::FacebookSDK::HttpMethod::Delete:
+			responseString = co_await HttpManager::Instance().DeleteTaskAsync(_request, _parameters.GetView());
+			break;
 		default:
-			//OutputDebugString(L"FBSingleValue::MakeHttpRequest recieved unknown HttpMethod value\n");
-			innerTask = create_task([]() -> hstring { return L""; });
+			OutputDebugString(L"FBSingleValue::MakeHttpRequest recieved unknown HttpMethod value\n");
+			responseString = L"";
 			break;
 		}
 
-		auto responseString = innerTask.get();
 		if (responseString.empty()) {
 			co_return(FacebookSDK::FacebookResult(FacebookSDK::FacebookError(0, L"HTTP request failed", L"Unable to receive response")));
 		}
