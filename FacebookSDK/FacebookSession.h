@@ -51,9 +51,7 @@ namespace winrt::FacebookSDK::implementation
 			FacebookSDK::FacebookAccessTokenData const& tokenData
 		);
 
-		void ParseOAuthResponse(
-			Windows::Foundation::Uri ResponseUri
-		);
+		void ParseOAuthResponse(Windows::Foundation::Uri ResponseUri);
 
 		Windows::Foundation::IAsyncOperation<Windows::Storage::IStorageItem>
 			MyTryGetItemAsync(
@@ -67,10 +65,9 @@ namespace winrt::FacebookSDK::implementation
 
 		Windows::Foundation::IAsyncAction TryDeleteTokenData();
 
-		concurrency::task<FacebookSDK::FacebookResult> GetAppPermissions(
-		);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetAppPermissions();
 
-		concurrency::task<FacebookSDK::FacebookResult>
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult>
 			ProcessAuthResult(
 				Windows::Security::Authentication::Web::WebAuthenticationResult authResult
 			);

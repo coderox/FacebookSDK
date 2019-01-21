@@ -201,7 +201,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowRequestsDialogAsync(PropertySet const Parameters)
 	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		FacebookDialog dialog;
@@ -216,7 +216,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowSendDialogAsync(PropertySet const Parameters)
 	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		FacebookDialog dialog;
@@ -231,17 +231,17 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync()
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync()
 	{
 		throw hresult_not_implemented();
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions)
 	{
 		throw hresult_not_implemented();
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions, FacebookSDK::SessionLoginBehavior const behavior)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions, FacebookSDK::SessionLoginBehavior const behavior)
 	{
 		throw hresult_not_implemented();
 	}
@@ -262,7 +262,7 @@ namespace winrt::FacebookSDK::implementation
 		return activeFBSession;
 	}
 
-	Windows::Storage::ApplicationDataContainer FacebookSession::DataContainer()
+	ApplicationDataContainer FacebookSession::DataContainer()
 	{
 		ApplicationDataContainer localSettings = ApplicationData::Current().LocalSettings();
 		if (!localSettings.Containers().HasKey(SDK_APP_DATA_CONTAINER))
@@ -272,19 +272,76 @@ namespace winrt::FacebookSDK::implementation
 		return localSettings.Containers().Lookup(SDK_APP_DATA_CONTAINER);
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryRefreshAccessTokenAsync()
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryRefreshAccessTokenAsync()
 	{
-		throw hresult_not_implemented();
+		co_await winrt::resume_background();
+		WebTokenRequestResult result{ nullptr };
+
+		auto provider = co_await WebAuthenticationCoreManager::FindAccountProviderAsync(FBAccountProvider);
+		if (provider) {
+			auto perms = GetGrantedPermissions();
+			WebTokenRequest request(provider, perms, FacebookAppId());
+			request.Properties().Insert(RedirectUriKey, GetWebAccountProviderRedirectUriString());
+			result = co_await WebAuthenticationCoreManager::GetTokenSilentlyAsync(request);
+			if (result) {
+				co_await result.InvalidateCacheAsync();
+
+			}
+		}
+
+		co_return FBResultFromTokenRequestResult(result);
 	}
 
-	Windows::Foundation::Uri FacebookSession::BuildLoginUri(
-		Windows::Foundation::Collections::PropertySet Parameters
-	) {
-		throw hresult_not_implemented();
+	Uri FacebookSession::BuildLoginUri(PropertySet parameters) 
+	{
+		auto session = FacebookSession::ActiveSession();
+		hstring apiVersion(L"");
+		if (APIMajorVersion())
+		{
+			wstringstream apiStream;
+			apiStream << L"v" + APIMajorVersion() << L"." << APIMinorVersion() << L"/";
+			apiVersion = apiStream.str().c_str();
+		}
+		wstringstream uriStream;
+		uriStream << L"https://www.facebook.com/" << apiVersion.c_str() << L"dialog/oauth?client_id=" << session.FacebookAppId().c_str();
+		//hstring uriString(uriStream.str().c_str());
+
+		// Use some reasonable default login parameters
+		hstring scope(DefaultScope);
+		hstring displayType(DefaultDisplay);
+		hstring responseType(DefaultResponse);
+
+		uriStream << L"&" << RedirectUriKey << L"=" << GetWebAuthRedirectUriString().c_str();
+
+		for (auto const& parameter : parameters) {
+			hstring key = parameter.Key();
+			hstring value = parameter.Value().as<IStringable>().ToString();
+			if (!value.empty()) {
+				if (compare_ordinal(key.c_str(), ScopeKey) == 0) {
+					scope = value;
+				}
+				else if (compare_ordinal(key.c_str(), DisplayKey) == 0) {
+					displayType = value;
+				}
+				else if (compare_ordinal(key.c_str(), ResponseTypeKey) == 0) {
+					responseType = value;
+				}
+				else {
+					uriStream << "&" << key.c_str() << "=" << value.c_str();
+				}
+			}
+		}
+
+		uriStream << "&" << ScopeKey << "=" << scope.c_str()
+			<< "&" << DisplayKey << "=" << displayType.c_str()
+			<< "&" << ResponseTypeKey << "=" << responseType.c_str();
+
+		return Uri(uriStream.str().c_str());
 	}
 
 	hstring FacebookSession::GetWebAuthRedirectUriString() {
-		throw hresult_not_implemented();
+		Uri endURI(WebAuthenticationBroker::GetCurrentApplicationCallbackUri());
+		return endURI.DisplayUri();
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetUserInfo(
@@ -416,16 +473,69 @@ namespace winrt::FacebookSDK::implementation
 		}
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissions(
-	) {
-		throw hresult_not_implemented();
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissions() 
+	{
+		wstringstream permStream;
+		permStream << L"/" << _user.Id().c_str() << L"/permissions";
+		FacebookPaginatedArray permArr(
+			permStream.str().c_str(),
+			nullptr,
+			JsonClassFactory([](hstring const& JsonText) -> IInspectable
+		{
+			return Graph::FBPermission::FromJson(JsonText);
+		}));
+
+		co_await winrt::resume_background();
+
+		auto result = co_await permArr.FirstAsync();
+		if (result.Succeeded()) {
+			auto perms = result.Object().as<IVectorView<IInspectable>>();
+			_AccessTokenData.SetPermissions(perms);
+		}
+		co_return make<FacebookResult>(_user);
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult>
-		FacebookSession::ProcessAuthResult(
-			Windows::Security::Authentication::Web::WebAuthenticationResult authResult
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ProcessAuthResult(
+			WebAuthenticationResult authResult
 		) {
-		throw hresult_not_implemented();
+		co_await winrt::resume_background();
+		
+		FacebookSDK::FacebookResult result{ nullptr };
+		hstring uriString;
+		FacebookSDK::FacebookAccessTokenData tokenData{ nullptr };
+		Uri uri{ nullptr };
+
+		switch (authResult.ResponseStatus())
+		{
+		case WebAuthenticationStatus::ErrorHttp:
+			//TODO: need a real error code
+			result = make<FacebookResult>(FacebookError(0,
+				L"Communication error",
+				L"An Http error occurred"));
+			break;
+		case WebAuthenticationStatus::Success:
+			//TODO: need a real error code
+			uriString = authResult.ResponseData();
+			uri = Uri(uriString);
+			tokenData = FacebookAccessTokenData::FromUri(uri);
+			if (!tokenData)
+			{
+				result = make<FacebookResult>(FacebookError::FromUri(uri));
+			}
+			else
+			{
+				result = make<FacebookResult>(tokenData);
+			}
+			break;
+		case WebAuthenticationStatus::UserCancel:
+			result = make<FacebookResult>(FacebookError(0,
+				L"User canceled",
+				L"The login operation was canceled"));
+			break;
+		default:
+			break;
+		}
+		co_return result;
 	}
 
 	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryGetUserInfoAfterLogin(
