@@ -24,6 +24,11 @@ L"}}";
 
 namespace winrt::FacebookSDK::implementation
 {
+	FacebookDialog::FacebookDialog()
+	{
+		InitializeComponent();
+	}
+
 	void FacebookDialog::InitDialog()
 	{
 		throw hresult_not_implemented();

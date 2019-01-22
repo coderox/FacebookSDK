@@ -14,6 +14,9 @@
     <Filter Include="Object Templates">
       <UniqueIdentifier>{4c576227-9e26-499a-908b-cb632fdedc46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Controls">
+      <UniqueIdentifier>{3071b0ac-e1df-4e19-8816-694c36338302}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -344,7 +347,9 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="FacebookDialog.xaml" />
     <Page Include="Themes\Styles.xaml" />
+    <Page Include="FacebookDialog.xaml">
+      <Filter>Controls</Filter>
+    </Page>
   </ItemGroup>
 </Project>

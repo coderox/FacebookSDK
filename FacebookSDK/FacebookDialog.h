@@ -6,7 +6,7 @@ namespace winrt::FacebookSDK::implementation
 {
 	struct FacebookDialog : FacebookDialogT<FacebookDialog>
 	{
-		FacebookDialog() = default;
+		FacebookDialog();
 
 		void InitDialog();
 		void UninitDialog();
