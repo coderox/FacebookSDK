@@ -183,7 +183,7 @@ namespace winrt::FacebookSDK::implementation
 
 		FacebookDialog::DeleteCookies();
 
-		return TryDeleteTokenData();
+		return TryDeleteTokenDataAsync();
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowFeedDialogAsync(PropertySet const Parameters)
@@ -344,7 +344,7 @@ namespace winrt::FacebookSDK::implementation
 		return endURI.DisplayUri();
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetUserInfo(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetUserInfoAsync(
 		FacebookSDK::FacebookAccessTokenData const& tokenData
 	) {
 		PropertySet parameters;
@@ -448,7 +448,7 @@ namespace winrt::FacebookSDK::implementation
 		}
 	}
 
-	Windows::Foundation::IAsyncAction FacebookSession::TryDeleteTokenData() {
+	IAsyncAction FacebookSession::TryDeleteTokenDataAsync() {
 		StorageFolder folder = ApplicationData::Current().LocalFolder();
 #ifdef _DEBUG
 		wstringstream msgStream;
@@ -473,7 +473,7 @@ namespace winrt::FacebookSDK::implementation
 		}
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissions() 
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissionsAsync() 
 	{
 		wstringstream permStream;
 		permStream << L"/" << _user.Id().c_str() << L"/permissions";
@@ -495,7 +495,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return make<FacebookResult>(_user);
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ProcessAuthResult(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ProcessAuthResultAsync(
 			WebAuthenticationResult authResult
 		) {
 		co_await winrt::resume_background();
@@ -538,33 +538,32 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryGetUserInfoAfterLogin(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetUserInfoAfterLoginAsync(
 		FacebookSDK::FacebookResult loginResult
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryGetAppPermissionsAfterLogin(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetAppPermissionsAfterLoginAsync(
 		FacebookSDK::FacebookResult loginResult
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::RunOAuthOnUiThread(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunOAuthOnUiThreadAsync(
+		PropertySet Parameters
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThread(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(
+		PropertySet Parameters
 	) {
 		throw hresult_not_implemented();
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(
-		Windows::Foundation::Collections::PropertySet const& Parameters
-	) {
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(PropertySet const& Parameters) 
+	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		FacebookDialog dialog;
 		try {
@@ -583,20 +582,20 @@ namespace winrt::FacebookSDK::implementation
 		co_return result;
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebView(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebViewAsync(
+		PropertySet Parameters
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAuthBroker(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAuthBrokerAsync(
+		PropertySet Parameters
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryLoginSilently(
-		Windows::Foundation::Collections::PropertySet Parameters
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginSilentlyAsync(
+		PropertySet Parameters
 	) {
 		throw hresult_not_implemented();
 	}
@@ -614,19 +613,19 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::CheckWebAccountProviderForExistingToken(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckWebAccountProviderForExistingTokenAsync(
 		FacebookSDK::FacebookPermissions Permissions
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAccountProvider(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAccountProviderAsync(
 		FacebookSDK::FacebookPermissions Permissions
 	) {
 		throw hresult_not_implemented();
 	}
 
-	concurrency::task<FacebookSDK::FacebookResult> FacebookSession::CallWebAccountProviderOnUiThread(
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CallWebAccountProviderOnUiThreadAsync(
 		FacebookSDK::FacebookPermissions Permissions
 	) {
 		throw hresult_not_implemented();
