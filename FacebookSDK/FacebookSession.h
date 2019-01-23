@@ -35,8 +35,8 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync();
-		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions const permissions);
-		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions const permissions, FacebookSDK::SessionLoginBehavior const behavior);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions permissions);
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions permissions, FacebookSDK::SessionLoginBehavior behavior);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> TryRefreshAccessTokenAsync();
 
 		void SetApiVersion(int32_t major, int32_t minor);

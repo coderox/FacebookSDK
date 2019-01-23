@@ -234,17 +234,75 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync()
 	{
-		throw hresult_not_implemented();
+		return LoginAsync(nullptr, FacebookSDK::SessionLoginBehavior::DefaultOrdering);
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions permissions)
 	{
-		throw hresult_not_implemented();
+		return LoginAsync(permissions, FacebookSDK::SessionLoginBehavior::DefaultOrdering);
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions const permissions, FacebookSDK::SessionLoginBehavior const behavior)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::LoginAsync(FacebookSDK::FacebookPermissions permissions, FacebookSDK::SessionLoginBehavior behavior)
 	{
-		throw hresult_not_implemented();
+		if (!permissions) {
+			permissions = make<FacebookPermissions>();
+		}
+
+		PropertySet parameters;
+		parameters.Insert(ScopeKey, box_value(permissions.ToString()));
+
+		if (LoggedIn()) {
+			parameters.Insert(AuthTypeKey, box_value(Rerequest));
+		}
+
+		FacebookSDK::FacebookResult result{ nullptr };
+		switch (behavior)
+		{
+		case SessionLoginBehavior::WebView:
+			_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
+			break;
+		
+		case SessionLoginBehavior::WebAuth:
+			_asyncResult = co_await TryLoginViaWebAuthBrokerAsync(parameters);
+			break;
+		
+		case SessionLoginBehavior::WebAccountProvider:
+			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
+			break;
+		
+		case SessionLoginBehavior::DefaultOrdering:
+			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
+			if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr && _asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
+				_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
+				if (_asyncResult == nullptr) {
+					_asyncResult = co_await TryLoginViaWebAuthBrokerAsync(parameters);
+				}
+			}
+			break;
+		
+		case SessionLoginBehavior::Silent:
+			_asyncResult = TryLoginSilentlyAsync(parameters);
+			break;
+		default:
+			OutputDebugString(L"Invalid SessionLoginBehavior member!\n");
+			// TODO need a real error code
+			_asyncResult = make<FacebookResult>(FacebookError(0, L"Login Error", L"Invalid SessionLoginBehavior member"));
+			break;
+		}
+
+		auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
+		auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
+		
+		if (finalResult != nullptr && finalResult.Succeeded()) {
+			_loggedIn = false;
+			AccessTokenData(nullptr);
+
+			if (finalResult == nullptr) {
+				finalResult = make<FacebookResult>(FacebookError(0, L"Unexpected error", L"Log in attempt failed"));
+				OutputDebugString(L"LoginAsync was about to return nullptr, created FacebookResult object to return instead");
+			}
+		}
+		co_return finalResult;
 	}
 
 	void FacebookSession::SetApiVersion(int32_t major, int32_t minor)
@@ -600,10 +658,29 @@ namespace winrt::FacebookSDK::implementation
 		co_return _asyncResult;
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(
-		PropertySet Parameters
-	) {
-		throw hresult_not_implemented();
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(PropertySet Parameters) 
+	{
+		try
+		{
+			_asyncResult = nullptr;
+			auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
+			auto function = [](FacebookSession *self, HANDLE event, PropertySet parameters) -> IAsyncAction {
+				self->_asyncResult = co_await self->ShowLoginDialogAsync(parameters);
+
+				SetEvent(event);
+			};
+
+			CoreApplication::MainView().CoreWindow().Dispatcher().RunAsync(
+				CoreDispatcherPriority::Normal,
+				std::bind(function, this, asyncEvent, Parameters));
+
+			co_await resume_on_signal(asyncEvent);
+		}
+		catch (hresult_error ex)
+		{
+			throw hresult_invalid_argument(SDKMessageLoginFailed);
+		}
+		co_return _asyncResult;
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(PropertySet const& Parameters)
