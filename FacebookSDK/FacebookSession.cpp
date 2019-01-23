@@ -694,7 +694,7 @@ namespace winrt::FacebookSDK::implementation
 		FacebookSDK::FacebookResult result{ nullptr };
 		FacebookDialog dialog;
 		try {
-			result = co_await dialog.ShowRequestsDialogAsync(Parameters);
+			result = co_await dialog.ShowLoginDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
