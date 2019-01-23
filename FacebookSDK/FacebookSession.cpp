@@ -307,12 +307,18 @@ namespace winrt::FacebookSDK::implementation
 
 	void FacebookSession::SetApiVersion(int32_t major, int32_t minor)
 	{
-		throw hresult_not_implemented();
+		_APIMajorVersion = major;
+		_APIMinorVersion = minor;
 	}
 
-	void FacebookSession::SetWebViewRedirectUrl(hstring const& domain, hstring const& Path)
+	void FacebookSession::SetWebViewRedirectUrl(hstring const& domain, hstring const& path)
 	{
-		throw hresult_not_implemented();
+		if (!domain.empty()) {
+			_webViewRedirectDomain = domain.c_str();
+		}
+		if (!path.empty()) {
+			_webViewRedirectPath = path.c_str();
+		}
 	}
 
 	FacebookSDK::FacebookSession FacebookSession::ActiveSession()
@@ -704,29 +710,84 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebViewAsync(
-		PropertySet Parameters
+		PropertySet parameters
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult loginResult{ nullptr };
+		auto session = FacebookSession::ActiveSession();
+
+		if (!IsRerequest(parameters)) {
+			auto oauthResult = co_await CheckForExistingTokenAsync();
+			if (oauthResult != nullptr && oauthResult.Succeeded()) {
+				auto tokenData = oauthResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
+				if (tokenData != nullptr && !tokenData.IsExpired()) {
+					loginResult = make<FacebookResult>(tokenData);
+				}
+			}
+			else {
+				loginResult = co_await RunWebViewLoginOnUIThreadAsync(parameters);
+			}
+		}
+		co_return loginResult;
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAuthBrokerAsync(
-		PropertySet Parameters
+		PropertySet parameters
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult loginResult{ nullptr };
+		auto session = FacebookSession::ActiveSession();
+
+		if (!IsRerequest(parameters)) {
+			auto oauthResult = co_await CheckForExistingTokenAsync();
+			if (oauthResult != nullptr && oauthResult.Succeeded()) {
+				auto tokenData = oauthResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
+				if (tokenData != nullptr && !tokenData.IsExpired()) {
+					loginResult = make<FacebookResult>(tokenData);
+				}
+			}
+			else {
+				loginResult = co_await RunOAuthOnUiThreadAsync(parameters);
+			}
+		}
+		co_return loginResult;
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginSilentlyAsync(
-		PropertySet Parameters
+		PropertySet parameters
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult loginResult{ nullptr };
+		auto session = FacebookSession::ActiveSession();
+
+		auto grantedPermissions = FacebookPermissions::FromString(GetGrantedPermissions());
+		auto requestingPermissions = FacebookPermissions::FromString(parameters.Lookup(L"scope").as<IStringable>().ToString());
+		auto diffPermissions = FacebookPermissions::Difference(requestingPermissions, grantedPermissions);
+		
+		FacebookSDK::FacebookResult oauthResult{ nullptr };
+		if (diffPermissions.Values().Size() != 0) {
+			oauthResult = co_await CheckForExistingTokenAsync();
+			if (oauthResult != nullptr && oauthResult.Succeeded()) {
+				auto tokenData = oauthResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
+				if (tokenData != nullptr && !tokenData.IsExpired()) {
+					loginResult = make<FacebookResult>(tokenData);
+				}
+			}
+			else {
+				loginResult = make<FacebookResult>(FacebookError(0,L"Restore Session Error", L"Could not find a valid access token"));
+			}
+		}
+		co_return loginResult;
 	}
 
 	void FacebookSession::SaveGrantedPermissions() {
-		throw hresult_not_implemented();
+		auto values = FacebookSession::DataContainer().Values();
+		values.Insert(GRANTED_PERMISSIONS_KEY, box_value(AccessTokenData().GrantedPermissions().ToString()));
 	}
 
 	hstring FacebookSession::GetGrantedPermissions() {
-		throw hresult_not_implemented();
+		auto values = FacebookSession::DataContainer().Values();
+		if (!values.HasKey(GRANTED_PERMISSIONS_KEY)) {
+			return L"";
+		}
+		return unbox_value<hstring>(values.Lookup(GRANTED_PERMISSIONS_KEY));
 	}
 
 #if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
@@ -774,9 +835,14 @@ namespace winrt::FacebookSDK::implementation
 	}
 #endif
 
-	BOOL FacebookSession::IsRerequest(
-		Windows::Foundation::Collections::PropertySet Parameters
-	) {
-		throw hresult_not_implemented();
+	BOOL FacebookSession::IsRerequest(PropertySet parameters) {
+		bool isRerequest = false;
+		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
+			hstring value = parameters.Lookup(AuthTypeKey).as<IStringable>().ToString();
+			if (compare_ordinal(value.c_str(), Rerequest) == 0) {
+				isRerequest = true;
+			}
+		}
+		return isRerequest;
 	}
 }
