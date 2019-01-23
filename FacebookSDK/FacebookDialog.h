@@ -103,7 +103,7 @@ namespace winrt::FacebookSDK::implementation
 		winrt::event_token sizeChangedEventRegistrationToken;
 		Windows::UI::Xaml::Controls::Grid _grid{ nullptr };
 		Windows::UI::Xaml::Controls::Primitives::Popup _popup{ nullptr };
-		//concurrency::task_completion_event<FacebookSDK::FacebookResult> _dialogResponse;
+		concurrency::task_completion_event<FacebookSDK::FacebookResult> _dialogResponse;
 	};
 }
 

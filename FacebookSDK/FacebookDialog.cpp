@@ -1,5 +1,9 @@
 ﻿#include "pch.h"
 #include "FacebookDialog.h"
+#include "FacebookSession.h"
+#include "FacebookFeedRequest.h"
+#include "FacebookAppRequest.h"
+#include "HttpManager.h"
 
 using namespace winrt;
 using namespace Windows::ApplicationModel::Core;
@@ -43,28 +47,53 @@ namespace winrt::FacebookSDK::implementation
 	FacebookDialog::FacebookDialog()
 	{
 		InitializeComponent();
+		InitDialog();
 	}
 
 	void FacebookDialog::InitDialog()
 	{
-		throw hresult_not_implemented();
+		_popup = nullptr;
+
+		CoreWindow coreWindow = CoreApplication::MainView().CoreWindow();
+
+		_popup = Popup();
+
+		_popup.HorizontalAlignment(Windows::UI::Xaml::HorizontalAlignment::Stretch);
+		_popup.VerticalAlignment(Windows::UI::Xaml::VerticalAlignment::Stretch);
+
+		Margin(Windows::UI::Xaml::Thickness({ 0, 0, 0, 0 }));
+		Height(coreWindow.Bounds().Height);
+		Width(coreWindow.Bounds().Width);
+
+		sizeChangedEventRegistrationToken = coreWindow.SizeChanged(
+			TypedEventHandler<CoreWindow, WindowSizeChangedEventArgs>
+			(this, &FacebookDialog::OnSizeChanged));
+
+		_popup.Child(*this);
 	}
 
 	void FacebookDialog::UninitDialog()
 	{
-		throw hresult_not_implemented();
+		dialogWebBrowser().Stop();
+		dialogWebBrowser().NavigationStarting(navigatingStartingEventHandlerRegistrationToken);
+		dialogWebBrowser().NavigationCompleted(navigatingCompletedEventHandlerRegistrationToken);
+		CoreApplication::MainView().CoreWindow().SizeChanged(sizeChangedEventRegistrationToken);
+
+		_popup.IsOpen(false);
+
+		//
+		// This breaks the circular dependency between the popup and dialog
+		// class, and is essential in order for the dialog to be disposed of
+		// properly.
+		//
+		_popup.Child(nullptr);
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowLoginDialogAsync(Windows::Foundation::Collections::PropertySet const parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowLoginDialogAsync(PropertySet const parameters)
 	{
-		auto handlerStarting =
-			TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(
-				this, &FacebookDialog::dialogWebView_LoginNavStarting);
-		TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs> handlerCompleted =
-			TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(
-				this, &FacebookDialog::dialogWebView_NavCompleted);
-		return ShowDialog(DialogUriBuilder(this,
-			&FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
+		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_LoginNavStarting);
+		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
 	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowFeedDialogAsync(Windows::Foundation::Collections::PropertySet const parameters)
@@ -94,11 +123,24 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowDialog(
 		DialogUriBuilder const& uriBuilder,
-		Windows::Foundation::TypedEventHandler<Windows::UI::Xaml::Controls::WebView, Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs> EventHandlerStarting,
-		Windows::Foundation::TypedEventHandler<Windows::UI::Xaml::Controls::WebView, Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs > EventHandlerCompleted,
-		Windows::Foundation::Collections::PropertySet parameters
+		TypedEventHandler<WebView, WebViewNavigationStartingEventArgs> eventHandlerStarting,
+		TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs > eventHandlerCompleted,
+		PropertySet parameters
 	) {
-		throw hresult_not_implemented();
+		Uri dialogUrl = uriBuilder(parameters);
+
+		navigatingStartingEventHandlerRegistrationToken = dialogWebBrowser().NavigationStarting(eventHandlerStarting);
+		navigatingCompletedEventHandlerRegistrationToken = dialogWebBrowser().NavigationCompleted(eventHandlerCompleted);
+		_popup.IsOpen(true);
+
+		dialogWebBrowser().Navigate(dialogUrl);
+		dialogWebBrowser().Focus(Windows::UI::Xaml::FocusState::Programmatic);
+
+		co_return _dialogResponse;
+		//return create_async([=]()
+		//{
+		//	return create_task(_dialogResponse);
+		//});
 	}
 
 	winrt::hstring FacebookDialog::GetRedirectUriString(

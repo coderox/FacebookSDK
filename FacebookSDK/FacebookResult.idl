@@ -3,6 +3,7 @@ import "FacebookError.idl";
 namespace FacebookSDK
 {
 	runtimeclass FacebookResult {
+		FacebookResult();
 		FacebookResult(Object Object);
 		Boolean Succeeded{ get; };
 		Object Object{ get; };
