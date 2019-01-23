@@ -23,7 +23,7 @@
               Path=ActualWidth,
               Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
-        
-        <facebook:FacebookDialog VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+        <Button Width="200" Height="200" Click="OnLoginClicked"/>
+
     </Grid>
 </Page>

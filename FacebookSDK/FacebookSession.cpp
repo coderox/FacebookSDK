@@ -482,7 +482,7 @@ namespace winrt::FacebookSDK::implementation
 					result = make<FacebookResult>(cachedData);
 				}
 			}
-			catch (hresult_error e) {
+			catch (...) {
 #ifdef _DEBUG
 				OutputDebugString(L"Couldn't decrypt cached token.  Continuing without cached token data.\n");
 #endif

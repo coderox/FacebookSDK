@@ -16,6 +16,11 @@ namespace FacebookSDK_Tests
 	public ref class BlankPage sealed
 	{
 	public:
-		BlankPage();		
+		BlankPage();
+	
+	private:
+		void SetSessionAppIds();
+		FacebookSDK::FacebookPermissions^ BuildPermissions();
+		void OnLoginClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }
