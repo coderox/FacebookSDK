@@ -59,12 +59,12 @@ namespace winrt::FacebookSDK::implementation
 		hstring GetWebAuthRedirectUriString();
 		winrt::fire_and_forget TrySaveTokenData();
 		Windows::Foundation::IAsyncAction TryDeleteTokenDataAsync();
+		FacebookSDK::FacebookResult ProcessAuthResult(Windows::Security::Authentication::Web::WebAuthenticationResult authResult);
 
 		Windows::Foundation::IAsyncOperation<Windows::Storage::IStorageItem> MyTryGetItemAsync(Windows::Storage::StorageFolder folder, hstring itemName);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetUserInfoAsync(FacebookSDK::FacebookAccessTokenData const& tokenData);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> CheckForExistingTokenAsync();
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetAppPermissionsAsync();
-		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ProcessAuthResultAsync(Windows::Security::Authentication::Web::WebAuthenticationResult authResult);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ShowLoginDialogAsync(Windows::Foundation::Collections::PropertySet const& Parameters);
 
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> TryGetUserInfoAfterLoginAsync(FacebookSDK::FacebookResult loginResult);
@@ -96,6 +96,7 @@ namespace winrt::FacebookSDK::implementation
 		FacebookSDK::Graph::FBUser _user{ nullptr };
 		concurrency::task<FacebookSDK::FacebookResult> _loginTask;
 		FacebookSDK::FacebookDialog _dialog{ nullptr };
+		FacebookSDK::FacebookResult _asyncResult{ nullptr };
 	};
 }
 

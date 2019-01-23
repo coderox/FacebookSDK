@@ -75,6 +75,7 @@ namespace winrt::FacebookSDK::implementation
 		: _AccessTokenData(nullptr)
 		, _loggedIn(false)
 		, _user(nullptr)
+		, _asyncResult(nullptr)
 	{
 		if (!::FacebookSDK::login_evt)
 		{
@@ -292,7 +293,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return FBResultFromTokenRequestResult(result);
 	}
 
-	Uri FacebookSession::BuildLoginUri(PropertySet parameters) 
+	Uri FacebookSession::BuildLoginUri(PropertySet parameters)
 	{
 		auto session = FacebookSession::ActiveSession();
 		hstring apiVersion(L"");
@@ -473,7 +474,7 @@ namespace winrt::FacebookSDK::implementation
 		}
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissionsAsync() 
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::GetAppPermissionsAsync()
 	{
 		wstringstream permStream;
 		permStream << L"/" << _user.Id().c_str() << L"/permissions";
@@ -495,11 +496,8 @@ namespace winrt::FacebookSDK::implementation
 		co_return make<FacebookResult>(_user);
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ProcessAuthResultAsync(
-			WebAuthenticationResult authResult
-		) {
-		co_await winrt::resume_background();
-		
+	FacebookSDK::FacebookResult FacebookSession::ProcessAuthResult(WebAuthenticationResult authResult) 
+	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		hstring uriString;
 		FacebookSDK::FacebookAccessTokenData tokenData{ nullptr };
@@ -535,25 +533,71 @@ namespace winrt::FacebookSDK::implementation
 		default:
 			break;
 		}
+		return result;
+	}
+
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetUserInfoAfterLoginAsync(FacebookSDK::FacebookResult loginResult)
+	{
+		FacebookSDK::FacebookResult result{ nullptr };
+
+		if (loginResult != nullptr && loginResult.Succeeded())
+		{
+			_AccessTokenData = loginResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
+			_loggedIn = true;
+			TrySaveTokenData();
+			result = co_await GetUserInfoAsync(_AccessTokenData);
+		}
+		else
+		{
+			result = loginResult;
+		}
+
 		co_return result;
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetUserInfoAfterLoginAsync(
-		FacebookSDK::FacebookResult loginResult
-	) {
-		throw hresult_not_implemented();
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetAppPermissionsAfterLoginAsync(FacebookSDK::FacebookResult loginResult)
+	{
+		FacebookSDK::FacebookResult result{ nullptr };
+		if (loginResult != nullptr && loginResult.Succeeded())
+		{
+			_user = loginResult.Object().as<Graph::FBUser>();
+			result = co_await GetAppPermissionsAsync();
+		}
+		else
+		{
+			result = loginResult;
+		}
+
+		co_return result;
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryGetAppPermissionsAfterLoginAsync(
-		FacebookSDK::FacebookResult loginResult
-	) {
-		throw hresult_not_implemented();
-	}
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunOAuthOnUiThreadAsync(PropertySet Parameters)
+	{
+		try
+		{
+			_asyncResult = nullptr;
+			auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
+			auto function = [](FacebookSession *self, HANDLE event, PropertySet parameters) -> IAsyncAction {
+				auto authResult = co_await WebAuthenticationBroker::AuthenticateAsync(
+					WebAuthenticationOptions::None,
+					self->BuildLoginUri(parameters),
+					Uri(self->GetWebAuthRedirectUriString()));
+				self->_asyncResult = self->ProcessAuthResult(authResult);
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunOAuthOnUiThreadAsync(
-		PropertySet Parameters
-	) {
-		throw hresult_not_implemented();
+				SetEvent(event);
+			};
+			
+			CoreApplication::MainView().CoreWindow().Dispatcher().RunAsync(
+				CoreDispatcherPriority::Normal,
+				std::bind(function, this, asyncEvent, Parameters));
+
+			co_await resume_on_signal(asyncEvent);
+		}
+		catch (hresult_error ex)
+		{
+			throw hresult_invalid_argument(SDKMessageLoginFailed);
+		}
+		co_return _asyncResult;
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(
@@ -562,7 +606,7 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(PropertySet const& Parameters) 
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ShowLoginDialogAsync(PropertySet const& Parameters)
 	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		FacebookDialog dialog;
@@ -573,7 +617,7 @@ namespace winrt::FacebookSDK::implementation
 			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
 			result = make<FacebookResult>(err);
 		}
-		
+
 		if (result.Succeeded())
 		{
 			AccessTokenData(result.Object().as<FacebookSDK::FacebookAccessTokenData>());
