@@ -310,6 +310,7 @@
     <Midl Include="FacebookDialog.idl" />
     <Midl Include="FacebookFeedRequest.idl" />
     <Midl Include="FacebookPaginatedArray.idl" />
+    <Midl Include="FacebookSendRequest.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -351,5 +352,13 @@
     <Page Include="FacebookDialog.xaml">
       <Filter>Controls</Filter>
     </Page>
+    <Page Include="FacebookProfilePictureControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\fb_blank_profile_portrait.png">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

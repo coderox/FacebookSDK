@@ -20,21 +20,5 @@ namespace FacebookSDK_Tests
 			// assert
 			Assert::IsNotNull(instance);
 		}
-
-		TEST_METHOD(TestConsumeGetAsyncWithEmptyString)
-		{
-			// arrange
-			auto request = ref new Platform::String(L"");
-
-			// act
-			auto instance = ref new FacebookSDK::FacebookSingleValue(request, nullptr, nullptr);
-			auto result = concurrency::create_task(instance->GetAsync()).get();
-			auto expected = ref new FacebookSDK::FacebookResult(nullptr);
-
-			// assert
-			Assert::IsNotNull(result);
-			Assert::AreEqual(expected->GetType()->FullName, result->GetType()->FullName);
-			Assert::IsNotNull(result->ErrorInfo);
-		}
 	};
 }

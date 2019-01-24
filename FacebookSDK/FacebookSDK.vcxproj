@@ -181,6 +181,14 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookPermissions.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookProfilePictureControl.h">
+      <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="FacebookSendRequest.h">
+      <DependentUpon>FacebookSendRequest.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookSession.h">
       <DependentUpon>FacebookSession.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -274,8 +282,16 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookPermissions.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FacebookProfilePictureControl.cpp">
+      <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookResult.cpp">
       <DependentUpon>FacebookResult.idl</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="FacebookSendRequest.cpp">
+      <DependentUpon>FacebookSendRequest.idl</DependentUpon>
+      <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="FacebookSession.cpp">
       <DependentUpon>FacebookSession.idl</DependentUpon>
@@ -350,6 +366,13 @@ call codegen.cmd</Command>
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookPermissions.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="FacebookProfilePictureControl.idl">
+      <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="FacebookSendRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookSession.idl">
@@ -453,9 +476,15 @@ call codegen.cmd</Command>
     <Page Include="FacebookDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FacebookProfilePictureControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Styles.xaml">
       <DeploymentContent>true</DeploymentContent>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\fb_blank_profile_portrait.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
