@@ -1,9 +1,13 @@
 ﻿#include "pch.h"
 #include "FacebookDialog.h"
 #include "FacebookSession.h"
+#include "FacebookResult.h"
 #include "FacebookFeedRequest.h"
 #include "FacebookAppRequest.h"
 #include "HttpManager.h"
+#include <sstream>
+#include <string>
+#include <Utilities.h>
 
 using namespace winrt;
 using namespace Windows::ApplicationModel::Core;
@@ -42,6 +46,25 @@ L"\"OAuthException\", \"code\": 4203, " \
 L"\"error_user_msg\": \"No Internet\"" \
 L"}}";
 
+#define ScopeKey        L"scope"
+#define DisplayKey      L"display"
+#define ResponseTypeKey L"response_type"
+#define DefaultScope    L"public_profile,email,user_friends"
+#define DefaultDisplay  L"popup"
+#define DefaultResponse L"token"
+
+#ifdef _DEBUG
+void DebugPrintLine(
+	hstring const& msg
+)
+{
+	hstring output(msg + L"\n");
+	OutputDebugString(output.c_str());
+}
+#else
+#define DebugPrintLine(msg) ((void) 0)
+#endif
+
 namespace winrt::FacebookSDK::implementation
 {
 	FacebookDialog::FacebookDialog()
@@ -68,6 +91,8 @@ namespace winrt::FacebookSDK::implementation
 		sizeChangedEventRegistrationToken = coreWindow.SizeChanged(
 			TypedEventHandler<CoreWindow, WindowSizeChangedEventArgs>
 			(this, &FacebookDialog::OnSizeChanged));
+
+		_dialogEventHandle = CreateEvent(nullptr, true, false, nullptr);
 
 		_popup.Child(*this);
 	}
@@ -96,24 +121,30 @@ namespace winrt::FacebookSDK::implementation
 		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowFeedDialogAsync(Windows::Foundation::Collections::PropertySet const parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowFeedDialogAsync(PropertySet const parameters)
 	{
-		throw hresult_not_implemented();
+		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_FeedNavStarting);
+		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowRequestsDialogAsync(PropertySet const parameters)
 	{
-		throw hresult_not_implemented();
+		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_RequestNavStarting);
+		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const parameters)
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowSendDialogAsync(PropertySet const parameters)
 	{
-		throw hresult_not_implemented();
+		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_SendNavStarting);
+		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
 	hstring FacebookDialog::GetFBServerUrl()
 	{
-		throw hresult_not_implemented();
+		return FacebookDialog::IsMobilePlatform() ? FACEBOOK_MOBILE_SERVER_NAME : FACEBOOK_DESKTOP_SERVER_NAME;
 	}
 
 	void FacebookDialog::DeleteCookies()
@@ -136,27 +167,76 @@ namespace winrt::FacebookSDK::implementation
 		dialogWebBrowser().Navigate(dialogUrl);
 		dialogWebBrowser().Focus(Windows::UI::Xaml::FocusState::Programmatic);
 
+		co_await resume_on_signal(_dialogEventHandle);
+
 		co_return _dialogResponse;
-		//return create_async([=]()
-		//{
-		//	return create_task(_dialogResponse);
-		//});
 	}
 
 	winrt::hstring FacebookDialog::GetRedirectUriString(
 		winrt::hstring DialogName
 	) {
-		throw hresult_not_implemented();
+		auto session = FacebookSession::ActiveSession();
+		std::wstringstream resultStream;
+		resultStream << session.WebViewRedirectDomain().c_str() << session.WebViewRedirectPath().c_str();
+		hstring result(Uri::EscapeComponent(resultStream.str().c_str()));
+		OutputDebugString(result.c_str());
+		return result;
 	}
 
 	BOOL FacebookDialog::IsMobilePlatform() {
-		throw hresult_not_implemented();
+#if WINAPI_FAMILY==WINAPI_FAMILY_PHONE_APP
+		return TRUE;
+#else
+		return FALSE;
+#endif
 	}
 
 	Windows::Foundation::Uri FacebookDialog::BuildLoginDialogUrl(
-		Windows::Foundation::Collections::PropertySet const& Parameters
+		Windows::Foundation::Collections::PropertySet const& parameters
 	) {
-		throw hresult_not_implemented();
+		auto session = FacebookSession::ActiveSession();
+		std::wstringstream uriString;
+		std::wstringstream apiVersion;
+		apiVersion << L"";
+		
+		if (session.APIMajorVersion())
+		{
+			apiVersion << L"/v" << session.APIMajorVersion() << L"." << session.APIMinorVersion() << L"/";
+		}
+		uriString << FacebookDialog::GetFBServerUrl().c_str() << apiVersion.str() << L"dialog/oauth?client_id=" << session.FacebookAppId().c_str();
+
+		// Use some reasonable default login parameters
+		hstring scope(DefaultScope);
+		hstring displayType(DefaultDisplay);
+		hstring responseType(DefaultResponse);
+
+		uriString << L"&redirect_uri=" << GetRedirectUriString(L"login").c_str();
+
+		for (auto const& parameter : parameters)
+		{
+			hstring key(parameter.Key());
+			hstring value = unbox_value<hstring>(parameter.Value());
+			if (!value.empty()) {
+				if (compare_ordinal(key.c_str(), ScopeKey) == 0) {
+					scope = value;
+				}
+				else if (compare_ordinal(key.c_str(), DisplayKey) == 0) {
+					displayType = value;
+				} 
+				else if (compare_ordinal(key.c_str(), ResponseTypeKey) == 0) {
+					responseType = value;
+				}
+				else {
+					uriString << "&" << key.c_str() << "=" << value.c_str();
+				}
+			}
+		}
+
+		uriString << "&" << ScopeKey << "=" << scope.c_str()
+			<< "&" << DisplayKey << "=" << displayType.c_str()
+			<< "&" << ResponseTypeKey << "=" << responseType.c_str();
+
+		return uriString.str().c_str();
 	}
 
 	Windows::Foundation::Uri FacebookDialog::BuildFeedDialogUrl(
@@ -181,7 +261,31 @@ namespace winrt::FacebookSDK::implementation
 		Windows::UI::Xaml::Controls::WebView const& sender,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
-		throw hresult_not_implemented();
+		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
+		DebugPrintLine(hstring(L"Path is ") + e.Uri().Path());
+
+		if (IsLoginSuccessRedirect(e.Uri()))
+		{
+			UninitDialog();
+
+			auto tokenData = FacebookAccessTokenData::FromUri(e.Uri());
+			if (tokenData)
+			{
+				SetDialogResponse(make<FacebookResult>(tokenData));
+			}
+			else
+			{
+				auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+				SetDialogResponse(make<FacebookResult>(err));
+			}
+		}
+		else if (IsDialogCloseRedirect(e.Uri()))
+		{
+			UninitDialog();
+
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+			SetDialogResponse(make<FacebookResult>(err));
+		}
 	}
 
 	void FacebookDialog::dialogWebView_FeedNavStarting(
@@ -209,20 +313,30 @@ namespace winrt::FacebookSDK::implementation
 		Windows::UI::Xaml::Controls::WebView const& sender,
 		Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs const& e
 	) {
-		throw hresult_not_implemented();
+		if (!e.IsSuccess())
+		{
+			UninitDialog();
+
+			auto err = FacebookError::FromJson(hstring(ErrorObjectJsonNoInternet));
+			SetDialogResponse(make<FacebookResult>(err));
+		}
 	}
 
 	void FacebookDialog::CloseDialogButton_OnClick(
 		Windows::Foundation::IInspectable const& sender,
 		Windows::UI::Xaml::RoutedEventArgs const& e
 	) {
-		throw hresult_not_implemented();
+		UninitDialog();
+
+		auto err = FacebookError::FromJson(hstring(ErrorObjectJson));
+		SetDialogResponse(make<FacebookResult>(err));
 	}
 
 	bool FacebookDialog::IsLoginSuccessRedirect(
-		Windows::Foundation::Uri const&  Response
+		Windows::Foundation::Uri const&  response
 	) {
-		throw hresult_not_implemented();
+		auto session = FacebookSession::ActiveSession();
+		return (compare_ordinal(response.Path().c_str(), session.WebViewRedirectPath().c_str()) == 0);
 	}
 
 	bool FacebookDialog::IsLogoutRedirect(
@@ -232,9 +346,9 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	bool FacebookDialog::IsDialogCloseRedirect(
-		Windows::Foundation::Uri const&  Response
+		Windows::Foundation::Uri const&  response
 	) {
-		throw hresult_not_implemented();
+		return (compare_ordinal(response.Path().c_str(), FACEBOOK_DIALOG_CLOSE_PATH) == 0);
 	}
 
 	void FacebookDialog::OnSizeChanged(
@@ -245,6 +359,10 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::SetDialogResponse(FacebookSDK::FacebookResult dialogResponse) {
-		throw hresult_not_implemented();
+		if (_dialogEventHandle != nullptr) {
+			_dialogResponse = dialogResponse;
+			SetEvent(_dialogEventHandle);
+		}
+		_dialogEventHandle = nullptr;
 	}
 }

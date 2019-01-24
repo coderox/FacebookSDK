@@ -98,7 +98,6 @@ namespace winrt::FacebookSDK::implementation
 	{
 		bool gotToken = false;
 		bool gotExpiration = false;
-		bool gotBadField = false;
 		hstring token;
 		hstring expiration;
 		FacebookSDK::FacebookAccessTokenData data{ nullptr };
@@ -119,13 +118,9 @@ namespace winrt::FacebookSDK::implementation
 				expiration = entry.Value();
 				gotExpiration = true;
 			}
-			else
-			{
-				gotBadField = true;
-			}
 		}
 
-		if (gotToken && gotExpiration && !gotBadField)
+		if (gotToken && gotExpiration)
 		{
 			data = make<FacebookAccessTokenData>(token.c_str(), expiration.c_str());
 		}

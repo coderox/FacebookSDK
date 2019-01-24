@@ -96,8 +96,9 @@ namespace winrt::FacebookSDK::implementation
 		if (_parameters == nullptr) {
 			_parameters = PropertySet();
 		}
-		co_await winrt::resume_background();
 		
+		auto fields = _parameters.Lookup(L"fields");
+
 		hstring responseString;
 		switch (httpMethod)
 		{

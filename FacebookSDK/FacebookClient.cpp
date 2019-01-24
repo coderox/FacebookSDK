@@ -68,8 +68,6 @@ namespace winrt::FacebookSDK::implementation
 		PropertySet modifiableParams = MapViewToPropertySet(parameters);
 		Uri uri = FacebookClient::PrepareRequestUri(path, modifiableParams);
 
-		co_await winrt::resume_background();
-
 		auto response = co_await FacebookClient::GetTaskInternalAsync(uri);
 
 		if (FacebookClient::IsOAuthErrorResponse(response)) {

@@ -159,6 +159,10 @@ namespace winrt::FacebookSDK::implementation
 					result->_errorUserMessage = current.Value().GetString();
 				}
 			}
+
+			if (!found) {
+				result = nullptr;
+			}
 		}
 		return result.as<winrt::FacebookSDK::FacebookError>();
 	}

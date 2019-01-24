@@ -238,6 +238,7 @@
     <ClCompile Include="GraphUriBuilder.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
     <ClCompile Include="MockHttpClient.cpp" />
+    <ClCompile Include="PropertySet.Tests.cpp" />
     <ClCompile Include="ScaleConverter.Tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>

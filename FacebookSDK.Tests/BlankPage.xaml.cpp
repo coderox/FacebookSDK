@@ -72,7 +72,8 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 	auto session = FacebookSDK::FacebookSession::ActiveSession;
 
 	create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::WebView)).then([=](FacebookSDK::FacebookResult^ result) {
-	
+		auto session = FacebookSDK::FacebookSession::ActiveSession;
+		OutputDebugString(session->AccessTokenData->AccessToken->Data());
 
 	});
 }

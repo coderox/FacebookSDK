@@ -248,6 +248,8 @@ namespace winrt::FacebookSDK::implementation
 			permissions = make<FacebookPermissions>();
 		}
 
+		co_await winrt::resume_background();
+
 		PropertySet parameters;
 		parameters.Insert(ScopeKey, box_value(permissions.ToString()));
 
@@ -293,7 +295,7 @@ namespace winrt::FacebookSDK::implementation
 		auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
 		auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
 		
-		if (finalResult != nullptr && finalResult.Succeeded()) {
+		if (finalResult == nullptr || !finalResult.Succeeded()) {
 			_loggedIn = false;
 			AccessTokenData(nullptr);
 
@@ -339,7 +341,6 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryRefreshAccessTokenAsync()
 	{
-		co_await winrt::resume_background();
 		WebTokenRequestResult result{ nullptr };
 
 		auto provider = co_await WebAuthenticationCoreManager::FindAccountProviderAsync(FBAccountProvider);
@@ -414,15 +415,18 @@ namespace winrt::FacebookSDK::implementation
 	) {
 		PropertySet parameters;
 		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
-		FacebookSingleValue value = FacebookSingleValue(
-			L"/me",
-			parameters,
-			JsonClassFactory([](hstring jsonText) -> IInspectable
+		auto objectFactory = JsonClassFactory([](hstring jsonText) -> IInspectable
 		{
 			return Graph::FBUser::FromJson(jsonText);
-		}));
+		});
 
-		return value.GetAsync();
+		FacebookSDK::FacebookSingleValue value = make<FacebookSingleValue>(
+			L"/me",
+			parameters,
+			objectFactory);
+
+		auto result = co_await value.GetAsync();
+		co_return result;
 	}
 
 	void FacebookSession::ParseOAuthResponse(Uri ResponseUri) {
@@ -447,8 +451,6 @@ namespace winrt::FacebookSDK::implementation
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckForExistingTokenAsync()
 	{
-		co_await winrt::resume_background();
-
 		FacebookSDK::FacebookResult result{ nullptr };
 		if (LoggedIn())
 		{
@@ -459,27 +461,29 @@ namespace winrt::FacebookSDK::implementation
 			try {
 				auto folder = ApplicationData::Current().LocalFolder();
 				IStorageItem item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
-				auto file = item.as<StorageFile>();
-				auto protectedBuffer = co_await FileIO::ReadBufferAsync(file);
-				DataProtectionProvider provider;
-				auto clearBuffer = co_await provider.UnprotectAsync(protectedBuffer);
-				auto clearText = CryptographicBuffer::ConvertBinaryToString(BinaryStringEncoding::Utf16LE, clearBuffer);
+				if (item != nullptr) {
+					auto file = item.as<StorageFile>();
+					auto protectedBuffer = co_await FileIO::ReadBufferAsync(file);
+					DataProtectionProvider provider;
+					auto clearBuffer = co_await provider.UnprotectAsync(protectedBuffer);
+					auto clearText = CryptographicBuffer::ConvertBinaryToString(BinaryStringEncoding::Utf16LE, clearBuffer);
 
-				wstring vals(clearText.c_str());
-				size_t pos = vals.find(L",");
+					wstring vals(clearText.c_str());
+					size_t pos = vals.find(L",");
 
-				if (pos != wstring::npos)
-				{
-					hstring accessToken(vals.substr(0, pos).c_str());
-					hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
-					DateTime expirationTime;
+					if (pos != wstring::npos)
+					{
+						hstring accessToken(vals.substr(0, pos).c_str());
+						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
+						DateTime expirationTime;
 
-					hstring msg(L"Access Token: " + accessToken + L"\n");
-					OutputDebugString(msg.c_str());
+						hstring msg(L"Access Token: " + accessToken + L"\n");
+						OutputDebugString(msg.c_str());
 
-					expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-					FacebookSDK::FacebookAccessTokenData cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
-					result = make<FacebookResult>(cachedData);
+						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
+						FacebookSDK::FacebookAccessTokenData cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+						result = make<FacebookResult>(cachedData);
+					}
 				}
 			}
 			catch (...) {
@@ -494,8 +498,6 @@ namespace winrt::FacebookSDK::implementation
 	fire_and_forget FacebookSession::TrySaveTokenData() {
 		if (LoggedIn())
 		{
-			co_await winrt::resume_background();
-
 			wchar_t buffer[INT64_STRING_BUFSIZE];
 			DataProtectionProvider provider(L"LOCAL=user");
 			_i64tow_s(
@@ -521,8 +523,6 @@ namespace winrt::FacebookSDK::implementation
 		hstring msg(msgStream.str().c_str());
 		OutputDebugString(msg.c_str());
 #endif
-		co_await winrt::resume_background();
-
 		try {
 			auto item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
 			item.DeleteAsync();
@@ -671,7 +671,8 @@ namespace winrt::FacebookSDK::implementation
 			_asyncResult = nullptr;
 			auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
 			auto function = [](FacebookSession *self, HANDLE event, PropertySet parameters) -> IAsyncAction {
-				self->_asyncResult = co_await self->ShowLoginDialogAsync(parameters);
+				auto result = co_await self->ShowLoginDialogAsync(parameters);
+				self->_asyncResult = result;
 
 				SetEvent(event);
 			};
