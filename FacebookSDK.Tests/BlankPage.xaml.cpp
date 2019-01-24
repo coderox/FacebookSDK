@@ -73,7 +73,14 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 
 	create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::WebView)).then([=](FacebookSDK::FacebookResult^ result) {
 		auto session = FacebookSDK::FacebookSession::ActiveSession;
-		OutputDebugString(session->AccessTokenData->AccessToken->Data());
-
+		if (session->LoggedIn) {
+			OutputDebugString(session->AccessTokenData->AccessToken->Data());
+		}
+		else {
+			if (!result->Succeeded && result->ErrorInfo != nullptr) {
+				auto message = result->ErrorInfo->Message;
+				OutputDebugString(message->Data());
+			}
+		}
 	});
 }
