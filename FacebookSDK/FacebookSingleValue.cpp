@@ -97,7 +97,7 @@ namespace winrt::FacebookSDK::implementation
 			_parameters = PropertySet();
 		}
 		
-		auto fields = _parameters.Lookup(L"fields");
+		//auto fields = _parameters.Lookup(L"fields");
 
 		hstring responseString;
 		switch (httpMethod)

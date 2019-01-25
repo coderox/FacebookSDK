@@ -8,15 +8,15 @@ namespace FacebookSDK_Tests
 	TEST_CLASS(GraphUriBuilder_Tests)
 	{
 	public:
-		//TEST_METHOD(TestCreateInstance)
-		//{
-		//	// arrange
-		//	auto instance = ref new FacebookSDK::GraphUriBuilder(L"http://www.coderox.se/");
+		TEST_METHOD(TestCreateInstance)
+		{
+			// arrange
+			auto instance = ref new FacebookSDK::GraphUriBuilder(L"http://www.coderox.se/");
 
-		//	// act
+			// act
 
-		//	// assert
-		//	Assert::IsNotNull(instance);
-		//}
+			// assert
+			Assert::IsNotNull(instance);
+		}
 	};
 }

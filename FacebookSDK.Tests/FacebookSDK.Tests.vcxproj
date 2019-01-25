@@ -235,6 +235,7 @@
     <ClCompile Include="FacebookMediaStream.Tests.cpp" />
     <ClCompile Include="FacebookResult.Tests.cpp" />
     <ClCompile Include="FacebookSingleValue.Tests.cpp" />
+    <ClCompile Include="Graph.Tests.cpp" />
     <ClCompile Include="GraphUriBuilder.Tests.cpp" />
     <ClCompile Include="HlsColor.Tests.cpp" />
     <ClCompile Include="MockHttpClient.cpp" />

@@ -149,7 +149,13 @@ namespace winrt::FacebookSDK::implementation
 
 	void FacebookDialog::DeleteCookies()
 	{
-		throw hresult_not_implemented();
+		HttpBaseProtocolFilter filter;
+		HttpCookieManager cookieManager(filter.CookieManager());
+		HttpCookieCollection cookiesJar(cookieManager.GetCookies(Uri(FacebookDialog::GetFBServerUrl())));
+		for (auto const& cookie: cookiesJar)
+		{
+			cookieManager.DeleteCookie(cookie);
+		}
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowDialog(

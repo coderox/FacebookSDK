@@ -5,6 +5,7 @@
 
 using namespace winrt;
 using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Media;
@@ -20,8 +21,8 @@ namespace winrt::FacebookSDK::implementation
 	DependencyProperty FacebookProfilePictureControl::_userIdProperty = DependencyProperty::Register(
 		L"UserId",
 		TypeName(xaml_typename<hstring>()),
-		TypeName(xaml_typename<FacebookProfilePictureControl>()),
-		PropertyMetadata(nullptr, PropertyChangedCallback(&FacebookProfilePictureControl::UserIdPropertyChanged))
+		TypeName(xaml_typename<FacebookSDK::FacebookProfilePictureControl>()),
+		PropertyMetadata(box_value(hstring(L"")), PropertyChangedCallback(&FacebookProfilePictureControl::UserIdPropertyChanged))
 	);
 
 	FacebookProfilePictureControl::FacebookProfilePictureControl()
@@ -73,16 +74,16 @@ namespace winrt::FacebookSDK::implementation
 		}
 
 		auto result = co_await GetProfilePictureInfoAsync(Width(), height);
-		Graph::FBProfilePicture info{ nullptr };
 		if (result != nullptr && result.Succeeded()) {
-			info = result.Object().as<Graph::FBProfilePicture>();
+			Graph::FBProfilePictureData info{ nullptr };
+			info = result.Object().as<FacebookSDK::Graph::FBProfilePictureData>();
 			auto coreWindow = CoreApplication::MainView().CoreWindow();
 			if (coreWindow) {
 				coreWindow.Dispatcher().RunAsync(CoreDispatcherPriority::Low,
 					DispatchedHandler([info, this]() {
-					if (info) {
+					if (info && info.Data() && !info.Data().Url().empty()) {
 						profilePic().Stretch(Stretch::Uniform);
-						profilePic().Source(BitmapImage(Uri(info.Url())));
+						profilePic().Source(BitmapImage(Uri(info.Data().Url())));
 					}
 				}));
 			}
@@ -114,6 +115,42 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookProfilePictureControl::GetProfilePictureInfoAsync(int width, int height) {
+		PropertySet parameters;
+		wchar_t whBuffer[INT_STRING_LENGTH];
+		FacebookSDK::FacebookResult result;
 
+		parameters.Insert(L"redirect", box_value(L"false"));
+
+		if (width > -1) {
+			if (!_itow_s(width, whBuffer, INT_STRING_LENGTH, 10))
+			{
+				hstring value(whBuffer);
+				parameters.Insert(L"width", box_value(value));
+			}
+		}
+		if (height > -1) {
+			if (!_itow_s(height, whBuffer, INT_STRING_LENGTH, 10))
+			{
+				hstring value(whBuffer);
+				parameters.Insert(L"height", box_value(value));
+			}
+		}
+
+		if (!UserId().empty()) {
+			hstring path(UserId() + L"/picture");
+
+			auto objectFactory = JsonClassFactory([](hstring jsonText) -> IInspectable
+			{
+				return Graph::FBProfilePictureData::FromJson(jsonText);
+			});
+
+			FacebookSDK::FacebookSingleValue value = make<FacebookSingleValue>(
+				path,
+				parameters,
+				objectFactory);
+			result = co_await value.GetAsync();
+		}
+
+		co_return result;
 	}
 }

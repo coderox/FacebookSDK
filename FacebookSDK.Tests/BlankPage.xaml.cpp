@@ -71,16 +71,26 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 {
 	auto session = FacebookSDK::FacebookSession::ActiveSession;
 
-	create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::WebView)).then([=](FacebookSDK::FacebookResult^ result) {
-		auto session = FacebookSDK::FacebookSession::ActiveSession;
-		if (session->LoggedIn) {
-			OutputDebugString(session->AccessTokenData->AccessToken->Data());
-		}
-		else {
-			if (!result->Succeeded && result->ErrorInfo != nullptr) {
-				auto message = result->ErrorInfo->Message;
-				OutputDebugString(message->Data());
+	if (session->LoggedIn) {
+		create_task(session->LogoutAsync());
+		loginButton->Content = ref new Platform::String(L"Login");
+	}
+	else {
+		create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::WebView)).then([&](FacebookSDK::FacebookResult^ result) {
+			auto session = FacebookSDK::FacebookSession::ActiveSession;
+			if (session->LoggedIn) {
+				loginButton->Content = ref new Platform::String(L"Logout");
+				OutputDebugString(session->AccessTokenData->AccessToken->Data());
+				auto user = session->User;
+				Platform::String^ userId = user->Id;
+				profilePicture->UserId = userId;
 			}
-		}
-	});
+			else {
+				if (!result->Succeeded && result->ErrorInfo != nullptr) {
+					auto message = result->ErrorInfo->Message;
+					OutputDebugString(message->Data());
+				}
+			}
+		});
+	}
 }

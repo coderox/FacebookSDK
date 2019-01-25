@@ -126,6 +126,10 @@ namespace winrt::FacebookSDK::Graph::implementation
     }
 #>
                 }
+
+				if(!found){
+					result = nullptr;
+				}
             }
         }
         return result.as<IInspectable>();

@@ -207,7 +207,7 @@ namespace winrt::FacebookSDK::implementation
 		}
 		else
 		{
-			return ConsumePagedResponse(responseString.c_str());
+			co_return ConsumePagedResponse(responseString.c_str());
 		}
 	}
 }
