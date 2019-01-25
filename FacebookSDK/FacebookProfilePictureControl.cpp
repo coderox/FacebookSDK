@@ -14,7 +14,7 @@ using namespace Windows::UI::Core;
 using namespace Windows::ApplicationModel::Core;
 
 #define INT_STRING_LENGTH 16
-#define PROFILE_PICTURE_SILLHOUETTE_IMAGE L"ms-appx://FacebookSDK/Images/fb_blank_profile_portrait.png"
+#define PROFILE_PICTURE_SILLHOUETTE_IMAGE L"ms-appx:///FacebookSDK/Images/fb_blank_profile_portrait.png"
 
 namespace winrt::FacebookSDK::implementation
 {
