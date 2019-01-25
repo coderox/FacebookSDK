@@ -125,21 +125,21 @@ namespace winrt::FacebookSDK::implementation
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_FeedNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
-		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildFeedDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowRequestsDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_RequestNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
-		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildRequestsDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookDialog::ShowSendDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FacebookDialog::dialogWebView_SendNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FacebookDialog::dialogWebView_NavCompleted);
-		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
+		return ShowDialog(DialogUriBuilder(this, &FacebookDialog::BuildSendDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
 	hstring FacebookDialog::GetFBServerUrl()
