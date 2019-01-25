@@ -95,3 +95,48 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 		});
 	}
 }
+
+void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
+{
+	auto session = FacebookSDK::FacebookSession::ActiveSession;
+
+	if (session->LoggedIn) {
+		PropertySet^ params = ref new PropertySet();
+		params->Insert(L"caption", L"I love Brussels Sprouts!");
+		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
+		params->Insert(L"description", L"Om Nom Nom!");
+
+		create_task(session->ShowFeedDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
+			OutputDebugString(L"Showed 'Feed' dialog.\n");
+		});
+	}
+}
+
+void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
+{
+	auto session = FacebookSDK::FacebookSession::ActiveSession;
+
+	if (session->LoggedIn) {
+		PropertySet^ params = ref new PropertySet();
+		params->Insert(L"title", L"I love Brussels Sprouts!");
+		params->Insert(L"message", L"Om Nom Nom!");
+
+		create_task(session->ShowRequestsDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
+			OutputDebugString(L"Showed 'Requests' dialog.\n");
+		});
+	}
+}
+
+void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
+{
+	auto session = FacebookSDK::FacebookSession::ActiveSession;
+
+	if (session->LoggedIn) {
+		PropertySet^ params = ref new PropertySet();
+		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
+		
+		create_task(session->ShowSendDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
+			OutputDebugString(L"Showed 'Send' dialog.\n");
+		});
+	}
+}

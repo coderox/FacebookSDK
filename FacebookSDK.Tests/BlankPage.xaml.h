@@ -22,5 +22,8 @@ namespace FacebookSDK_Tests
 		void SetSessionAppIds();
 		FacebookSDK::FacebookPermissions^ BuildPermissions();
 		void OnLoginClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnFeedClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnRequestsClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnSendClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

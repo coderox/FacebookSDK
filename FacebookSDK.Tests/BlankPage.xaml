@@ -23,7 +23,14 @@
               Path=ActualWidth,
               Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
-        <Button Width="200" Height="200" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
+        
+        <StackPanel Orientation="Horizontal">
+            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
+            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
+            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
+            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
+        </StackPanel>
+        
         <facebook:FacebookProfilePictureControl x:Name="profilePicture" HorizontalAlignment="Right" Width="100" Height="100"/>
 
     </Grid>
