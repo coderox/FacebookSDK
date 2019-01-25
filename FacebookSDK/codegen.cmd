@@ -9,6 +9,22 @@ REM Verify that we can find TextTransform
 where /q TextTransform.exe
 if "%ErrorLevel%" == "0" goto :Found
 
+REM Add TextTransform to our path based on the default location for VS2017 Community Edition
+set _TT=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\IDE\
+set PATH=%_TT%;%PATH%;
+
+REM Verify that we can find TextTransform
+where /q TextTransform.exe
+if "%ErrorLevel%" == "0" goto :Found
+
+REM Add TextTransform to our path based on the default location for VS2017 Professional Edition
+set _TT=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Common7\IDE\
+set PATH=%_TT%;%PATH%;
+
+REM Verify that we can find TextTransform
+where /q TextTransform.exe
+if "%ErrorLevel%" == "0" goto :Found
+
 REM Add TextTransform to our path based on the default location for VS2017
 set _TT=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\IDE\
 set PATH=%_TT%;%PATH%;
@@ -103,6 +119,6 @@ REM returns 1 if should regen, 0 otherwise
 setlocal
 set CurrentGeneratedFile=%1
 set CurrentTemplateFile=%2
-set CompareTool="..\..\build\CompareFileDates.exe"
+set CompareTool="..\build\CompareFileDates.exe"
 %CompareTool% "%CD%\Generated\%CurrentGeneratedFile%" "%CD%\%CurrentTemplateFile%"
 if %errorlevel% EQU 1 exit /b 1 else exit /b 0
