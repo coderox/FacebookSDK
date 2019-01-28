@@ -13,65 +13,72 @@ namespace winrt::FacebookSDK::implementation
 
 	FacebookSDK::FacebookPermissions FacebookLoginButton::Permissions()
 	{
-		throw hresult_not_implemented();
+		return _permissions;
 	}
 
 	void FacebookLoginButton::Permissions(FacebookSDK::FacebookPermissions const& value)
 	{
-		throw hresult_not_implemented();
+		_permissions = value;
 	}
 
 	void FacebookLoginButton::InitWithPermissions(FacebookSDK::FacebookPermissions const& permissions)
 	{
-		throw hresult_not_implemented();
+		_permissions = permissions;
 	}
 
 	event_token FacebookLoginButton::FacebookLoginError(FacebookSDK::FacebookLoginErrorHandler const& handler)
 	{
-		throw hresult_not_implemented();
+		return _facebookLoginError.add(handler);
 	}
 
 	void FacebookLoginButton::FacebookLoginError(event_token const& token) noexcept
 	{
-		throw hresult_not_implemented();
+		_facebookLoginError.remove(token);
 	}
 
 	event_token FacebookLoginButton::FetchedUserInfo(FacebookSDK::FetchedUserInfoHandler const& handler)
 	{
-		throw hresult_not_implemented();
+		return _fetchedUserInfo.add(handler);
 	}
 
 	void FacebookLoginButton::FetchedUserInfo(event_token const& token) noexcept
 	{
-		throw hresult_not_implemented();
+		_fetchedUserInfo.remove(token);
 	}
 
 	event_token FacebookLoginButton::ShowingLoggedInUser(FacebookSDK::ShowingLoggedInUserHandler const& handler)
 	{
-		throw hresult_not_implemented();
+		return _showingLoggedInUser.add(handler);
 	}
 
 	void FacebookLoginButton::ShowingLoggedInUser(event_token const& token) noexcept
 	{
-		throw hresult_not_implemented();
+		_showingLoggedInUser.remove(token);
 	}
 
 	event_token FacebookLoginButton::ShowingLoggedOutUser(FacebookSDK::ShowingLoggedOutUserHandler const& handler)
 	{
-		throw hresult_not_implemented();
+		return _showingLoggedOutUser.add(handler);
 	}
 
 	void FacebookLoginButton::ShowingLoggedOutUser(event_token const& token) noexcept
 	{
-		throw hresult_not_implemented();
+		_showingLoggedOutUser.remove(token);
 	}
 
-	fire_and_forget FacebookLoginButton::OnClick(IInspectable const& sender, RoutedEventArgs const& e) {
-		co_await winrt::resume_background();
-		co_return;
+	fire_and_forget FacebookLoginButton::OnClick(IInspectable const& sender, RoutedEventArgs const& e)
+	{
+		auto session = FacebookSession::ActiveSession();
+
+		if (!session.LoggedIn()) {
+			auto result = co_await session.LoginAsync(_permissions);
+			if (result.Succeeded()) {
+				auto user = result.Object().try_as<Graph::FBUser>();
+			}
+		}
 	}
 	
 	hstring FacebookLoginButton::GetPermissions() {
-		throw hresult_not_implemented();
+		return _permissions != nullptr ? _permissions.ToString() : L"";
 	}
 }

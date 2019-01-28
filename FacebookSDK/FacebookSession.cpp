@@ -22,6 +22,7 @@ using namespace std;
 using namespace winrt;
 using namespace concurrency;
 using namespace Windows::Foundation;
+using namespace Windows::ApplicationModel; 
 using namespace Windows::ApplicationModel::Activation;
 using namespace Windows::ApplicationModel::Core;
 using namespace Windows::Data::Json;
@@ -41,6 +42,7 @@ using namespace Windows::System;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
+
 
 #define INT64_STRING_BUFSIZE 65
 extern const wchar_t* ErrorObjectJson;
@@ -248,8 +250,6 @@ namespace winrt::FacebookSDK::implementation
 			permissions = make<FacebookPermissions>();
 		}
 
-		co_await winrt::resume_background();
-
 		PropertySet parameters;
 		parameters.Insert(ScopeKey, box_value(permissions.ToString()));
 
@@ -276,7 +276,7 @@ namespace winrt::FacebookSDK::implementation
 			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
 			if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr && _asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
 				_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
-				if (_asyncResult == nullptr) {
+				if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr)) {
 					_asyncResult = co_await TryLoginViaWebAuthBrokerAsync(parameters);
 				}
 			}
@@ -355,7 +355,7 @@ namespace winrt::FacebookSDK::implementation
 			}
 		}
 
-		co_return FBResultFromTokenRequestResult(result);
+		co_return FacebookResultFromTokenRequestResult(result);
 	}
 
 	Uri FacebookSession::BuildLoginUri(PropertySet parameters)
@@ -793,38 +793,167 @@ namespace winrt::FacebookSDK::implementation
 
 #if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 	hstring FacebookSession::GetWebAccountProviderRedirectUriString() {
-		throw hresult_not_implemented();
+		Package package = Package::Current();
+		PackageId packageId = package.Id();
+		hstring phoneAppId = packageId.ProductId();
+
+		return L"msft-" + phoneAppId + L"://login_success";
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckWebAccountProviderForExistingTokenAsync(
-		FacebookSDK::FacebookPermissions Permissions
+		FacebookSDK::FacebookPermissions permissions
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		if (LoggedIn())
+		{
+			co_return make<FacebookResult>(AccessTokenData());
+		}
+		else
+		{
+			auto provider = co_await WebAuthenticationCoreManager::FindAccountProviderAsync(FBAccountProvider);
+			if (provider != nullptr) {
+				WebTokenRequest request(provider, permissions.ToString(), FacebookAppId());
+				request.Properties().Insert(RedirectUriKey, GetWebAccountProviderRedirectUriString());
+				auto requestResult = co_await WebAuthenticationCoreManager::GetTokenSilentlyAsync(request);
+
+				if (requestResult && requestResult.ResponseStatus() == WebTokenRequestStatus::UserInteractionRequired)
+				{
+					result = co_await CallWebAccountProviderOnUiThreadAsync(permissions);
+				}
+				else {
+					result = FacebookResultFromTokenRequestResult(requestResult);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::TryLoginViaWebAccountProviderAsync(
-		FacebookSDK::FacebookPermissions Permissions
+		FacebookSDK::FacebookPermissions permissions
 	) {
-		throw hresult_not_implemented();
+		return CheckWebAccountProviderForExistingTokenAsync(permissions);
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CallWebAccountProviderOnUiThreadAsync(
-		FacebookSDK::FacebookPermissions Permissions
+		FacebookSDK::FacebookPermissions permissions
 	) {
-		throw hresult_not_implemented();
+		_asyncResult = nullptr;
+		auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
+		auto function = [](FacebookSession *self, HANDLE event, FacebookSDK::FacebookPermissions const& permissions) -> IAsyncAction {
+			try {
+				auto provider = co_await WebAuthenticationCoreManager::FindAccountProviderAsync(FBAccountProvider);
+				WebTokenRequestResult result = nullptr;
+				if (provider) {
+					WebTokenRequest request(provider, permissions.ToString(), self->FacebookAppId());
+					request.Properties().Insert(RedirectUriKey, self->GetWebAccountProviderRedirectUriString());
+					result = co_await WebAuthenticationCoreManager::RequestTokenAsync(request);
+				}
+				self->_asyncResult = self->FacebookResultFromTokenRequestResult(result);
+			}
+			catch (...) {
+				throw hresult_invalid_argument(SDKMessageLoginFailed);
+			}
+			SetEvent(event);
+		};
+
+		CoreApplication::MainView().CoreWindow().Dispatcher().RunAsync(
+			CoreDispatcherPriority::Normal,
+			std::bind(function, this, asyncEvent, permissions));
+
+		co_await resume_on_signal(asyncEvent);
+		
+		co_return this->_asyncResult;
 	}
 
 	FacebookSDK::FacebookResult FacebookSession::ExtractAccessTokenDataFromResponseData(
-		Windows::Foundation::Collections::IVectorView
-		<Windows::Security::Authentication::Web::Core::WebTokenResponse> ResponseData
+		IVectorView<WebTokenResponse> responseData
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+		for (auto const& response : responseData) {
+			// Calculate a time 90 minutes from now.  This is the *earliest* time
+			// at which our token will expire, so to be conservative we'll assume
+			// that's when it expires.  The token broker doesn't expose the
+			// actual expiration time, so this is the best we can do.
+			//
+			Calendar cal;
+			DateTime now = cal.GetDateTime();
+			long long minimumExpiryInTicks = now.time_since_epoch().count() + _90_MINUTES_IN_TICKS;
+			DateTime expiration = winrt::clock::from_time_t(minimumExpiryInTicks);
+			FacebookAccessTokenData token(response.Token(), expiration);
+			result = make<FacebookResult>(token);
+
+#ifdef _DEBUG
+			hstring msg(L"Token is: " + response.Token() + L"\n");
+			OutputDebugString(msg.c_str());
+
+			for (auto const& item : response.Properties()) {
+				msg = L"Found pair (" + item.Key() + L", " + item.Value() + L")\n";
+				OutputDebugString(msg.c_str());
+			}
+
+			msg = L"User ID: " + response.WebAccount().Id() + L"\n";
+			OutputDebugString(msg.c_str());
+
+			msg = L"User Name: " + response.WebAccount().UserName() + L"\n";
+			OutputDebugString(msg.c_str());
+
+			for (auto const& item : response.WebAccount().Properties()) {
+				msg = L"Found pair (" + item.Key() + L", " + item.Value() + L")\n";
+				OutputDebugString(msg.c_str());
+			}
+#endif // _DEBUG
+			break;
+		}
+
+		return result;
 	}
 
-	FacebookSDK::FacebookResult FacebookSession::FBResultFromTokenRequestResult(
-		Windows::Security::Authentication::Web::Core::WebTokenRequestResult RequestResult
+	FacebookSDK::FacebookResult FacebookSession::FacebookResultFromTokenRequestResult(
+		WebTokenRequestResult requestResult
 	) {
-		throw hresult_not_implemented();
+		FacebookSDK::FacebookResult result{ nullptr };
+
+		if (requestResult != nullptr)
+		{
+			WebTokenRequestStatus status = requestResult.ResponseStatus();
+			bool expectedError = false;
+
+			// TODO: Do we need to handle any of the other status codes here in any
+			// way besides just returning null?
+			switch (status)
+			{
+			case WebTokenRequestStatus::Success:
+				result = ExtractAccessTokenDataFromResponseData(requestResult.ResponseData());
+				break;
+
+			case WebTokenRequestStatus::UserCancel:
+			case WebTokenRequestStatus::UserInteractionRequired:
+			case WebTokenRequestStatus::AccountProviderNotAvailable:
+			case WebTokenRequestStatus::AccountSwitch:
+			case WebTokenRequestStatus::ProviderError:
+				expectedError = true;
+			default:
+#ifdef _DEBUG
+				if (!expectedError)
+				{
+					wchar_t buf[100];
+					_itow_s((int)status, buf, 100, 10);
+					hstring msg = L"Unexpected status result: " + hstring(buf) + L"\n";
+					OutputDebugString(msg.c_str());
+				}
+#endif
+				result = make<FacebookResult>(FacebookError((int)ErrorCode::ErrorCodeWebTokenRequestStatus, L"WebTokenRequestStatus Error", WebTokenRequestStatusToString(status)));
+				break;
+			}
+		}
+		else
+		{
+			// We don't have a provider
+			result = make<FacebookResult>(FacebookError((int)ErrorCode::ErrorCodeWebAccountProviderNotFound, L"WebAccountProvider Error", L"No appropriate WebAccountProvider was found"));
+		}
+
+		return result;
 	}
 #endif
 

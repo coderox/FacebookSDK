@@ -23,6 +23,8 @@
 #include "winrt/Windows.Security.Authentication.Web.Core.h"
 #include "winrt/Windows.ApplicationModel.Activation.h"
 #include "winrt/Windows.ApplicationModel.Core.h"
+#include "winrt/Windows.Security.Authentication.Web.Core.h"
+#include "winrt/Windows.Security.Credentials.h"
 
 #include "FacebookConstants.h"
 #include "FacebookLoginButton.h"

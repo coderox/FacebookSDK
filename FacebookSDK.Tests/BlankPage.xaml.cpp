@@ -49,7 +49,7 @@ BlankPage::BlankPage()
 
 	//auto likes = ref new FacebookSDK::FacebookPaginatedArray(graphPath, nullptr, fact);
 	//auto result = concurrency::create_task(likes->FirstAsync()).get();
-	
+	SetSessionAppIds();
 }
 
 void BlankPage::SetSessionAppIds() {
@@ -76,7 +76,6 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 		loginButton->Content = ref new Platform::String(L"Login");
 	}
 	else {
-		SetSessionAppIds();
 		create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::WebView)).then([&](FacebookSDK::FacebookResult^ result) {
 			auto session = FacebookSDK::FacebookSession::ActiveSession;
 			if (session->LoggedIn) {

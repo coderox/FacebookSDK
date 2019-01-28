@@ -34,7 +34,11 @@ namespace winrt::FacebookSDK::implementation
 
 	private:
 		winrt::hstring GetPermissions();
-				
+
+		winrt::event<FacebookLoginErrorHandler> _facebookLoginError;
+		winrt::event<FetchedUserInfoHandler> _fetchedUserInfo;
+		winrt::event<ShowingLoggedInUserHandler> _showingLoggedInUser;
+		winrt::event<ShowingLoggedOutUserHandler> _showingLoggedOutUser;
 		FacebookSDK::FacebookPermissions _permissions{ nullptr };
     };
 }
