@@ -25,3 +25,6 @@
 #include "winrt/Windows.ApplicationModel.Core.h"
 
 #include "FacebookConstants.h"
+#include "FacebookLoginButton.h"
+#include "ScaleConverter.h"
+#include "ColorLuminosityConverter.h"

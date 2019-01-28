@@ -73,6 +73,11 @@
     <ClCompile Include="FacebookFeedRequest.cpp" />
     <ClCompile Include="FacebookPaginatedArray.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="FacebookProfilePictureControl.cpp" />
+    <ClCompile Include="FacebookSendRequest.cpp" />
+    <ClCompile Include="FacebookLoginButton.cpp">
+      <Filter>Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -132,6 +137,11 @@
     <ClInclude Include="FacebookFeedRequest.h" />
     <ClInclude Include="FacebookPaginatedArray.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="FacebookProfilePictureControl.h" />
+    <ClInclude Include="FacebookSendRequest.h" />
+    <ClInclude Include="FacebookLoginButton.h">
+      <Filter>Controls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -311,6 +321,10 @@
     <Midl Include="FacebookFeedRequest.idl" />
     <Midl Include="FacebookPaginatedArray.idl" />
     <Midl Include="FacebookSendRequest.idl" />
+    <Midl Include="FacebookProfilePictureControl.idl" />
+    <Midl Include="FacebookLoginButton.idl">
+      <Filter>Controls</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -355,6 +369,7 @@
     <Page Include="FacebookProfilePictureControl.xaml">
       <Filter>Controls</Filter>
     </Page>
+    <Page Include="Themes\Generic.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\fb_blank_profile_portrait.png">

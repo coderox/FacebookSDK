@@ -165,6 +165,7 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookLoginButton.h" />
     <ClInclude Include="FacebookMediaObject.h">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -266,6 +267,7 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="FacebookLoginButton.cpp" />
     <ClCompile Include="FacebookMediaObject.cpp">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -356,6 +358,7 @@ call codegen.cmd</Command>
     <Midl Include="FacebookFeedRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="FacebookLoginButton.idl" />
     <Midl Include="FacebookMediaObject.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -477,6 +480,9 @@ call codegen.cmd</Command>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FacebookProfilePictureControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Styles.xaml">
