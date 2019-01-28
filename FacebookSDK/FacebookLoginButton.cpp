@@ -74,6 +74,7 @@ namespace winrt::FacebookSDK::implementation
 			auto result = co_await session.LoginAsync(_permissions);
 			if (result.Succeeded()) {
 				auto user = result.Object().try_as<Graph::FBUser>();
+				_fetchedUserInfo(*this, user);
 			}
 		}
 	}

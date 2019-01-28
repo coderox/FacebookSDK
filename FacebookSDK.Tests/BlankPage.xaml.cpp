@@ -139,3 +139,8 @@ void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
 		});
 	}
 }
+
+void FacebookSDK_Tests::BlankPage::OnUserInfoFetched(FacebookSDK::FacebookLoginButton^ sender, FacebookSDK::Graph::FBUser^ userInfo)
+{
+	profilePicture->UserId = userInfo->Id;
+}
