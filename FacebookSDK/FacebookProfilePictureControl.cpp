@@ -73,7 +73,7 @@ namespace winrt::FacebookSDK::implementation
 			height = (int)Width();
 		}
 
-		auto result = co_await GetProfilePictureInfoAsync(Width(), height);
+		auto result = co_await GetProfilePictureInfoAsync((int)Width(), height);
 		if (result != nullptr && result.Succeeded()) {
 			Graph::FBProfilePictureData info{ nullptr };
 			info = result.Object().as<FacebookSDK::Graph::FBProfilePictureData>();

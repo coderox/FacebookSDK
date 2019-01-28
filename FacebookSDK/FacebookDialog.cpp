@@ -327,7 +327,7 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::dialogWebView_LoginNavStarting(
-		Windows::UI::Xaml::Controls::WebView const& sender,
+		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
 		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
@@ -358,7 +358,7 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::dialogWebView_FeedNavStarting(
-		Windows::UI::Xaml::Controls::WebView const& sender,
+		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
 		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
@@ -402,7 +402,7 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::dialogWebView_RequestNavStarting(
-		Windows::UI::Xaml::Controls::WebView const sender,
+		Windows::UI::Xaml::Controls::WebView const /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
 		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
@@ -446,7 +446,7 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::dialogWebView_SendNavStarting(
-		Windows::UI::Xaml::Controls::WebView const& sender,
+		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
 		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
@@ -482,7 +482,7 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::dialogWebView_NavCompleted(
-		Windows::UI::Xaml::Controls::WebView const& sender,
+		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs const& e
 	) {
 		if (!e.IsSuccess())
@@ -495,8 +495,8 @@ namespace winrt::FacebookSDK::implementation
 	}
 
 	void FacebookDialog::CloseDialogButton_OnClick(
-		Windows::Foundation::IInspectable const& sender,
-		Windows::UI::Xaml::RoutedEventArgs const& e
+		Windows::Foundation::IInspectable const& /*sender*/,
+		Windows::UI::Xaml::RoutedEventArgs const& /*e*/
 	) {
 		UninitDialog();
 
@@ -525,7 +525,7 @@ namespace winrt::FacebookSDK::implementation
 
 	void FacebookDialog::OnSizeChanged(
 		Windows::UI::Core::CoreWindow const& sender,
-		Windows::UI::Core::WindowSizeChangedEventArgs const& args
+		Windows::UI::Core::WindowSizeChangedEventArgs const& /*args*/
 	) {
 		Height(sender.Bounds().Height);
 		Width(sender.Bounds().Width);
