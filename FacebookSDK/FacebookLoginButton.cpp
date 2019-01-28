@@ -7,8 +7,8 @@ using namespace Windows::Foundation;
 
 namespace winrt::FacebookSDK::implementation
 {
-	void FacebookLoginButton::OnApplyTemplate() const {
-
+	void FacebookLoginButton::OnApplyTemplate() {
+		Click({ this, &FacebookLoginButton::OnClick });
 	}
 
 	FacebookSDK::FacebookPermissions FacebookLoginButton::Permissions()
@@ -66,7 +66,9 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	void FacebookLoginButton::OnClick(IInspectable const& sender, RoutedEventArgs const& e) {
+	fire_and_forget FacebookLoginButton::OnClick(IInspectable const& sender, RoutedEventArgs const& e) {
+		co_await winrt::resume_background();
+		co_return;
 	}
 	
 	hstring FacebookLoginButton::GetPermissions() {

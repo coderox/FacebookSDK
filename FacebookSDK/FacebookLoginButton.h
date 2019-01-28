@@ -6,9 +6,12 @@ namespace winrt::FacebookSDK::implementation
 {
 	struct FacebookLoginButton : FacebookLoginButtonT<FacebookLoginButton>
     {
-		FacebookLoginButton() = default;
+		FacebookLoginButton() 
+		{
+			DefaultStyleKey(winrt::box_value(L"FacebookSDK.FacebookLoginButton"));
+		};
 
-		void OnApplyTemplate() const;
+		void OnApplyTemplate();
 
 		FacebookSDK::FacebookPermissions Permissions();
 		void Permissions(FacebookSDK::FacebookPermissions const& value);
@@ -27,7 +30,7 @@ namespace winrt::FacebookSDK::implementation
 		winrt::event_token ShowingLoggedOutUser(FacebookSDK::ShowingLoggedOutUserHandler const& handler);
 		void ShowingLoggedOutUser(winrt::event_token const& token) noexcept;
 
-		void OnClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+		winrt::fire_and_forget OnClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
 	private:
 		winrt::hstring GetPermissions();
