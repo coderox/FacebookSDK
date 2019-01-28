@@ -26,6 +26,7 @@
         
         <StackPanel Orientation="Horizontal">
             <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
+            <facebook:FacebookLoginButton/>
             <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
             <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
             <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>

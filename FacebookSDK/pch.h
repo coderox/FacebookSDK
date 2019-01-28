@@ -27,5 +27,10 @@
 #include "winrt/Windows.ApplicationModel.Store.h"
 #include "winrt/Windows.Services.Store.h"
 #include "winrt/Windows.System.UserProfile.h"
+#include "winrt/Windows.Security.Authentication.Web.Core.h"
+#include "winrt/Windows.Security.Credentials.h"
 
 #include "FacebookConstants.h"
+#include "FacebookLoginButton.h"
+#include "ScaleConverter.h"
+#include "ColorLuminosityConverter.h"

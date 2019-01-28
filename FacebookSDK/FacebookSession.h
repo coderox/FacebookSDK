@@ -81,7 +81,7 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> TryLoginViaWebAccountProviderAsync(FacebookSDK::FacebookPermissions Permissions);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> CallWebAccountProviderOnUiThreadAsync(FacebookSDK::FacebookPermissions Permissions);
 		FacebookSDK::FacebookResult ExtractAccessTokenDataFromResponseData(Windows::Foundation::Collections::IVectorView<Windows::Security::Authentication::Web::Core::WebTokenResponse> ResponseData);
-		FacebookSDK::FacebookResult FBResultFromTokenRequestResult(Windows::Security::Authentication::Web::Core::WebTokenRequestResult RequestResult);
+		FacebookSDK::FacebookResult FacebookResultFromTokenRequestResult(Windows::Security::Authentication::Web::Core::WebTokenRequestResult RequestResult);
 #endif
 
 		bool _loggedIn;
