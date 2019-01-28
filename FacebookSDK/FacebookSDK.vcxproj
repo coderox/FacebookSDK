@@ -185,6 +185,10 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FacebookAppEvents.h">
+      <DependentUpon>FacebookAppEvents.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FacebookSendRequest.h">
       <DependentUpon>FacebookSendRequest.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -289,6 +293,10 @@ call codegen.cmd</Command>
     <ClCompile Include="FacebookResult.cpp">
       <DependentUpon>FacebookResult.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="FacebookAppEvents.cpp">
+      <DependentUpon>FacebookAppEvents.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FacebookSendRequest.cpp">
       <DependentUpon>FacebookSendRequest.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -371,6 +379,9 @@ call codegen.cmd</Command>
     <Midl Include="FacebookProfilePictureControl.idl">
       <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="FacebookAppEvents.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="FacebookSendRequest.idl">
       <SubType>Designer</SubType>

@@ -73,6 +73,8 @@
     <ClCompile Include="FacebookFeedRequest.cpp" />
     <ClCompile Include="FacebookPaginatedArray.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="FacebookProfilePictureControl.cpp" />
+    <ClCompile Include="FacebookSendRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -132,6 +134,8 @@
     <ClInclude Include="FacebookFeedRequest.h" />
     <ClInclude Include="FacebookPaginatedArray.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="FacebookProfilePictureControl.h" />
+    <ClInclude Include="FacebookSendRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FacebookSDK.def" />
@@ -311,6 +315,8 @@
     <Midl Include="FacebookFeedRequest.idl" />
     <Midl Include="FacebookPaginatedArray.idl" />
     <Midl Include="FacebookSendRequest.idl" />
+    <Midl Include="FacebookProfilePictureControl.idl" />
+    <Midl Include="FacebookAppEvents.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">

@@ -23,5 +23,9 @@
 #include "winrt/Windows.Security.Authentication.Web.Core.h"
 #include "winrt/Windows.ApplicationModel.Activation.h"
 #include "winrt/Windows.ApplicationModel.Core.h"
+#include "winrt/Windows.ApplicationModel.Resources.h"
+#include "winrt/Windows.ApplicationModel.Store.h"
+#include "winrt/Windows.Services.Store.h"
+#include "winrt/Windows.System.UserProfile.h"
 
 #include "FacebookConstants.h"
