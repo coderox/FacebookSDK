@@ -16,7 +16,7 @@ using namespace Windows::Storage;
 using namespace Windows::System::UserProfile;
 using namespace Windows::System::Threading;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #define ALWAYS_LOG_INSTALLS
 #endif
 
@@ -98,7 +98,7 @@ namespace winrt::FacebookSDK::implementation
 		_useSimulator = value;
 	}
 
-	void FacebookAppEvents::ActiveApp()
+	void FacebookAppEvents::ActivateApp()
 	{
 		// Try to grab the application id from session.
 		auto session = FacebookSession::ActiveSession();
@@ -120,7 +120,7 @@ namespace winrt::FacebookSDK::implementation
 		}
 		catch (hresult_error ex)
 		{
-#if DEBUG
+#if _DEBUG
 			throw;
 #endif
 		}
@@ -134,8 +134,11 @@ namespace winrt::FacebookSDK::implementation
 		hstring lastPingKey(L"LastAttributionPing" + appId);
 		hstring lastResponseKey(L"LastInstallResponse" + appId);
 		ApplicationDataContainer settings = FacebookSession::DataContainer();
-		hstring pingTime = unbox_value<hstring>(settings.Values().Lookup(lastPingKey));
-
+		
+		hstring pingTime;
+		if (settings.Values().HasKey(lastPingKey)) {
+			pingTime = unbox_value<hstring>(settings.Values().Lookup(lastPingKey));
+		} 
 #ifndef ALWAYS_LOG_INSTALLS
 		if (pingTime.empty())
 #endif
@@ -147,7 +150,7 @@ namespace winrt::FacebookSDK::implementation
 			settings.Values().Insert(lastPingKey, PropertyValue::CreateString(to_hstring(universalTime)));
 			settings.Values().Insert(lastResponseKey, PropertyValue::CreateString(lastAttributionResponse));
 
-#ifdef DEBUG
+#ifdef _DEBUG
 			auto formatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"year-month-day hour:minute:second");
 			hstring msg(L"Mobile App Install Response: " + lastAttributionResponse + L"\n"
 				L"Mobile App Install Ping Time: " + formatter.Format(calendar.GetDateTime()) + L"\n");

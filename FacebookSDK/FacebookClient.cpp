@@ -121,7 +121,6 @@ namespace winrt::FacebookSDK::implementation
 		Uri uri = FacebookClient::PrepareRequestUri(path, modifiableParams);
 		hstring result;
 
-		co_await winrt::resume_background();
 		PropertySet streams = GetStreamsToUpload(modifiableParams);
 		if (streams) {
 			result = co_await FacebookClient::MultipartPostAsync(path, modifiableParams, streams);
@@ -189,10 +188,12 @@ namespace winrt::FacebookSDK::implementation
 		// Enumerate through all the parameters
 		for (auto const& current : parameters)
 		{
-			if (!streams) {
-				streams = PropertySet();
+			if (streams.try_as<FacebookMediaStream>() != nullptr) {
+				if (!streams) {
+					streams = PropertySet();
+				}
+				streams.Insert(current.Key(), current.Value());
 			}
-			streams.Insert(current.Key(), current.Value());
 		}
 
 		return streams;

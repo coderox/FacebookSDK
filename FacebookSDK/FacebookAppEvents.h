@@ -11,7 +11,7 @@ namespace winrt::FacebookSDK::implementation
 		static bool UseSimulator();
 		static void UseSimulator(bool value);
 
-		static void ActiveApp();
+		static void ActivateApp();
 
 	private:
 		/**

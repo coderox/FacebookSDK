@@ -4,7 +4,7 @@ namespace FacebookSDK
     runtimeclass FacebookAppEvents 
     {
         FacebookAppEvents();
-		static void ActiveApp();
+		static void ActivateApp();
 		static Boolean UseSimulator{ get; set; };
     }
 }

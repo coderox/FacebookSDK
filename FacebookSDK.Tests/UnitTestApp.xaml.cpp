@@ -71,6 +71,10 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 	Window::Current->Activate();
 
 	Microsoft::VisualStudio::TestPlatform::TestExecutor::WinRTCore::UnitTestClient::Run(e->Arguments);
+
+	auto session = FacebookSDK::FacebookSession::ActiveSession;
+	session->FacebookAppId = "719494811465102";
+	FacebookSDK::FacebookAppEvents::ActivateApp();
 }
 
 /// <summary>
