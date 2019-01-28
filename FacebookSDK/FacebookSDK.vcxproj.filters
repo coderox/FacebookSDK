@@ -17,10 +17,12 @@
     <Filter Include="Controls">
       <UniqueIdentifier>{3071b0ac-e1df-4e19-8816-694c36338302}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Themes">
+      <UniqueIdentifier>{2e1bb2b5-4031-433e-9f33-489a25a76e9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="FacebookError.cpp" />
     <ClCompile Include="FacebookResult.cpp" />
     <ClCompile Include="HlsColor.cpp" />
@@ -77,6 +79,10 @@
     <ClCompile Include="FacebookSendRequest.cpp" />
     <ClCompile Include="FacebookLoginButton.cpp">
       <Filter>Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="FacebookAppEvents.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,9 +148,9 @@
     <ClInclude Include="FacebookLoginButton.h">
       <Filter>Controls</Filter>
     </ClInclude>
+    <ClInclude Include="FacebookAppEvents.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FacebookSDK.def" />
     <None Include="packages.config" />
     <None Include="codegen.cmd" />
     <None Include="Graph.FBAppRequest.cpp.tt">
@@ -258,9 +264,9 @@
     <None Include="Graph.FBPaging.idl.tt">
       <Filter>Object Templates</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
+    <None Include="FacebookSDK.def">
+      <Filter>Generated Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="FacebookError.idl" />
@@ -325,6 +331,7 @@
     <Midl Include="FacebookLoginButton.idl">
       <Filter>Controls</Filter>
     </Midl>
+    <Midl Include="FacebookAppEvents.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -362,14 +369,21 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Styles.xaml" />
     <Page Include="FacebookDialog.xaml">
       <Filter>Controls</Filter>
     </Page>
     <Page Include="FacebookProfilePictureControl.xaml">
       <Filter>Controls</Filter>
     </Page>
-    <Page Include="Themes\Generic.xaml" />
+    <Page Include="FacebookLoginButton.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Filter>Themes</Filter>
+    </Page>
+    <Page Include="Themes\Styles.xaml">
+      <Filter>Themes</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\fb_blank_profile_portrait.png">

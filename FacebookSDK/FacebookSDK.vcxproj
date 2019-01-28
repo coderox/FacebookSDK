@@ -165,7 +165,9 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="FacebookLoginButton.h" />
+    <ClInclude Include="FacebookLoginButton.h">
+      <DependentUpon>FacebookLoginButton.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="FacebookMediaObject.h">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -271,7 +273,9 @@ call codegen.cmd</Command>
       <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="FacebookLoginButton.cpp" />
+    <ClCompile Include="FacebookLoginButton.cpp">
+      <DependentUpon>FacebookLoginButton.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="FacebookMediaObject.cpp">
       <DependentUpon>FacebookMediaObject.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -366,7 +370,9 @@ call codegen.cmd</Command>
     <Midl Include="FacebookFeedRequest.idl">
       <SubType>Designer</SubType>
     </Midl>
-    <Midl Include="FacebookLoginButton.idl" />
+    <Midl Include="FacebookLoginButton.idl">
+      <DependentUpon>FacebookLoginButton.xaml</DependentUpon>
+    </Midl>
     <Midl Include="FacebookMediaObject.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -469,11 +475,6 @@ call codegen.cmd</Command>
     <None Include="Utility.ttinclude" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="Graph.FBAppRequest.xml" />
     <Xml Include="Graph.FBCursors.xml" />
     <Xml Include="Graph.FBGroup.xml" />
@@ -488,6 +489,9 @@ call codegen.cmd</Command>
   </ItemGroup>
   <ItemGroup>
     <Page Include="FacebookDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FacebookLoginButton.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FacebookProfilePictureControl.xaml">
