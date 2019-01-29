@@ -38,7 +38,7 @@ namespace winrt::FacebookSDK::implementation
 	{
 		if (!HasNext())
 		{
-			co_return make<FacebookResult>(FacebookError(0, L"Invalid SDK call", L"No next page"));
+			co_return make<FacebookResult>(make<FacebookError>(0, L"Invalid SDK call", L"No next page"));
 		}
 
 		return GetPageAsync(_paging.Next().c_str());
@@ -48,7 +48,7 @@ namespace winrt::FacebookSDK::implementation
 	{
 		if (!HasPrevious())
 		{
-			co_return make<FacebookResult>(FacebookError(0, L"Invalid SDK call", L"No previous page"));
+			co_return make<FacebookResult>(make<FacebookError>(0, L"Invalid SDK call", L"No previous page"));
 		}
 
 		return GetPageAsync(_paging.Previous().c_str());
@@ -203,7 +203,7 @@ namespace winrt::FacebookSDK::implementation
 		hstring responseString = co_await HttpManager::Instance().GetTaskAsync(path, _parameters.GetView());
 		if (responseString.empty())
 		{
-			co_return make<FacebookResult>(FacebookError(0, L"HTTP request failed", L"unable to receive response"));
+			co_return make<FacebookResult>(make<FacebookError>(0, L"HTTP request failed", L"unable to receive response"));
 		}
 		else
 		{

@@ -256,7 +256,6 @@ namespace winrt::FacebookSDK::implementation
 		if (LoggedIn()) {
 			parameters.Insert(AuthTypeKey, box_value(Rerequest));
 		}
-
 		FacebookSDK::FacebookResult result{ nullptr };
 		switch (behavior)
 		{
@@ -274,6 +273,7 @@ namespace winrt::FacebookSDK::implementation
 
 		case SessionLoginBehavior::DefaultOrdering:
 			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
+
 			if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr && _asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
 				_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
 				if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr)) {
@@ -288,7 +288,7 @@ namespace winrt::FacebookSDK::implementation
 		default:
 			OutputDebugString(L"Invalid SessionLoginBehavior member!\n");
 			// TODO need a real error code
-			_asyncResult = make<FacebookResult>(FacebookError(0, L"Login Error", L"Invalid SessionLoginBehavior member"));
+			_asyncResult = make<FacebookResult>(make<FacebookError>(0, L"Login Error", L"Invalid SessionLoginBehavior member"));
 			break;
 		}
 
@@ -300,7 +300,7 @@ namespace winrt::FacebookSDK::implementation
 			AccessTokenData(nullptr);
 
 			if (finalResult == nullptr) {
-				finalResult = make<FacebookResult>(FacebookError(0, L"Unexpected error", L"Log in attempt failed"));
+				finalResult = make<FacebookResult>(make<FacebookError>(0, L"Unexpected error", L"Log in attempt failed"));
 				OutputDebugString(L"LoginAsync was about to return nullptr, created FacebookResult object to return instead");
 			}
 		}
@@ -381,7 +381,7 @@ namespace winrt::FacebookSDK::implementation
 
 		for (auto const& parameter : parameters) {
 			hstring key = parameter.Key();
-			hstring value = parameter.Value().as<IStringable>().ToString();
+			auto value = unbox_value<hstring>(parameter.Value());
 			if (!value.empty()) {
 				if (compare_ordinal(key.c_str(), ScopeKey) == 0) {
 					scope = value;
@@ -571,7 +571,7 @@ namespace winrt::FacebookSDK::implementation
 		{
 		case WebAuthenticationStatus::ErrorHttp:
 			//TODO: need a real error code
-			result = make<FacebookResult>(FacebookError(0,
+			result = make<FacebookResult>(make<FacebookError>(0,
 				L"Communication error",
 				L"An Http error occurred"));
 			break;
@@ -590,7 +590,7 @@ namespace winrt::FacebookSDK::implementation
 			}
 			break;
 		case WebAuthenticationStatus::UserCancel:
-			result = make<FacebookResult>(FacebookError(0,
+			result = make<FacebookResult>(make<FacebookError>(0,
 				L"User canceled",
 				L"The login operation was canceled"));
 			break;
@@ -719,7 +719,7 @@ namespace winrt::FacebookSDK::implementation
 		if (!IsRerequest(parameters)) {
 			auto oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
-				auto tokenData = oauthResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
+				auto tokenData = oauthResult.Object().try_as<FacebookSDK::FacebookAccessTokenData>();
 				if (tokenData != nullptr && !tokenData.IsExpired()) {
 					loginResult = make<FacebookResult>(tokenData);
 				}
@@ -772,7 +772,7 @@ namespace winrt::FacebookSDK::implementation
 				}
 			}
 			else {
-				loginResult = make<FacebookResult>(FacebookError(0, L"Restore Session Error", L"Could not find a valid access token"));
+				loginResult = make<FacebookResult>(make<FacebookError>(0, L"Restore Session Error", L"Could not find a valid access token"));
 			}
 		}
 		co_return loginResult;
@@ -795,8 +795,8 @@ namespace winrt::FacebookSDK::implementation
 	hstring FacebookSession::GetWebAccountProviderRedirectUriString() {
 		Package package = Package::Current();
 		PackageId packageId = package.Id();
-		hstring phoneAppId = packageId.ProductId();
-
+		//hstring phoneAppId = packageId.ProductId();
+		hstring phoneAppId = L"s-1-15-2-993894519-2096754445-998123955-3150536948-1224592709-2849448323-2973583169";
 		return L"msft-" + phoneAppId + L"://login_success";
 	}
 
@@ -946,14 +946,14 @@ namespace winrt::FacebookSDK::implementation
 					OutputDebugString(msg.c_str());
 				}
 #endif
-				result = make<FacebookResult>(FacebookError((int)ErrorCode::ErrorCodeWebTokenRequestStatus, L"WebTokenRequestStatus Error", WebTokenRequestStatusToString(status)));
+				result = make<FacebookResult>(make<FacebookError>((int)ErrorCode::ErrorCodeWebTokenRequestStatus, L"WebTokenRequestStatus Error", WebTokenRequestStatusToString(status)));
 				break;
 			}
 		}
 		else
 		{
 			// We don't have a provider
-			result = make<FacebookResult>(FacebookError((int)ErrorCode::ErrorCodeWebAccountProviderNotFound, L"WebAccountProvider Error", L"No appropriate WebAccountProvider was found"));
+			result = make<FacebookResult>(make<FacebookError>((int)ErrorCode::ErrorCodeWebAccountProviderNotFound, L"WebAccountProvider Error", L"No appropriate WebAccountProvider was found"));
 		}
 
 		return result;

@@ -151,7 +151,7 @@ namespace winrt::FacebookSDK::implementation
 			settings.Values().Insert(lastResponseKey, PropertyValue::CreateString(lastAttributionResponse));
 
 #ifdef _DEBUG
-			auto formatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"year-month-day hour:minute:second");
+			auto formatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"year month day hour minute second");
 			hstring msg(L"Mobile App Install Response: " + lastAttributionResponse + L"\n"
 				L"Mobile App Install Ping Time: " + formatter.Format(calendar.GetDateTime()) + L"\n");
 			OutputDebugString(msg.c_str());
