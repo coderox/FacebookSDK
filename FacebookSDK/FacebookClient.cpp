@@ -404,7 +404,7 @@ namespace winrt::FacebookSDK::implementation
 		HttpBaseProtocolFilter filter;
 		HttpClient httpClient(filter);
 		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
-
+		OutputDebugString(RequestUri.AbsoluteUri().c_str());
 		auto response = co_await httpClient.PostAsync(RequestUri, HttpStringContent(L""));
 		auto result = co_await TryReceiveHttpResponse(response);
 		co_return result;

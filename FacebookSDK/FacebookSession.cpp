@@ -550,8 +550,6 @@ namespace winrt::FacebookSDK::implementation
 			return Graph::FBPermission::FromJson(JsonText);
 		}));
 
-		co_await winrt::resume_background();
-
 		auto result = co_await permArr.FirstAsync();
 		if (result.Succeeded()) {
 			auto perms = result.Object().as<IVectorView<IInspectable>>();
