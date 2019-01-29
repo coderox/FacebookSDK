@@ -870,12 +870,16 @@ namespace winrt::FacebookSDK::implementation
 		IVectorView<WebTokenResponse> responseData
 	) {
 		FacebookSDK::FacebookResult result{ nullptr };
-		for (auto const& response : responseData) {
+
+		if (responseData.Size() > 0)
+		{
 			// Calculate a time 90 minutes from now.  This is the *earliest* time
 			// at which our token will expire, so to be conservative we'll assume
 			// that's when it expires.  The token broker doesn't expose the
 			// actual expiration time, so this is the best we can do.
 			//
+			auto response = responseData.GetAt(0);
+
 			Calendar cal;
 			DateTime now = cal.GetDateTime();
 			long long minimumExpiryInTicks = now.time_since_epoch().count() + _90_MINUTES_IN_TICKS;
@@ -903,7 +907,6 @@ namespace winrt::FacebookSDK::implementation
 				OutputDebugString(msg.c_str());
 			}
 #endif // _DEBUG
-			break;
 		}
 
 		return result;
