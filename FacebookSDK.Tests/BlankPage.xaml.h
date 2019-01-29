@@ -26,5 +26,6 @@ namespace FacebookSDK_Tests
 		void OnRequestsClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnSendClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnUserInfoFetched(FacebookSDK::FacebookLoginButton^ sender, FacebookSDK::Graph::FBUser^ userInfo);
+		void OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

@@ -71,6 +71,7 @@
     <ClInclude Include="UnitTestApp.xaml.h" />
     <ClInclude Include="BlankPage.xaml.h" />
     <ClInclude Include="MockHttpClient.h" />
+    <ClInclude Include="FBReturnObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />

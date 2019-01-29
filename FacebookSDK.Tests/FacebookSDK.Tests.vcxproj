@@ -197,6 +197,7 @@
     <ClInclude Include="BlankPage.xaml.h">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="FBReturnObject.h" />
     <ClInclude Include="MockHttpClient.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
