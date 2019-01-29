@@ -52,17 +52,6 @@ namespace winrt::FacebookSDK::Graph::implementation
 #>
     struct <#= className #> : <#= className #>T<<#= className #>>
     {
-        public:
-<#
-    if (bindable)
-    {
-#>
-        virtual event Windows::UI::Xaml::Data::PropertyChangedEventHandler^ 
-            PropertyChanged;
-
-<#
-    }
-#>
         static winrt::Windows::Foundation::IInspectable FromJson(
             winrt::hstring const& JsonText
         );

@@ -134,25 +134,5 @@ namespace winrt::FacebookSDK::Graph::implementation
         }
         return result.as<IInspectable>();
     }
-<# 
-    if (bindable)
-    {
-#>
-
-    void <#= className #>::NotifyPropertyChanged(
-        hstring const& prop
-        )
-    {
-        CoreApplication::MainView->CoreWindow->Dispatcher->RunAsync(
-            Windows::UI::Core::CoreDispatcherPriority::Normal, 
-            ref new Windows::UI::Core::DispatchedHandler([this, prop]()
-        {
-            PropertyChangedEventArgs^ args = ref new PropertyChangedEventArgs(prop);
-            PropertyChanged(this, args);
-        }));
-    }
-<#
-    }
-#>
 }
 <#@ include file="Utility.ttinclude" #>
