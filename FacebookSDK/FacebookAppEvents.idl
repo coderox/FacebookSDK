@@ -1,10 +1,10 @@
 namespace FacebookSDK
 {
 	[default_interface]
-    runtimeclass FacebookAppEvents 
-    {
-        FacebookAppEvents();
+	runtimeclass FacebookAppEvents
+	{
+		FacebookAppEvents();
 		static void ActivateApp();
 		static Boolean UseSimulator{ get; set; };
-    }
+	}
 }

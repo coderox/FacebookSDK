@@ -134,11 +134,11 @@ namespace winrt::FacebookSDK::implementation
 		hstring lastPingKey(L"LastAttributionPing" + appId);
 		hstring lastResponseKey(L"LastInstallResponse" + appId);
 		ApplicationDataContainer settings = FacebookSession::DataContainer();
-		
+
 		hstring pingTime;
 		if (settings.Values().HasKey(lastPingKey)) {
 			pingTime = unbox_value<hstring>(settings.Values().Lookup(lastPingKey));
-		} 
+		}
 #ifndef ALWAYS_LOG_INSTALLS
 		if (pingTime.empty())
 #endif
