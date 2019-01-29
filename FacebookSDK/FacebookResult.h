@@ -5,26 +5,26 @@
 
 namespace winrt::FacebookSDK::implementation
 {
-    struct FacebookResult : FacebookResultT<FacebookResult>
-    {
+	struct FacebookResult : FacebookResultT<FacebookResult>
+	{
 	public:
 		FacebookResult() { };
-        FacebookResult(Windows::Foundation::IInspectable const& Object);
+		FacebookResult(Windows::Foundation::IInspectable const& Object);
 
-        bool Succeeded();
-        Windows::Foundation::IInspectable Object();
-        FacebookSDK::FacebookError ErrorInfo();
+		bool Succeeded();
+		Windows::Foundation::IInspectable Object();
+		FacebookSDK::FacebookError ErrorInfo();
 	private:
 		~FacebookResult();
 
 		Windows::Foundation::IInspectable _object{ nullptr };
 		FacebookSDK::FacebookError _error{ nullptr };
-    };
+	};
 }
 
 namespace winrt::FacebookSDK::factory_implementation
 {
-    struct FacebookResult : FacebookResultT<FacebookResult, implementation::FacebookResult>
-    {
-    };
+	struct FacebookResult : FacebookResultT<FacebookResult, implementation::FacebookResult>
+	{
+	};
 }

@@ -146,7 +146,7 @@ namespace winrt::FacebookSDK::implementation
 			if (value.ValueType() == JsonValueType::Object)
 			{
 				JsonObject obj = value.GetObject();
-				
+
 				IIterator<IKeyValuePair<hstring, IJsonValue>> it = nullptr;
 				for (it = obj.First(); it.HasCurrent(); it.MoveNext())
 				{
