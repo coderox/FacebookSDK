@@ -78,7 +78,7 @@ namespace winrt::FacebookSDK::implementation
 			}
 		}
 	}
-	
+
 	hstring FacebookLoginButton::GetPermissions() {
 		return _permissions != nullptr ? _permissions.ToString() : L"";
 	}

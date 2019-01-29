@@ -152,7 +152,7 @@ namespace winrt::FacebookSDK::implementation
 		HttpBaseProtocolFilter filter;
 		HttpCookieManager cookieManager(filter.CookieManager());
 		HttpCookieCollection cookiesJar(cookieManager.GetCookies(Uri(FacebookDialog::GetFBServerUrl())));
-		for (auto const& cookie: cookiesJar)
+		for (auto const& cookie : cookiesJar)
 		{
 			cookieManager.DeleteCookie(cookie);
 		}
@@ -204,7 +204,7 @@ namespace winrt::FacebookSDK::implementation
 		std::wstringstream uriString;
 		std::wstringstream apiVersion;
 		apiVersion << L"";
-		
+
 		if (session.APIMajorVersion())
 		{
 			apiVersion << L"/v" << session.APIMajorVersion() << L"." << session.APIMinorVersion() << L"/";
@@ -228,7 +228,7 @@ namespace winrt::FacebookSDK::implementation
 				}
 				else if (compare_ordinal(key.c_str(), DisplayKey) == 0) {
 					displayType = value;
-				} 
+				}
 				else if (compare_ordinal(key.c_str(), ResponseTypeKey) == 0) {
 					responseType = value;
 				}

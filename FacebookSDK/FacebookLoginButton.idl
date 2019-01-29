@@ -12,9 +12,9 @@ namespace FacebookSDK
 
 	delegate void ShowingLoggedOutUserHandler(FacebookLoginButton sender);
 
-    runtimeclass FacebookLoginButton : Windows.UI.Xaml.Controls.Button
-    {
-        FacebookLoginButton();
+	runtimeclass FacebookLoginButton : Windows.UI.Xaml.Controls.Button
+	{
+		FacebookLoginButton();
 
 		FacebookPermissions Permissions{ get; set; };
 
@@ -25,5 +25,5 @@ namespace FacebookSDK
 		event FetchedUserInfoHandler FetchedUserInfo;
 		event ShowingLoggedInUserHandler ShowingLoggedInUser;
 		event ShowingLoggedOutUserHandler ShowingLoggedOutUser;
-    }
+	}
 }

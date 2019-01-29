@@ -4,10 +4,10 @@ namespace FacebookSDK
 {
 	delegate Windows.Foundation.Uri DialogUriBuilder(Windows.Foundation.Collections.PropertySet Parameters);
 
-    [default_interface]
-    runtimeclass FacebookDialog : Windows.UI.Xaml.Controls.UserControl
-    {
-        FacebookDialog();
+	[default_interface]
+	runtimeclass FacebookDialog : Windows.UI.Xaml.Controls.UserControl
+	{
+		FacebookDialog();
 		void InitDialog();
 		void UninitDialog();
 
@@ -33,5 +33,5 @@ namespace FacebookSDK
 		 *  When the access token is removed the cookies must be clean up
 		 */
 		static void DeleteCookies();
-    }
+	}
 }

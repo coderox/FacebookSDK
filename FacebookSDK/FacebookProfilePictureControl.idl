@@ -6,9 +6,9 @@ namespace FacebookSDK
 	};
 
 	runtimeclass FacebookProfilePictureControl : Windows.UI.Xaml.Controls.UserControl
-    {
-        FacebookProfilePictureControl();
+	{
+		FacebookProfilePictureControl();
 		String UserId{ get; set; };
 		CroppingType CropMode{ get; set; };
-    }
+	}
 }

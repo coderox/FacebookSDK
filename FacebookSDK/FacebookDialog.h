@@ -18,7 +18,7 @@ namespace winrt::FacebookSDK::implementation
 
 		static hstring GetFBServerUrl();
 		static void DeleteCookies();
-	
+
 		void CloseDialogButton_OnClick(
 			Windows::Foundation::IInspectable const& sender,
 			Windows::UI::Xaml::RoutedEventArgs const& e
