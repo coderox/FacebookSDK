@@ -1,9 +1,9 @@
 namespace FacebookSDK
 {
-    runtimeclass FacebookFeedRequest 
-    {
-        FacebookFeedRequest();
+	runtimeclass FacebookFeedRequest
+	{
+		FacebookFeedRequest();
 		String PostId{ get; };
-		static FacebookFeedRequest FromFeedDialogResponse(Windows.Foundation.Uri response); 
+		static FacebookFeedRequest FromFeedDialogResponse(Windows.Foundation.Uri response);
 	}
 }
