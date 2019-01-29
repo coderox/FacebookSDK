@@ -21,9 +21,9 @@ namespace FacebookSDK
 		Silent
 	};
 
-    runtimeclass FacebookSession 
-    {
-        FacebookSession();
+	runtimeclass FacebookSession
+	{
+		FacebookSession();
 		String FacebookAppId{ get; set; };
 		String WinAppId{ get; set; };
 		String AppResponse{ get; };

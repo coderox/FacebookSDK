@@ -13,7 +13,7 @@ namespace winrt::FacebookSDK::implementation
 {
 	GraphUriBuilder::GraphUriBuilder(hstring const& path)
 	{
-		Uri testUri{nullptr};
+		Uri testUri{ nullptr };
 		bool buildDomain = false;
 		try
 		{
@@ -95,8 +95,8 @@ namespace winrt::FacebookSDK::implementation
 			}
 		}
 	}
-	
-	void GraphUriBuilder::FixPathDelimiters() { 
+
+	void GraphUriBuilder::FixPathDelimiters() {
 		hstring fixedPath;
 		std::wstring originalPath{ _path.c_str() };
 		std::wistringstream iss{ originalPath };

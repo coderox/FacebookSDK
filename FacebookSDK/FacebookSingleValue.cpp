@@ -17,7 +17,7 @@ namespace winrt::FacebookSDK::implementation
 		, _objectFactory(objectFactory)
 		, _result(nullptr)
 	{
-		
+
 	}
 
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSingleValue::GetAsync()
@@ -66,7 +66,7 @@ namespace winrt::FacebookSDK::implementation
 							{
 								if (current.Value().ValueType() != JsonValueType::Object) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
-								} 
+								}
 								item = _objectFactory(current.Value().GetString());
 								if (!item) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
@@ -96,7 +96,7 @@ namespace winrt::FacebookSDK::implementation
 		if (_parameters == nullptr) {
 			_parameters = PropertySet();
 		}
-		
+
 		//auto fields = _parameters.Lookup(L"fields");
 
 		hstring responseString;

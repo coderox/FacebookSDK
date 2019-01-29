@@ -1,7 +1,7 @@
 namespace FacebookSDK
 {
-    interface IHttpClient 
-    {
+	interface IHttpClient
+	{
 		Windows.Foundation.IAsyncOperation<String> GetTaskAsync(
 			String path,
 			Windows.Foundation.Collections.IMapView<String, Object> parameters
@@ -20,5 +20,5 @@ namespace FacebookSDK
 		String ParametersToQueryString(
 			Windows.Foundation.Collections.IMapView<String, Object> parameters
 		);
-    }
+	}
 }

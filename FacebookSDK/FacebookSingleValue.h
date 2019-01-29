@@ -35,7 +35,7 @@ namespace winrt::FacebookSDK::implementation
 			::FacebookSDK::HttpMethod httpMethod
 		);
 
-		FacebookSDK::FacebookResult _result { nullptr };
+		FacebookSDK::FacebookResult _result{ nullptr };
 		std::wstring _request;
 		winrt::Windows::Foundation::Collections::PropertySet _parameters;
 		FacebookSDK::JsonClassFactory _objectFactory;

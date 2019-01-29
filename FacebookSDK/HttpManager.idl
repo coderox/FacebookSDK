@@ -2,9 +2,9 @@ import "IHttpClient.idl";
 
 namespace FacebookSDK
 {
-    runtimeclass HttpManager : IHttpClient
-    {
+	runtimeclass HttpManager : IHttpClient
+	{
 		static HttpManager Instance {get; };
 		void SetHttpClient(IHttpClient httpClient);
-    }
+	}
 }

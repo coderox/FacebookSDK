@@ -22,7 +22,7 @@ using namespace std;
 using namespace winrt;
 using namespace concurrency;
 using namespace Windows::Foundation;
-using namespace Windows::ApplicationModel; 
+using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
 using namespace Windows::ApplicationModel::Core;
 using namespace Windows::Data::Json;
@@ -263,15 +263,15 @@ namespace winrt::FacebookSDK::implementation
 		case SessionLoginBehavior::WebView:
 			_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
 			break;
-		
+
 		case SessionLoginBehavior::WebAuth:
 			_asyncResult = co_await TryLoginViaWebAuthBrokerAsync(parameters);
 			break;
-		
+
 		case SessionLoginBehavior::WebAccountProvider:
 			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
 			break;
-		
+
 		case SessionLoginBehavior::DefaultOrdering:
 			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
 			if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr && _asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
@@ -281,7 +281,7 @@ namespace winrt::FacebookSDK::implementation
 				}
 			}
 			break;
-		
+
 		case SessionLoginBehavior::Silent:
 			_asyncResult = TryLoginSilentlyAsync(parameters);
 			break;
@@ -294,7 +294,7 @@ namespace winrt::FacebookSDK::implementation
 
 		auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
 		auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
-		
+
 		if (finalResult == nullptr || !finalResult.Succeeded()) {
 			_loggedIn = false;
 			AccessTokenData(nullptr);
@@ -560,7 +560,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return make<FacebookResult>(_user);
 	}
 
-	FacebookSDK::FacebookResult FacebookSession::ProcessAuthResult(WebAuthenticationResult authResult) 
+	FacebookSDK::FacebookResult FacebookSession::ProcessAuthResult(WebAuthenticationResult authResult)
 	{
 		FacebookSDK::FacebookResult result{ nullptr };
 		hstring uriString;
@@ -650,7 +650,7 @@ namespace winrt::FacebookSDK::implementation
 
 				SetEvent(event);
 			};
-			
+
 			CoreApplication::MainView().CoreWindow().Dispatcher().RunAsync(
 				CoreDispatcherPriority::Normal,
 				std::bind(function, this, asyncEvent, Parameters));
@@ -664,7 +664,7 @@ namespace winrt::FacebookSDK::implementation
 		co_return _asyncResult;
 	}
 
-	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(PropertySet Parameters) 
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::RunWebViewLoginOnUIThreadAsync(PropertySet Parameters)
 	{
 		try
 		{
@@ -761,7 +761,7 @@ namespace winrt::FacebookSDK::implementation
 		auto grantedPermissions = FacebookPermissions::FromString(GetGrantedPermissions());
 		auto requestingPermissions = FacebookPermissions::FromString(parameters.Lookup(L"scope").as<IStringable>().ToString());
 		auto diffPermissions = FacebookPermissions::Difference(requestingPermissions, grantedPermissions);
-		
+
 		FacebookSDK::FacebookResult oauthResult{ nullptr };
 		if (diffPermissions.Values().Size() != 0) {
 			oauthResult = co_await CheckForExistingTokenAsync();
@@ -772,7 +772,7 @@ namespace winrt::FacebookSDK::implementation
 				}
 			}
 			else {
-				loginResult = make<FacebookResult>(FacebookError(0,L"Restore Session Error", L"Could not find a valid access token"));
+				loginResult = make<FacebookResult>(FacebookError(0, L"Restore Session Error", L"Could not find a valid access token"));
 			}
 		}
 		co_return loginResult;
@@ -862,7 +862,7 @@ namespace winrt::FacebookSDK::implementation
 			std::bind(function, this, asyncEvent, permissions));
 
 		co_await resume_on_signal(asyncEvent);
-		
+
 		co_return this->_asyncResult;
 	}
 
