@@ -17,7 +17,7 @@ namespace winrt::FacebookSDK::implementation
 	FacebookAccessTokenData::FacebookAccessTokenData(
 		std::wstring accessToken,
 		std::wstring expiration)
-		: _accessToken(accessToken)	
+		: _accessToken(accessToken)
 	{
 		if (!expiration.empty())
 		{
@@ -79,7 +79,7 @@ namespace winrt::FacebookSDK::implementation
 		for (unsigned int i = 0; i < perms.Size(); i++)
 		{
 			Graph::FBPermission perm = unbox_value<Graph::FBPermission>(perms.GetAt(i));
-			
+
 			if (!compare_ordinal(perm.Status().c_str(), L"granted") == 0)
 			{
 				granted.Append(perm.Permission());
@@ -138,7 +138,7 @@ namespace winrt::FacebookSDK::implementation
 		_expirationDate = cal.GetDateTime();
 	}
 
-	WwwFormUrlDecoder FacebookAccessTokenData::ParametersFromResponse(Uri const& response) 
+	WwwFormUrlDecoder FacebookAccessTokenData::ParametersFromResponse(Uri const& response)
 	{
 		// facebook sometimes returns the access token, etc., as a Uri fragment
 		// but in the query string, making it not parse correctly. Here we check

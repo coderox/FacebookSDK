@@ -2,9 +2,9 @@ import "FacebookPermissions.idl";
 
 namespace FacebookSDK
 {
-    runtimeclass FacebookAccessTokenData 
-    {
-        static FacebookAccessTokenData FromUri(Windows.Foundation.Uri Response);
+	runtimeclass FacebookAccessTokenData
+	{
+		static FacebookAccessTokenData FromUri(Windows.Foundation.Uri Response);
 		FacebookAccessTokenData(String AccessToken, Windows.Foundation.DateTime Expiration);
 
 		String AccessToken{ get; };
@@ -13,5 +13,5 @@ namespace FacebookSDK
 		FacebookPermissions DeclinedPermissions{ get; };
 		Boolean IsExpired{ get; };
 		void SetPermissions(Windows.Foundation.Collections.IVectorView<Object> perms);
-    }
+	}
 }
