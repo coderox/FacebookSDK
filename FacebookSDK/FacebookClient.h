@@ -10,10 +10,10 @@ namespace winrt::FacebookSDK::implementation
 	{
 		FacebookClient() = default;
 
-		Windows::Foundation::IAsyncOperation<hstring> GetTaskAsync(hstring const path, Windows::Foundation::Collections::IMapView<hstring, Windows::Foundation::IInspectable> const parameters);
-		Windows::Foundation::IAsyncOperation<hstring> PostTaskAsync(hstring const path, Windows::Foundation::Collections::IMapView<hstring, Windows::Foundation::IInspectable> const parameters);
-		Windows::Foundation::IAsyncOperation<hstring> DeleteTaskAsync(hstring const path, Windows::Foundation::Collections::IMapView<hstring, Windows::Foundation::IInspectable> const parameters);
-		hstring ParametersToQueryString(Windows::Foundation::Collections::IMapView<hstring, Windows::Foundation::IInspectable> const& parameters);
+		winrt::Windows::Foundation::IAsyncOperation<hstring> GetTaskAsync(hstring const path, winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		winrt::Windows::Foundation::IAsyncOperation<hstring> PostTaskAsync(hstring const path, winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		winrt::Windows::Foundation::IAsyncOperation<hstring> DeleteTaskAsync(hstring const path, winrt::Windows::Foundation::Collections::IMapView<hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		winrt::hstring ParametersToQueryString(winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const& parameters);
 
 	private:
 

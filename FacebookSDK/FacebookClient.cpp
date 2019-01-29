@@ -349,7 +349,7 @@ namespace winrt::FacebookSDK::implementation
 
 		for (auto const& current : parameters)
 		{
-			if (winrt::unbox_value_or<hstring>(current.Value(),L"") == L"") {
+			if (winrt::unbox_value_or<hstring>(current.Value(), L"") == L"") {
 				keysThatAreNotString.Append(current.Key());
 			}
 		}
@@ -358,7 +358,7 @@ namespace winrt::FacebookSDK::implementation
 		{
 			auto val = parameters.Lookup(current);
 			hstring newValue = unbox_value<hstring>(val);
-			
+
 			parameters.Remove(current);
 			parameters.Insert(current, box_value(newValue));
 		}
