@@ -12,8 +12,8 @@ namespace FacebookSDK
 		ErrorSubcodeSessionInvalidated = 466
 	};
 
-    runtimeclass FacebookError {
-        static FacebookError FromUri(Windows.Foundation.Uri ResponseUri);
+	runtimeclass FacebookError {
+		static FacebookError FromUri(Windows.Foundation.Uri ResponseUri);
 		static FacebookError FromJson(String JsonText);
 
 		FacebookError(Int32 Code, String Type, String Message);
