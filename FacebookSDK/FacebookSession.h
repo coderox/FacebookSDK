@@ -61,7 +61,6 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::IAsyncAction TryDeleteTokenDataAsync();
 		FacebookSDK::FacebookResult ProcessAuthResult(Windows::Security::Authentication::Web::WebAuthenticationResult authResult);
 
-		Windows::Foundation::IAsyncOperation<Windows::Storage::IStorageItem> MyTryGetItemAsync(Windows::Storage::StorageFolder folder, hstring itemName);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetUserInfoAsync(FacebookSDK::FacebookAccessTokenData const& tokenData);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> CheckForExistingTokenAsync();
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> GetAppPermissionsAsync();

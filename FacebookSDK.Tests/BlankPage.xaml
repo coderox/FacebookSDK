@@ -13,7 +13,7 @@
         <facebook:ScaleConverter x:Key="ScaleConverter"/>
     </Page.Resources>
 
-    <Grid Background="Red" Name="bgGrid" Padding="20">
+    <Grid Background="Red" Name="bgGrid" Padding="20" Loaded="OnLoaded">
         <Grid Background="{Binding ElementName=bgGrid, 
               Path=Background,
               Converter={StaticResource ColorLuminosityConverter},

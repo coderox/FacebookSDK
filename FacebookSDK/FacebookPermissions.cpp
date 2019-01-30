@@ -41,7 +41,7 @@ namespace winrt::FacebookSDK::implementation
 
 	FacebookSDK::FacebookPermissions FacebookPermissions::FromString(hstring const& permissions)
 	{
-		return FacebookSDK::FacebookPermissions(ParsePermissionsFromString(permissions));
+		return make<FacebookPermissions>(ParsePermissionsFromString(permissions));
 	}
 
 	FacebookSDK::FacebookPermissions FacebookPermissions::Difference(FacebookSDK::FacebookPermissions const& Minuend, FacebookSDK::FacebookPermissions const& Subtrahend)
@@ -64,7 +64,7 @@ namespace winrt::FacebookSDK::implementation
 				}
 			}
 		}
-		return FacebookPermissions(remainingPermissions.GetView());
+		return make<FacebookPermissions>(remainingPermissions.GetView());
 	}
 
 	IVectorView<hstring> FacebookPermissions::ParsePermissionsFromString(hstring const& permissions) {

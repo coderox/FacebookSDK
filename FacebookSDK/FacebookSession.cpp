@@ -283,7 +283,7 @@ namespace winrt::FacebookSDK::implementation
 			break;
 
 		case SessionLoginBehavior::Silent:
-			_asyncResult = TryLoginSilentlyAsync(parameters);
+			_asyncResult = co_await TryLoginSilentlyAsync(parameters);
 			break;
 		default:
 			OutputDebugString(L"Invalid SessionLoginBehavior member!\n");
@@ -303,6 +303,9 @@ namespace winrt::FacebookSDK::implementation
 				finalResult = make<FacebookResult>(make<FacebookError>(0, L"Unexpected error", L"Log in attempt failed"));
 				OutputDebugString(L"LoginAsync was about to return nullptr, created FacebookResult object to return instead");
 			}
+		}
+		else {
+			SaveGrantedPermissions();
 		}
 		co_return finalResult;
 	}
@@ -433,22 +436,6 @@ namespace winrt::FacebookSDK::implementation
 		throw hresult_not_implemented();
 	}
 
-	IAsyncOperation<IStorageItem> FacebookSession::MyTryGetItemAsync(StorageFolder folder, hstring itemName)
-	{
-		try
-		{
-#if defined(_WIN32_WINNT_WIN10)
-			return folder.TryGetItemAsync(itemName);
-#else
-			return folder.GetItemAsync(itemName);
-#endif
-		}
-		catch (hresult_error e)
-		{
-			return nullptr;
-		}
-	}
-
 	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::CheckForExistingTokenAsync()
 	{
 		FacebookSDK::FacebookResult result{ nullptr };
@@ -460,7 +447,7 @@ namespace winrt::FacebookSDK::implementation
 		{
 			try {
 				auto folder = ApplicationData::Current().LocalFolder();
-				IStorageItem item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
+				IStorageItem item = co_await folder.TryGetItemAsync(L"FBSDKData");
 				if (item != nullptr) {
 					auto file = item.as<StorageFile>();
 					auto protectedBuffer = co_await FileIO::ReadBufferAsync(file);
@@ -524,7 +511,7 @@ namespace winrt::FacebookSDK::implementation
 		OutputDebugString(msg.c_str());
 #endif
 		try {
-			auto item = co_await MyTryGetItemAsync(folder, L"FBSDKData");
+			auto item = co_await folder.TryGetItemAsync(L"FBSDKData");
 			item.DeleteAsync();
 		}
 		catch (...) {
@@ -757,28 +744,40 @@ namespace winrt::FacebookSDK::implementation
 		auto session = FacebookSession::ActiveSession();
 
 		auto grantedPermissions = FacebookPermissions::FromString(GetGrantedPermissions());
-		auto requestingPermissions = FacebookPermissions::FromString(parameters.Lookup(L"scope").as<IStringable>().ToString());
+		auto requestingPermissions = FacebookPermissions::FromString(unbox_value<hstring>(parameters.Lookup(L"scope")));
+
+		OutputDebugString(hstring(L"Granted permissions: " + grantedPermissions.ToString() + L"\n").c_str());
+		OutputDebugString(hstring(L"Requested permissions: " + requestingPermissions.ToString() + L"\n").c_str());
+
 		auto diffPermissions = FacebookPermissions::Difference(requestingPermissions, grantedPermissions);
 
 		FacebookSDK::FacebookResult oauthResult{ nullptr };
-		if (diffPermissions.Values().Size() != 0) {
+		if (diffPermissions.Values().Size() == 0) {
 			oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
 				auto tokenData = oauthResult.Object().as<FacebookSDK::FacebookAccessTokenData>();
 				if (tokenData != nullptr && !tokenData.IsExpired()) {
 					loginResult = make<FacebookResult>(tokenData);
 				}
+				else {
+					loginResult = make<FacebookResult>(make<FacebookError>(0, L"Restore Session Error", L"Could not find a valid access token or token has expired"));
+				}
 			}
 			else {
 				loginResult = make<FacebookResult>(make<FacebookError>(0, L"Restore Session Error", L"Could not find a valid access token"));
 			}
+		}
+		else {
+			loginResult = make<FacebookResult>(make<FacebookError>(0, L"Restore Session Error", L"Requested permissions are different from granted"));
 		}
 		co_return loginResult;
 	}
 
 	void FacebookSession::SaveGrantedPermissions() {
 		auto values = FacebookSession::DataContainer().Values();
-		values.Insert(GRANTED_PERMISSIONS_KEY, box_value(AccessTokenData().GrantedPermissions().ToString()));
+		auto grantedPermissions = AccessTokenData().GrantedPermissions().ToString();
+		OutputDebugString(hstring(L"Granted permissions: " + grantedPermissions + L"\n").c_str());
+		values.Insert(GRANTED_PERMISSIONS_KEY, box_value(grantedPermissions));
 	}
 
 	hstring FacebookSession::GetGrantedPermissions() {

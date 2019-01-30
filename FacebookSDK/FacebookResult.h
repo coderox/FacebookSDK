@@ -8,7 +8,7 @@ namespace winrt::FacebookSDK::implementation
 	struct FacebookResult : FacebookResultT<FacebookResult>
 	{
 	public:
-		FacebookResult() { };
+		FacebookResult() = default;
 		FacebookResult(Windows::Foundation::IInspectable const& Object);
 
 		bool Succeeded();

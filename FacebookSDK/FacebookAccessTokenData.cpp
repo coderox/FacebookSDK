@@ -80,11 +80,11 @@ namespace winrt::FacebookSDK::implementation
 		{
 			Graph::FBPermission perm = unbox_value<Graph::FBPermission>(perms.GetAt(i));
 
-			if (!compare_ordinal(perm.Status().c_str(), L"granted") == 0)
+			if (compare_ordinal(perm.Status().c_str(), L"granted") == 0)
 			{
 				granted.Append(perm.Permission());
 			}
-			else if (!compare_ordinal(perm.Status().c_str(), L"declined") == 0)
+			else if (compare_ordinal(perm.Status().c_str(), L"declined") == 0)
 			{
 				declined.Append(perm.Permission());
 			}
