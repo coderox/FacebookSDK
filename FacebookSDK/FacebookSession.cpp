@@ -704,9 +704,10 @@ namespace winrt::FacebookSDK::implementation
 		if (!IsRerequest(parameters)) {
 			auto oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
-				auto tokenData = oauthResult.Object().try_as<FacebookSDK::FacebookAccessTokenData>();
-				if (tokenData != nullptr && !tokenData.IsExpired()) {
-					loginResult = make<FacebookResult>(tokenData);
+				if (FacebookSDK::FacebookAccessTokenData tokenData{ oauthResult.Object().try_as<FacebookSDK::FacebookAccessTokenData>() }) {
+					if (!tokenData.IsExpired()) {
+						loginResult = make<FacebookResult>(tokenData);
+					}
 				}
 			}
 			else {

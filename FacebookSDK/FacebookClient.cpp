@@ -49,11 +49,11 @@ namespace winrt::FacebookSDK::implementation
 		for (auto const& current : parameters)
 		{
 			hstring key(current.Key());
-			if (current.Value().try_as<FacebookMediaObject>()) {
-				mediaObjects.Insert(key, current.Value());
+			if (FacebookMediaObject value{ current.Value().try_as<FacebookMediaObject>() }) {
+				mediaObjects.Insert(key, value);
 			}
-			else if (current.Value().try_as<FacebookMediaStream>()) {
-				mediaStreams.Insert(key, current.Value());
+			else if (FacebookMediaStream value{ current.Value().try_as<FacebookMediaStream>() }) {
+				mediaStreams.Insert(key, value);
 			}
 			else {
 				dictionary.Insert(key, current.Value());
@@ -188,11 +188,11 @@ namespace winrt::FacebookSDK::implementation
 		// Enumerate through all the parameters
 		for (auto const& current : parameters)
 		{
-			if (streams.try_as<FacebookMediaStream>() != nullptr) {
+			if (FacebookMediaStream stream{ current.Value().try_as<FacebookMediaStream>() }) {
 				if (!streams) {
 					streams = PropertySet();
 				}
-				streams.Insert(current.Key(), current.Value());
+				streams.Insert(current.Key(), current);
 			}
 		}
 

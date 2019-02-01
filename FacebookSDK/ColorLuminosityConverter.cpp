@@ -31,8 +31,7 @@ namespace winrt::FacebookSDK::implementation
 		double factor = stod(wstring(paramString.data()));
 		IInspectable result;
 
-		SolidColorBrush scb = value.try_as<SolidColorBrush>();
-		if (scb != nullptr)
+		if (SolidColorBrush scb{ value.try_as<SolidColorBrush>() })
 		{
 			result = SolidColorBrush(ApplyFactor(scb.Color(), factor));
 		}
