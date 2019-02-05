@@ -460,15 +460,30 @@ namespace winrt::FacebookSDK::implementation
 
 					if (pos != wstring::npos)
 					{
-						hstring accessToken(vals.substr(0, pos).c_str());
-						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
 						DateTime expirationTime;
-
+						DateTime dataAccessExpirationTime;
+						hstring accessToken(vals.substr(0, pos).c_str());
 						hstring msg(L"Access Token: " + accessToken + L"\n");
 						OutputDebugString(msg.c_str());
 
+						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
 						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-						FacebookSDK::FacebookAccessTokenData cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+
+						FacebookSDK::FacebookAccessTokenData cachedData{ nullptr };
+
+						pos = vals.find(L",", pos);
+						if (pos != wstring::npos)
+						{
+							hstring dataExpirationString(vals.substr(pos + 1, wstring::npos).c_str());
+							dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
+							cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime, dataAccessExpirationTime);
+						}
+						else {
+#ifdef _DEBUG
+							OutputDebugString(L"Read token without data access expiration time!\n");
+#endif
+							cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+						}
 						result = make<FacebookResult>(cachedData);
 					}
 				}
@@ -492,6 +507,12 @@ namespace winrt::FacebookSDK::implementation
 				buffer, INT64_STRING_BUFSIZE, 10);
 			wstringstream tokenStream;
 			tokenStream << AccessTokenData().AccessToken().c_str() << L"," << hstring(buffer).c_str();
+			if (AccessTokenData().HasDataAccessExpired()) {
+				_i64tow_s(
+					WindowsTickToUnixSeconds(AccessTokenData().DataAccessExpirationDate().time_since_epoch().count()),
+					buffer, INT64_STRING_BUFSIZE, 10);
+				tokenStream << L"," << hstring(buffer).c_str();
+			}
 			hstring tokenData(tokenStream.str().c_str());
 			IBuffer dataBuff = CryptographicBuffer::ConvertStringToBinary(tokenData, BinaryStringEncoding::Utf16LE);
 
