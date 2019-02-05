@@ -49,6 +49,7 @@ namespace FacebookSDK
 		Windows.Foundation.IAsyncOperation<FacebookSDK.FacebookResult> LoginAsync();
 		Windows.Foundation.IAsyncOperation<FacebookSDK.FacebookResult> LoginAsync(FacebookSDK.FacebookPermissions permissions);
 		Windows.Foundation.IAsyncOperation<FacebookSDK.FacebookResult> LoginAsync(FacebookSDK.FacebookPermissions permissions, FacebookSDK.SessionLoginBehavior behavior);
+		Windows.Foundation.IAsyncOperation<FacebookSDK.FacebookResult> ReauthorizeAsync(FacebookSDK.FacebookPermissions permissions);
 
 		void SetApiVersion(Int32 major, Int32 minor);
 		void SetWebViewRedirectUrl(String domain, String Path);

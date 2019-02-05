@@ -38,6 +38,7 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions permissions);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> LoginAsync(FacebookSDK::FacebookPermissions permissions, FacebookSDK::SessionLoginBehavior behavior);
 		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> TryRefreshAccessTokenAsync();
+		Windows::Foundation::IAsyncOperation<FacebookSDK::FacebookResult> ReauthorizeAsync(FacebookSDK::FacebookPermissions permissions);
 
 		void SetApiVersion(int32_t major, int32_t minor);
 		void SetWebViewRedirectUrl(hstring const& domain, hstring const& Path);

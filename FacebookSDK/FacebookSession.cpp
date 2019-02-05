@@ -61,6 +61,7 @@ extern const wchar_t* ErrorObjectJson;
 #define DefaultResponse L"token"
 #define AuthTypeKey     L"auth_type"
 #define Rerequest       L"rerequest"
+#define Reauthorize     L"reauthorize"
 #define RedirectUriKey  L"redirect_uri"
 
 #define SDK_APP_DATA_CONTAINER L"winsdkfb" // TODO: Should we move this?
@@ -298,6 +299,7 @@ namespace winrt::FacebookSDK::implementation
 		if (finalResult == nullptr || !finalResult.Succeeded()) {
 			_loggedIn = false;
 			AccessTokenData(nullptr);
+			co_await TryDeleteTokenDataAsync();
 
 			if (finalResult == nullptr) {
 				finalResult = make<FacebookResult>(make<FacebookError>(0, L"Unexpected error", L"Log in attempt failed"));
@@ -308,6 +310,44 @@ namespace winrt::FacebookSDK::implementation
 			SaveGrantedPermissions();
 		}
 		co_return finalResult;
+	}
+
+	IAsyncOperation<FacebookSDK::FacebookResult> FacebookSession::ReauthorizeAsync(FacebookSDK::FacebookPermissions permissions)
+	{
+		if (!LoggedIn()) {
+			return LoginAsync(permissions, FacebookSDK::SessionLoginBehavior::DefaultOrdering);
+		}
+		else {
+			if (!permissions) {
+				permissions = make<FacebookPermissions>();
+			}
+
+			PropertySet parameters;
+			parameters.Insert(ScopeKey, box_value(permissions.ToString()));
+
+			parameters.Insert(AuthTypeKey, box_value(Reauthorize));
+
+			FacebookSDK::FacebookResult result{ nullptr };
+
+			_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
+
+			auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
+			auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
+
+			if (finalResult == nullptr || !finalResult.Succeeded()) {
+				_loggedIn = false;
+				AccessTokenData(nullptr);
+
+				if (finalResult == nullptr) {
+					finalResult = make<FacebookResult>(make<FacebookError>(0, L"Unexpected error", L"Reauthorize attempt failed"));
+					OutputDebugString(L"ReauthorizeAsync was about to return nullptr, created FacebookResult object to return instead");
+				}
+			}
+			else {
+				SaveGrantedPermissions();
+			}
+			co_return finalResult;
+		}
 	}
 
 	void FacebookSession::SetApiVersion(int32_t major, int32_t minor)
@@ -419,9 +459,9 @@ namespace winrt::FacebookSDK::implementation
 		PropertySet parameters;
 		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
 		auto objectFactory = JsonClassFactory([](hstring jsonText) -> IInspectable
-		{
-			return Graph::FBUser::FromJson(jsonText);
-		});
+			{
+				return Graph::FBUser::FromJson(jsonText);
+			});
 
 		FacebookSDK::FacebookSingleValue value = make<FacebookSingleValue>(
 			L"/me",
@@ -533,7 +573,9 @@ namespace winrt::FacebookSDK::implementation
 #endif
 		try {
 			auto item = co_await folder.TryGetItemAsync(L"FBSDKData");
-			item.DeleteAsync();
+			if (item) {
+				item.DeleteAsync();
+			}
 		}
 		catch (...) {
 			//Do nothing here, trying to delete the cache file is a "fire and
@@ -554,9 +596,9 @@ namespace winrt::FacebookSDK::implementation
 			permStream.str().c_str(),
 			nullptr,
 			JsonClassFactory([](hstring const& JsonText) -> IInspectable
-		{
-			return Graph::FBPermission::FromJson(JsonText);
-		}));
+				{
+					return Graph::FBPermission::FromJson(JsonText);
+				}));
 
 		auto result = co_await permArr.FirstAsync();
 		if (result.Succeeded()) {
@@ -990,7 +1032,7 @@ namespace winrt::FacebookSDK::implementation
 	BOOL FacebookSession::IsRerequest(PropertySet parameters) {
 		bool isRerequest = false;
 		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
-			hstring value = parameters.Lookup(AuthTypeKey).as<IStringable>().ToString();
+			hstring value = unbox_value<hstring>(parameters.Lookup(AuthTypeKey));
 			if (compare_ordinal(value.c_str(), Rerequest) == 0) {
 				isRerequest = true;
 			}

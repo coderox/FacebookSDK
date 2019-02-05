@@ -95,7 +95,7 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 					OutputDebugString(message->Data());
 				}
 			}
-		});
+			});
 	}
 }
 
@@ -111,7 +111,7 @@ void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
 
 		create_task(session->ShowFeedDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Feed' dialog.\n");
-		});
+			});
 	}
 }
 
@@ -126,7 +126,7 @@ void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
 
 		create_task(session->ShowRequestsDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Requests' dialog.\n");
-		});
+			});
 	}
 }
 
@@ -137,10 +137,10 @@ void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
 	if (session->LoggedIn) {
 		PropertySet^ params = ref new PropertySet();
 		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
-		
+
 		create_task(session->ShowSendDialogAsync(params)).then([=](FacebookSDK::FacebookResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Send' dialog.\n");
-		});
+			});
 	}
 }
 
@@ -150,54 +150,26 @@ void FacebookSDK_Tests::BlankPage::OnUserInfoFetched(FacebookSDK::FacebookLoginB
 }
 
 
-void FacebookSDK_Tests::BlankPage::OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void FacebookSDK_Tests::BlankPage::OnReauthorizeClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	FacebookSDK::FacebookSession^ sess = FacebookSDK::FacebookSession::ActiveSession;
-	if (sess->LoggedIn)
-	{
-		// Set caption, link and description parameters
-		PropertySet^ parameters = ref new PropertySet();
-		parameters->Insert(L"caption", L"Microsoft");
-		parameters->Insert(L"link", L"https://www.microsoft.com/en-us/default.aspx");
-		parameters->Insert(L"description", L"Microsoft home page");
+	auto session = FacebookSDK::FacebookSession::ActiveSession;
 
-		// Add message
-		parameters->Insert(L"message", L"Posting from my Universal Windows app.");
-
-		//Create Graph API path
-		String^ graphPath = sess->User->Id + L"/feed";
-
-		// Create a json class factory with a class (FBReturnObject class)
-		// that can receive and parse the json response returned
-		FacebookSDK::JsonClassFactory^ fact = ref new FacebookSDK::JsonClassFactory([](String^ JsonText) ->
-			Object^
-		{
-			auto returnObject = ref new FBReturnObject();
-			returnObject->Id = Windows::Data::Json::JsonObject::Parse(JsonText)->GetNamedString("id");
-			return returnObject;
-		});
-
-		FacebookSDK::FacebookSingleValue^ sval = ref new FacebookSDK::FacebookSingleValue(graphPath, parameters, fact);
-		create_task(sval->PostAsync()).then([=](FacebookSDK::FacebookResult^ result)
-		{
-			if (result->Succeeded)
-			{
-				FBReturnObject^ response = static_cast<FBReturnObject ^>(result->Object);
-			}
-			else
-			{
-				// Posting failed
-			}
-		});
-
-	}
+	SetSessionAppIds();
+	create_task(session->ReauthorizeAsync(BuildPermissions())).then([&](FacebookSDK::FacebookResult^ result) {
+		if (result->Succeeded) {
+			OutputDebugString(L"Reauthorize completed");
+		} else if (result->ErrorInfo != nullptr) {
+			auto message = result->ErrorInfo->Message;
+			OutputDebugString(message->Data());
+		}
+	});
 }
 
 
 void FacebookSDK_Tests::BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	SetSessionAppIds(); 
-	
+	SetSessionAppIds();
+
 	auto session = FacebookSDK::FacebookSession::ActiveSession;
 	if (!session->LoggedIn) {
 		create_task(session->LoginAsync(BuildPermissions(), FacebookSDK::SessionLoginBehavior::Silent)).then([&](FacebookSDK::FacebookResult^ result) {
@@ -215,6 +187,6 @@ void FacebookSDK_Tests::BlankPage::OnLoaded(Platform::Object^ sender, Windows::U
 					OutputDebugString(message->Data());
 				}
 			}
-		});
+			});
 	}
 }
