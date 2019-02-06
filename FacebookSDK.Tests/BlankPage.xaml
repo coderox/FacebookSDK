@@ -23,16 +23,19 @@
               Path=ActualWidth,
               Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
-        
-        <StackPanel Orientation="Horizontal">
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
-            <facebook:FacebookLoginButton FetchedUserInfo="OnUserInfoFetched"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnReauthorizeClicked" Content="Reauthorize" x:Name="reauthorizeButton"/>
+
+        <StackPanel Orientation="Vertical">
+            <TextBox x:Name="tbPermission"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
+                <facebook:FacebookLoginButton FetchedUserInfo="OnUserInfoFetched"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnReauthorizeClicked" Content="Reauthorize" x:Name="reauthorizeButton"/>
+            </StackPanel>
         </StackPanel>
-        
+
         <facebook:FacebookProfilePictureControl x:Name="profilePicture" HorizontalAlignment="Right" Width="100" Height="100"/>
 
     </Grid>

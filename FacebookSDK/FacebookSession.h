@@ -55,6 +55,7 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::Uri BuildLoginUri(Windows::Foundation::Collections::PropertySet parameters);
 
 		BOOL IsRerequest(Windows::Foundation::Collections::PropertySet Parameters);
+		BOOL IsReauthorize(Windows::Foundation::Collections::PropertySet Parameters);
 
 		hstring GetGrantedPermissions();
 		hstring GetWebAuthRedirectUriString();

@@ -28,12 +28,12 @@ using namespace Windows::UI::Xaml::Navigation;
 
 const wchar_t* requested_permissions[] = {
 	L"public_profile",
-	L"user_friends",
-	L"user_likes",
-	L"user_location",
-	L"publish_pages",
-	L"manage_pages",
-	L"user_posts"
+	//L"user_friends",
+	//L"user_likes",
+	//L"user_location",
+	//L"publish_pages",
+	//L"manage_pages",
+	//L"user_posts"
 };
 
 BlankPage::BlankPage()
@@ -68,7 +68,6 @@ FacebookSDK::FacebookPermissions^ BlankPage::BuildPermissions() {
 	}
 	return ref new FacebookSDK::FacebookPermissions(v->GetView());
 }
-
 
 void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 {
@@ -154,8 +153,23 @@ void FacebookSDK_Tests::BlankPage::OnReauthorizeClicked(Platform::Object^ sender
 {
 	auto session = FacebookSDK::FacebookSession::ActiveSession;
 
-	SetSessionAppIds();
-	create_task(session->ReauthorizeAsync(BuildPermissions())).then([&](FacebookSDK::FacebookResult^ result) {
+	
+	const wchar_t* requested_permissions[] = {
+		L"public_profile",
+		L"user_friends",
+		L"user_likes",
+		L"user_location",
+		L"user_posts",
+		L"user_status"
+	};
+
+	auto v = ref new Vector<String^>();
+	for (auto const& permission : requested_permissions)
+	{
+		v->Append(ref new String(permission));
+	}
+	
+	create_task(session->ReauthorizeAsync(ref new FacebookSDK::FacebookPermissions(v->GetView()))).then([&](FacebookSDK::FacebookResult^ result) {
 		if (result->Succeeded) {
 			OutputDebugString(L"Reauthorize completed");
 		} else if (result->ErrorInfo != nullptr) {

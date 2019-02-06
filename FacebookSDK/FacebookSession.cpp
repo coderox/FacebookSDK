@@ -506,15 +506,15 @@ namespace winrt::FacebookSDK::implementation
 						hstring msg(L"Access Token: " + accessToken + L"\n");
 						OutputDebugString(msg.c_str());
 
-						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
+						size_t nextPos = vals.find(L",", pos + 1);
+						hstring expirationString(vals.substr(pos + 1, nextPos).c_str());
 						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
 
 						FacebookSDK::FacebookAccessTokenData cachedData{ nullptr };
 
-						pos = vals.find(L",", pos);
-						if (pos != wstring::npos)
+						if (nextPos != wstring::npos)
 						{
-							hstring dataExpirationString(vals.substr(pos + 1, wstring::npos).c_str());
+							hstring dataExpirationString(vals.substr(nextPos + 1, wstring::npos).c_str());
 							dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
 							cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime, dataAccessExpirationTime);
 						}
@@ -764,7 +764,7 @@ namespace winrt::FacebookSDK::implementation
 		FacebookSDK::FacebookResult loginResult{ nullptr };
 		auto session = FacebookSession::ActiveSession();
 
-		if (!IsRerequest(parameters)) {
+		if (!IsRerequest(parameters) && !IsReauthorize(parameters)) {
 			auto oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
 				if (FacebookSDK::FacebookAccessTokenData tokenData{ oauthResult.Object().try_as<FacebookSDK::FacebookAccessTokenData>() }) {
@@ -773,9 +773,9 @@ namespace winrt::FacebookSDK::implementation
 					}
 				}
 			}
-			else {
-				loginResult = co_await RunWebViewLoginOnUIThreadAsync(parameters);
-			}
+		}
+		if(loginResult == nullptr) {
+			loginResult = co_await RunWebViewLoginOnUIThreadAsync(parameters);
 		}
 		co_return loginResult;
 	}
@@ -1038,5 +1038,16 @@ namespace winrt::FacebookSDK::implementation
 			}
 		}
 		return isRerequest;
+	}
+
+	BOOL FacebookSession::IsReauthorize(PropertySet parameters) {
+		bool isReauthorize = false;
+		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
+			hstring value = unbox_value<hstring>(parameters.Lookup(AuthTypeKey));
+			if (compare_ordinal(value.c_str(), Reauthorize) == 0) {
+				isReauthorize = true;
+			}
+		}
+		return isReauthorize;
 	}
 }
