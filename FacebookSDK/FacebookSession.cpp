@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include <ppltasks.h>
 
 #include "FacebookAccessTokenData.h"
 #include "FacebookSession.h"
@@ -502,27 +501,42 @@ namespace winrt::FacebookSDK::implementation
 					{
 						DateTime expirationTime;
 						DateTime dataAccessExpirationTime;
+						hstring dataExpirationString;
 						hstring accessToken(vals.substr(0, pos).c_str());
 						hstring msg(L"Access Token: " + accessToken + L"\n");
 						OutputDebugString(msg.c_str());
 
 						size_t nextPos = vals.find(L",", pos + 1);
-						hstring expirationString(vals.substr(pos + 1, nextPos).c_str());
-						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-
+						hstring expirationString(vals.substr(pos + 1, nextPos - (pos +1)).c_str());
+						
 						FacebookSDK::FacebookAccessTokenData cachedData{ nullptr };
 
 						if (nextPos != wstring::npos)
 						{
-							hstring dataExpirationString(vals.substr(nextPos + 1, wstring::npos).c_str());
+							dataExpirationString = vals.substr(nextPos + 1, wstring::npos).c_str();
 							dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
-							cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime, dataAccessExpirationTime);
 						}
-						else {
+
+						if (expirationString != L"0") {
+							expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
+							if (dataExpirationString != L"0") {
 #ifdef _DEBUG
-							OutputDebugString(L"Read token without data access expiration time!\n");
+								OutputDebugString(L"Read token with both expiration and data access expiration time!\n");
 #endif
-							cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+								dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
+								cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime, dataAccessExpirationTime);
+							}
+							else {
+#ifdef _DEBUG
+								OutputDebugString(L"Read token without any data access expiration time!\n");
+#endif
+								cachedData = make<FacebookAccessTokenData>(accessToken, expirationTime);
+							}
+						} else {
+#ifdef _DEBUG
+							OutputDebugString(L"Read token without any expiration time!\n");
+#endif
+							cachedData = make<FacebookAccessTokenData>(accessToken.c_str(), expirationString.c_str(), dataExpirationString.c_str());
 						}
 						result = make<FacebookResult>(cachedData);
 					}
@@ -542,22 +556,32 @@ namespace winrt::FacebookSDK::implementation
 		{
 			wchar_t buffer[INT64_STRING_BUFSIZE];
 			DataProtectionProvider provider(L"LOCAL=user");
-			_i64tow_s(
-				WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
-				buffer, INT64_STRING_BUFSIZE, 10);
 			wstringstream tokenStream;
-			tokenStream << AccessTokenData().AccessToken().c_str() << L"," << hstring(buffer).c_str();
-			if (AccessTokenData().HasDataAccessExpired()) {
+			tokenStream << AccessTokenData().AccessToken().c_str();
+			if (AccessTokenData().HasExpirationDate()) {
+				_i64tow_s(
+					WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
+					buffer, INT64_STRING_BUFSIZE, 10);
+				tokenStream << L"," << hstring(buffer).c_str();
+			}
+			else {
+				tokenStream << L",0";
+			}
+			if (AccessTokenData().HasDataAccessExpirationDate()) {
 				_i64tow_s(
 					WindowsTickToUnixSeconds(AccessTokenData().DataAccessExpirationDate().time_since_epoch().count()),
 					buffer, INT64_STRING_BUFSIZE, 10);
 				tokenStream << L"," << hstring(buffer).c_str();
+			}
+			else {
+				tokenStream << L",0";
 			}
 			hstring tokenData(tokenStream.str().c_str());
 			IBuffer dataBuff = CryptographicBuffer::ConvertStringToBinary(tokenData, BinaryStringEncoding::Utf16LE);
 
 			auto protectedData = co_await provider.ProtectAsync(dataBuff);
 			StorageFolder folder = ApplicationData::Current().LocalFolder();
+			std::lock_guard<std::mutex> guard(_fileMutex);
 			auto file = co_await folder.CreateFileAsync(L"FBSDKData", CreationCollisionOption::OpenIfExists);
 			co_await FileIO::WriteBufferAsync(file, protectedData);
 		}
@@ -572,6 +596,7 @@ namespace winrt::FacebookSDK::implementation
 		OutputDebugString(msg.c_str());
 #endif
 		try {
+			std::lock_guard<std::mutex> guard(_fileMutex);
 			auto item = co_await folder.TryGetItemAsync(L"FBSDKData");
 			if (item) {
 				item.DeleteAsync();

@@ -19,6 +19,7 @@ namespace winrt::FacebookSDK::implementation
 		std::wstring expiration,
 		std::wstring dataAccessExpiration)
 		: _accessToken(accessToken)
+		, _hasExpirationDate(false)
 		, _hasDataAccessExpirationDate(false)
 	{
 		if (!expiration.empty())
@@ -36,6 +37,7 @@ namespace winrt::FacebookSDK::implementation
 	FacebookAccessTokenData::FacebookAccessTokenData(hstring const& accessToken, DateTime const& expiration)
 		: _accessToken(accessToken.c_str())
 		, _expirationDate(expiration)
+		, _hasExpirationDate(true)
 		, _hasDataAccessExpirationDate(false)
 	{
 #ifdef _DEBUG
@@ -50,6 +52,7 @@ namespace winrt::FacebookSDK::implementation
 		: _accessToken(accessToken.c_str())
 		, _expirationDate(expiration)
 		, _dataAccessExpirationDate(dataAccessExpiration)
+		, _hasExpirationDate(true)
 		, _hasDataAccessExpirationDate(true)
 	{
 #ifdef _DEBUG
@@ -92,24 +95,23 @@ namespace winrt::FacebookSDK::implementation
 		Calendar cal;
 		cal.SetToNow();
 		expired = (cal.CompareDateTime(_expirationDate) >= 0);
-		return expired;
+		return _hasExpirationDate && expired;
 	}
 
 	bool FacebookAccessTokenData::IsDataAccessExpired()
 	{
-		if (!_hasDataAccessExpirationDate) {
-			return false;
-		}
-		else {
-			bool expired = true;
-			Calendar cal;
-			cal.SetToNow();
-			expired = (cal.CompareDateTime(_expirationDate) >= 0);
-			return expired;
-		}
+		bool expired = true;
+		Calendar cal;
+		cal.SetToNow();
+		expired = (cal.CompareDateTime(_expirationDate) >= 0);
+		return _hasDataAccessExpirationDate && expired;
 	}
 
-	bool FacebookAccessTokenData::HasDataAccessExpired() {
+	bool FacebookAccessTokenData::HasExpirationDate() {
+		return _hasExpirationDate;
+	}
+
+	bool FacebookAccessTokenData::HasDataAccessExpirationDate() {
 		return _hasDataAccessExpirationDate;
 	}
 
@@ -184,9 +186,12 @@ namespace winrt::FacebookSDK::implementation
 	) {
 		Calendar cal;
 		int numSecs = _wtoi(expiration.c_str());
-		cal.SetToNow();
-		cal.AddSeconds(numSecs);
-		_expirationDate = cal.GetDateTime();
+		if (numSecs != 0) {
+			cal.SetToNow();
+			cal.AddSeconds(numSecs);
+			_expirationDate = cal.GetDateTime();
+			_hasExpirationDate = true;
+		}
 	}
 
 	void FacebookAccessTokenData::CalculateDataAccessExpirationDateTime(

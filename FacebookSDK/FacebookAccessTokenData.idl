@@ -13,9 +13,13 @@ namespace FacebookSDK
 		Windows.Foundation.DateTime DataAccessExpirationDate{ get; };
 		FacebookPermissions GrantedPermissions{ get; };
 		FacebookPermissions DeclinedPermissions{ get; };
+		
 		Boolean IsExpired{ get; };
+		Boolean HasExpirationDate{ get; };
+
 		Boolean IsDataAccessExpired{ get; };
-		Boolean HasDataAccessExpired{ get; };
+		Boolean HasDataAccessExpirationDate{ get; };
+		
 		void SetPermissions(Windows.Foundation.Collections.IVectorView<Object> perms);
 	}
 }

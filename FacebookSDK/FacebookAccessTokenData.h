@@ -22,9 +22,13 @@ namespace winrt::FacebookSDK::implementation
 		Windows::Foundation::DateTime DataAccessExpirationDate();
 		FacebookSDK::FacebookPermissions GrantedPermissions();
 		FacebookSDK::FacebookPermissions DeclinedPermissions();
+		
 		bool IsExpired();
+		bool HasExpirationDate();
+
 		bool IsDataAccessExpired();
-		bool HasDataAccessExpired();
+		bool HasDataAccessExpirationDate();
+		
 		void SetPermissions(Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> const& perms);
 
 		static FacebookSDK::FacebookAccessTokenData FromUri(Windows::Foundation::Uri const& Response);
@@ -63,6 +67,7 @@ namespace winrt::FacebookSDK::implementation
 		std::wstring _accessToken;
 		winrt::Windows::Foundation::DateTime _expirationDate;
 		winrt::Windows::Foundation::DateTime _dataAccessExpirationDate;
+		bool _hasExpirationDate;
 		bool _hasDataAccessExpirationDate;
 		FacebookSDK::FacebookPermissions _grantedPermissions{ nullptr };
 		FacebookSDK::FacebookPermissions _declinedPermissions{ nullptr };

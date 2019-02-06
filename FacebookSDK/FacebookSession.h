@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "FacebookSession.g.h"
-#include <ppltasks.h>
+#include <mutex>
 
 namespace winrt::FacebookSDK::implementation
 {
@@ -95,9 +95,9 @@ namespace winrt::FacebookSDK::implementation
 		std::wstring _webViewRedirectPath;
 		FacebookSDK::FacebookAccessTokenData _AccessTokenData{ nullptr };
 		FacebookSDK::Graph::FBUser _user{ nullptr };
-		concurrency::task<FacebookSDK::FacebookResult> _loginTask;
 		FacebookSDK::FacebookDialog _dialog{ nullptr };
 		FacebookSDK::FacebookResult _asyncResult{ nullptr };
+		std::mutex _fileMutex;
 	};
 }
 

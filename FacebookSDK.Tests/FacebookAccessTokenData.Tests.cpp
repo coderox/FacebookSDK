@@ -32,7 +32,7 @@ namespace FacebookSDK_Tests
 			Assert::IsNotNull(instance);
 			Assert::AreEqual("ACCESS_TOKEN", instance->AccessToken);
 			Assert::IsFalse(instance->IsExpired);
-			Assert::IsFalse(instance->HasDataAccessExpired);
+			Assert::IsFalse(instance->HasDataAccessExpirationDate);
 		}
 
 		TEST_METHOD(TestIsExpiredYesterdayShouldBeTrue)
@@ -46,7 +46,7 @@ namespace FacebookSDK_Tests
 			// assert
 			Assert::IsNotNull(instance);
 			Assert::IsTrue(instance->IsExpired);
-			Assert::IsFalse(instance->HasDataAccessExpired);
+			Assert::IsFalse(instance->HasDataAccessExpirationDate);
 		}
 
 		TEST_METHOD(TestDataAccessExpiration)
@@ -61,7 +61,7 @@ namespace FacebookSDK_Tests
 			Assert::IsNotNull(instance);
 			Assert::AreEqual("ACCESS_TOKEN", instance->AccessToken);
 			Assert::IsFalse(instance->IsExpired);
-			Assert::IsTrue(instance->HasDataAccessExpired);
+			Assert::IsTrue(instance->HasDataAccessExpirationDate);
 			Assert::IsFalse(instance->IsDataAccessExpired);
 		}
 
@@ -76,7 +76,7 @@ namespace FacebookSDK_Tests
 			// assert
 			Assert::IsNotNull(instance);
 			Assert::IsTrue(instance->IsExpired);
-			Assert::IsTrue(instance->HasDataAccessExpired);
+			Assert::IsTrue(instance->HasDataAccessExpirationDate);
 			Assert::IsTrue(instance->IsDataAccessExpired);
 		}
 	};
