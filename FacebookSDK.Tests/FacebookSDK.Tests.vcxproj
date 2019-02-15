@@ -126,7 +126,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <PackageCertificateKeyFile>FacebookSDK.Tests_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>..\FacebookSDK.TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>069E8EB24D71F6A1B1A709FCCA5B83E8685722CD</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -213,7 +213,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="FacebookSDK.Tests_TemporaryKey.pfx" />
+    <None Include="..\FacebookSDK.TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
