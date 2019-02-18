@@ -149,56 +149,56 @@ call codegen.cmd</Command>
             <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookAccessTokenData.h">
-            <DependentUpon>FacebookAccessTokenData.idl</DependentUpon>
+        <ClInclude Include="FBAccessTokenData.h">
+            <DependentUpon>FBAccessTokenData.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookClient.h">
-            <DependentUpon>FacebookClient.idl</DependentUpon>
+        <ClInclude Include="FBClient.h">
+            <DependentUpon>FBClient.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookConstants.h" />
-        <ClInclude Include="FacebookDialog.h">
-            <DependentUpon>FacebookDialog.xaml</DependentUpon>
+        <ClInclude Include="FBConstants.h" />
+        <ClInclude Include="FBDialog.h">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookFeedRequest.h">
-            <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
+        <ClInclude Include="FBFeedRequest.h">
+            <DependentUpon>FBFeedRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookLoginButton.h">
-            <DependentUpon>FacebookLoginButton.idl</DependentUpon>
+        <ClInclude Include="FBLoginButton.h">
+            <DependentUpon>FBLoginButton.idl</DependentUpon>
         </ClInclude>
-        <ClInclude Include="FacebookMediaObject.h">
-            <DependentUpon>FacebookMediaObject.idl</DependentUpon>
+        <ClInclude Include="FBMediaObject.h">
+            <DependentUpon>FBMediaObject.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookMediaStream.h">
-            <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+        <ClInclude Include="FBMediaStream.h">
+            <DependentUpon>FBMediaStream.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookPaginatedArray.h">
-            <DependentUpon>FacebookPaginatedArray.idl</DependentUpon>
+        <ClInclude Include="FBPaginatedArray.h">
+            <DependentUpon>FBPaginatedArray.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookPermissions.h">
-            <DependentUpon>FacebookPermissions.idl</DependentUpon>
+        <ClInclude Include="FBPermissions.h">
+            <DependentUpon>FBPermissions.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookProfilePictureControl.h">
-            <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+        <ClInclude Include="FBProfilePictureControl.h">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookAppEvents.h">
-            <DependentUpon>FacebookAppEvents.idl</DependentUpon>
+        <ClInclude Include="FBAppEvents.h">
+            <DependentUpon>FBAppEvents.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookSendRequest.h">
-            <DependentUpon>FacebookSendRequest.idl</DependentUpon>
+        <ClInclude Include="FBSendRequest.h">
+            <DependentUpon>FBSendRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookSession.h">
-            <DependentUpon>FacebookSession.idl</DependentUpon>
+        <ClInclude Include="FBSession.h">
+            <DependentUpon>FBSession.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
         <ClInclude Include="Generated\Graph.FBAppRequest.h" />
@@ -224,15 +224,15 @@ call codegen.cmd</Command>
         <ClInclude Include="JsonClassFactory.h">
             <DependentUpon>JsonClassFactory.idl</DependentUpon>
         </ClInclude>
-        <ClInclude Include="FacebookAppRequest.h">
-            <DependentUpon>FacebookAppRequest.idl</DependentUpon>
+        <ClInclude Include="FBAppRequest.h">
+            <DependentUpon>FBAppRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
-        <ClInclude Include="FacebookResult.h">
-            <DependentUpon>FacebookResult.idl</DependentUpon>
+        <ClInclude Include="FBResult.h">
+            <DependentUpon>FBResult.idl</DependentUpon>
         </ClInclude>
-        <ClInclude Include="FacebookSingleValue.h">
-            <DependentUpon>FacebookSingleValue.idl</DependentUpon>
+        <ClInclude Include="FBSingleValue.h">
+            <DependentUpon>FBSingleValue.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClInclude>
         <ClInclude Include="HlsColor.h">
@@ -240,8 +240,8 @@ call codegen.cmd</Command>
             <SubType>Code</SubType>
         </ClInclude>
         <ClInclude Include="pch.h" />
-        <ClInclude Include="FacebookError.h">
-            <DependentUpon>FacebookError.idl</DependentUpon>
+        <ClInclude Include="FBError.h">
+            <DependentUpon>FBError.idl</DependentUpon>
         </ClInclude>
         <ClInclude Include="ScaleConverter.h">
             <DependentUpon>ScaleConverter.idl</DependentUpon>
@@ -254,66 +254,66 @@ call codegen.cmd</Command>
         <ClCompile Include="ColorLuminosityConverter.cpp">
             <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
         </ClCompile>
-        <ClCompile Include="FacebookAccessTokenData.cpp">
-            <DependentUpon>FacebookAccessTokenData.idl</DependentUpon>
+        <ClCompile Include="FBAccessTokenData.cpp">
+            <DependentUpon>FBAccessTokenData.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookAppRequest.cpp">
-            <DependentUpon>FacebookAppRequest.idl</DependentUpon>
+        <ClCompile Include="FBAppRequest.cpp">
+            <DependentUpon>FBAppRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookClient.cpp">
-            <DependentUpon>FacebookClient.idl</DependentUpon>
+        <ClCompile Include="FBClient.cpp">
+            <DependentUpon>FBClient.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookDialog.cpp">
-            <DependentUpon>FacebookDialog.xaml</DependentUpon>
+        <ClCompile Include="FBDialog.cpp">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookFeedRequest.cpp">
-            <DependentUpon>FacebookFeedRequest.idl</DependentUpon>
+        <ClCompile Include="FBFeedRequest.cpp">
+            <DependentUpon>FBFeedRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookLoginButton.cpp">
-            <DependentUpon>FacebookLoginButton.idl</DependentUpon>
+        <ClCompile Include="FBLoginButton.cpp">
+            <DependentUpon>FBLoginButton.idl</DependentUpon>
         </ClCompile>
-        <ClCompile Include="FacebookMediaObject.cpp">
-            <DependentUpon>FacebookMediaObject.idl</DependentUpon>
+        <ClCompile Include="FBMediaObject.cpp">
+            <DependentUpon>FBMediaObject.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookMediaStream.cpp">
-            <DependentUpon>FacebookMediaStream.idl</DependentUpon>
+        <ClCompile Include="FBMediaStream.cpp">
+            <DependentUpon>FBMediaStream.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookPaginatedArray.cpp">
-            <DependentUpon>FacebookPaginatedArray.idl</DependentUpon>
+        <ClCompile Include="FBPaginatedArray.cpp">
+            <DependentUpon>FBPaginatedArray.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookPermissions.cpp">
-            <DependentUpon>FacebookPermissions.idl</DependentUpon>
+        <ClCompile Include="FBPermissions.cpp">
+            <DependentUpon>FBPermissions.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookProfilePictureControl.cpp">
-            <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+        <ClCompile Include="FBProfilePictureControl.cpp">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookResult.cpp">
-            <DependentUpon>FacebookResult.idl</DependentUpon>
+        <ClCompile Include="FBResult.cpp">
+            <DependentUpon>FBResult.idl</DependentUpon>
         </ClCompile>
-        <ClCompile Include="FacebookAppEvents.cpp">
-            <DependentUpon>FacebookAppEvents.idl</DependentUpon>
+        <ClCompile Include="FBAppEvents.cpp">
+            <DependentUpon>FBAppEvents.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookSendRequest.cpp">
-            <DependentUpon>FacebookSendRequest.idl</DependentUpon>
+        <ClCompile Include="FBSendRequest.cpp">
+            <DependentUpon>FBSendRequest.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookSession.cpp">
-            <DependentUpon>FacebookSession.idl</DependentUpon>
+        <ClCompile Include="FBSession.cpp">
+            <DependentUpon>FBSession.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
-        <ClCompile Include="FacebookSingleValue.cpp">
-            <DependentUpon>FacebookSingleValue.idl</DependentUpon>
+        <ClCompile Include="FBSingleValue.cpp">
+            <DependentUpon>FBSingleValue.idl</DependentUpon>
             <SubType>Code</SubType>
         </ClCompile>
         <ClCompile Include="Generated\Graph.FBAppRequest.cpp" />
@@ -342,8 +342,8 @@ call codegen.cmd</Command>
         <ClCompile Include="pch.cpp">
             <PrecompiledHeader>Create</PrecompiledHeader>
         </ClCompile>
-        <ClCompile Include="FacebookError.cpp">
-            <DependentUpon>FacebookError.idl</DependentUpon>
+        <ClCompile Include="FBError.cpp">
+            <DependentUpon>FBError.idl</DependentUpon>
         </ClCompile>
         <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
         <ClCompile Include="ScaleConverter.cpp">
@@ -354,47 +354,47 @@ call codegen.cmd</Command>
     </ItemGroup>
     <ItemGroup>
         <Midl Include="ColorLuminosityConverter.idl" />
-        <Midl Include="FacebookAccessTokenData.idl">
+        <Midl Include="FBAccessTokenData.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookAppRequest.idl">
+        <Midl Include="FBAppRequest.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookClient.idl">
+        <Midl Include="FBClient.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookDialog.idl">
-            <DependentUpon>FacebookDialog.xaml</DependentUpon>
+        <Midl Include="FBDialog.idl">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Midl>
-        <Midl Include="FacebookError.idl" />
-        <Midl Include="FacebookFeedRequest.idl">
+        <Midl Include="FBError.idl" />
+        <Midl Include="FBFeedRequest.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookLoginButton.idl" />
-        <Midl Include="FacebookMediaObject.idl">
+        <Midl Include="FBLoginButton.idl" />
+        <Midl Include="FBMediaObject.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookMediaStream.idl">
+        <Midl Include="FBMediaStream.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookPaginatedArray.idl">
+        <Midl Include="FBPaginatedArray.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookPermissions.idl">
+        <Midl Include="FBPermissions.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookProfilePictureControl.idl">
-            <DependentUpon>FacebookProfilePictureControl.xaml</DependentUpon>
+        <Midl Include="FBProfilePictureControl.idl">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Midl>
-        <Midl Include="FacebookAppEvents.idl">
+        <Midl Include="FBAppEvents.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookSendRequest.idl">
+        <Midl Include="FBSendRequest.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookSession.idl">
+        <Midl Include="FBSession.idl">
             <SubType>Designer</SubType>
         </Midl>
         <Midl Include="Generated\Graph.FBAppRequest.idl" />
@@ -420,8 +420,8 @@ call codegen.cmd</Command>
         <Midl Include="JsonClassFactory.idl">
             <SubType>Designer</SubType>
         </Midl>
-        <Midl Include="FacebookResult.idl" />
-        <Midl Include="FacebookSingleValue.idl">
+        <Midl Include="FBResult.idl" />
+        <Midl Include="FBSingleValue.idl">
             <SubType>Designer</SubType>
         </Midl>
         <Midl Include="HlsColor.idl">
@@ -487,10 +487,10 @@ call codegen.cmd</Command>
         <Xml Include="Graph.FBUser.xml" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="FacebookDialog.xaml">
+        <Page Include="FBDialog.xaml">
             <SubType>Designer</SubType>
         </Page>
-        <Page Include="FacebookProfilePictureControl.xaml">
+        <Page Include="FBProfilePictureControl.xaml">
             <SubType>Designer</SubType>
         </Page>
         <Page Include="Themes\Generic.xaml">

@@ -1,0 +1,10 @@
+namespace winsdkfb
+{
+	runtimeclass FBAppRequest
+	{
+		String RequestId{ get; };
+		Windows.Foundation.Collections.IVectorView<String> RecipientIds{ get; };
+
+		static FBAppRequest FromRequestDialogResponse(Windows.Foundation.Uri Response);
+	}
+}

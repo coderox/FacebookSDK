@@ -25,10 +25,10 @@
     <ClCompile Include="ColorLuminosityConverter.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookError.Tests.cpp">
+    <ClCompile Include="FBError.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookResult.Tests.cpp">
+    <ClCompile Include="FBResult.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="ScaleConverter.Tests.cpp">
@@ -37,19 +37,19 @@
     <ClCompile Include="HlsColor.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookSingleValue.Tests.cpp">
+    <ClCompile Include="FBSingleValue.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookAppRequest.Tests.cpp">
+    <ClCompile Include="FBAppRequest.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookMediaObject.Tests.cpp">
+    <ClCompile Include="FBMediaObject.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookMediaStream.Tests.cpp">
+    <ClCompile Include="FBMediaStream.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookAccessTokenData.Tests.cpp">
+    <ClCompile Include="FBAccessTokenData.Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="GraphUriBuilder.Tests.cpp">

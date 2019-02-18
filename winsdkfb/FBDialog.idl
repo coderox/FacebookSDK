@@ -1,0 +1,37 @@
+import "FBResult.idl";
+
+namespace winsdkfb
+{
+	delegate Windows.Foundation.Uri DialogUriBuilder(Windows.Foundation.Collections.PropertySet Parameters);
+
+	[default_interface]
+	runtimeclass FBDialog : Windows.UI.Xaml.Controls.UserControl
+	{
+		FBDialog();
+		void InitDialog();
+		void UninitDialog();
+
+		static String GetFBServerUrl();
+
+		Windows.Foundation.IAsyncOperation<FBResult> ShowLoginDialogAsync(
+			Windows.Foundation.Collections.PropertySet parameters
+		);
+
+		Windows.Foundation.IAsyncOperation<FBResult> ShowFeedDialogAsync(
+			Windows.Foundation.Collections.PropertySet parameters
+		);
+
+		Windows.Foundation.IAsyncOperation<FBResult> ShowRequestsDialogAsync(
+			Windows.Foundation.Collections.PropertySet parameters
+		);
+
+		Windows.Foundation.IAsyncOperation<FBResult> ShowSendDialogAsync(
+			Windows.Foundation.Collections.PropertySet parameters
+		);
+
+		/*! discussion The current session in webview is required only if the access token is valid
+		 *  When the access token is removed the cookies must be clean up
+		 */
+		static void DeleteCookies();
+	}
+}

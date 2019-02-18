@@ -199,7 +199,7 @@ namespace winsdkfb.CS.Tests
                 PagingObjectJson + "}";
 
             string fbResponse = FBArrayOfLikes;
-            FacebookPaginatedArray arr = new FacebookPaginatedArray("Unused", null,
+            FBPaginatedArray arr = new FBPaginatedArray("Unused", null,
                 new JsonClassFactory(
                     (JsonText) => FBPage.FromJson(JsonText)));
 
@@ -220,7 +220,7 @@ namespace winsdkfb.CS.Tests
         [TestMethod]
         public void parseErrorFromJson()
         {
-            FacebookError e = FacebookError.FromJson(ErrorObjectJson);
+            FBError e = FBError.FromJson(ErrorObjectJson);
             Assert.IsNotNull(e);
             Assert.IsNotNull(e.Message);
             Assert.IsNotNull(e.Type);
@@ -237,7 +237,7 @@ namespace winsdkfb.CS.Tests
         [TestMethod]
         public void parseErrorFromQueryString()
         {
-            FacebookError err = FacebookError.FromUri(new Uri(FBCanceledRequestResponse));
+            FBError err = FBError.FromUri(new Uri(FBCanceledRequestResponse));
             Assert.IsNotNull(err);
             Assert.AreEqual(err.Code, 4201);
             Assert.AreEqual(FBCanceledRequestMessage, err.Message);
@@ -252,7 +252,7 @@ namespace winsdkfb.CS.Tests
             parameters.Add("access_token", "");
             parameters.Add("id", TestAppId);
 
-            FacebookSingleValue sval = new FacebookSingleValue(FBSDKTokenApiPath,
+            FBSingleValue sval = new FBSingleValue(FBSDKTokenApiPath,
                 parameters,
                 new JsonClassFactory((JsonText) =>
                 {
@@ -265,7 +265,7 @@ namespace winsdkfb.CS.Tests
                     return obj;
                 }));
 
-            FacebookResult fbresult = await sval.GetAsync();
+            FBResult fbresult = await sval.GetAsync();
 
             if (fbresult.Succeeded)
             {
@@ -287,7 +287,7 @@ namespace winsdkfb.CS.Tests
         //    bool success = false;
 
         //    // If you're creating/deleting test users frequently, like say in
-        //    // a unit test suite, Facebook will occasionally fail this call with 
+        //    // a unit test suite, FB will occasionally fail this call with 
         //    // the error code 1, type "OAuthException" and the message "An 
         //    // unknown error occurred".  Throwing in a short delay and retrying
         //    // almost always alleviates the problem, so adding a few retries
@@ -297,10 +297,10 @@ namespace winsdkfb.CS.Tests
         //    {
         //        string path = "/" + TestAppId + FBSDKTestUsersPath;
 
-        //        FacebookSingleValue sval = new FacebookSingleValue(path, Parameters,
+        //        FBSingleValue sval = new FBSingleValue(path, Parameters,
         //            new JsonClassFactory(FBTestUser.FromJson));
 
-        //        FacebookResult fbresult = await sval.PostAsync();
+        //        FBResult fbresult = await sval.PostAsync();
 
         //        if ((fbresult.Succeeded == false) || (fbresult.Object == null))
         //        {
@@ -338,10 +338,10 @@ namespace winsdkfb.CS.Tests
 
         //    string path = "/" + User.Id + FBFeedPath;
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBObject.FromJson));
 
-        //    FacebookResult fbresult = await sval.PostAsync();
+        //    FBResult fbresult = await sval.PostAsync();
 
         //    return (FBObject)fbresult.Object;
         //}
@@ -358,7 +358,7 @@ namespace winsdkfb.CS.Tests
         //    FBPaginatedArray arr = new FBPaginatedArray(path, parameters,
         //        new JsonClassFactory(FBTestUser.FromJson));
 
-        //    FacebookResult result = await arr.FirstAsync();
+        //    FBResult result = await arr.FirstAsync();
         //    //Assert.IsTrue(result.Succeeded);
 
         //    IReadOnlyList<Object> users = null;
@@ -376,7 +376,7 @@ namespace winsdkfb.CS.Tests
         //    return users;
         //}
 
-        //public async Task<FacebookResult> deleteTestUser(
+        //public async Task<FBResult> deleteTestUser(
         //    FBTestUser user
         //    )
         //{
@@ -386,7 +386,7 @@ namespace winsdkfb.CS.Tests
 
         //    parameters.Add("access_token", Uri.EscapeUriString(token));
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBSuccess.FromJson));
 
         //    return await sval.DeleteAsync();
@@ -396,7 +396,7 @@ namespace winsdkfb.CS.Tests
         //{
         //    IReadOnlyList<Object> users = await getListOfTestUsers();
         //    Assert.IsNotNull(users);
-        //    List<Task<FacebookResult>> results = new List<Task<FacebookResult>>();
+        //    List<Task<FBResult>> results = new List<Task<FBResult>>();
 
         //    for (int i = 0; i < users.Count; i++)
         //    {
@@ -413,7 +413,7 @@ namespace winsdkfb.CS.Tests
 
         //    for (int i = 0; i < users.Count; i++)
         //    {
-        //        FacebookResult result = await results[i];
+        //        FBResult result = await results[i];
 
         //        if (result.Succeeded == false)
         //        {
@@ -437,7 +437,7 @@ namespace winsdkfb.CS.Tests
         //    }
         //}
 
-        //public async Task<FacebookResult> publishCustomUserObject(
+        //public async Task<FBResult> publishCustomUserObject(
         //    FBTestUser user
         //    )
         //{
@@ -448,13 +448,13 @@ namespace winsdkfb.CS.Tests
         //    parameters.Add("access_token", user.AccessToken);
         //    parameters.Add("object", FBCustomObjectInstance);
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBObject.FromJson));
 
         //    return await sval.PostAsync();
         //}
 
-        //public async Task<FacebookResult> publishCustomStory(
+        //public async Task<FBResult> publishCustomStory(
         //    FBTestUser user,
         //    FBObject customObject
         //    )
@@ -465,7 +465,7 @@ namespace winsdkfb.CS.Tests
         //    parameters.Add("noun", customObject.Id);
         //    parameters.Add("access_token", user.AccessToken);
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBObject.FromJson));
 
         //    return await sval.PostAsync();
@@ -517,7 +517,7 @@ namespace winsdkfb.CS.Tests
         //    FBPaginatedArray arr = new FBPaginatedArray(path, parameters,
         //        new JsonClassFactory(FBTestUser.FromJson));
 
-        //    FacebookResult result = await arr.FirstAsync();
+        //    FBResult result = await arr.FirstAsync();
         //    Assert.IsTrue(result.Succeeded);
 
         //    IReadOnlyList<Object> users =
@@ -582,10 +582,10 @@ namespace winsdkfb.CS.Tests
 
         //    string path = "/" + user.Id + "/photos";
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBPhoto.FromJson));
 
-        //    FacebookResult result = await sval.PostAsync();
+        //    FBResult result = await sval.PostAsync();
         //    Assert.IsTrue(result.Succeeded);
 
         //    try
@@ -619,10 +619,10 @@ namespace winsdkfb.CS.Tests
 
         //    parameters.Add("object", likedObject);
 
-        //    FacebookSingleValue sval = new FacebookSingleValue(path, parameters,
+        //    FBSingleValue sval = new FBSingleValue(path, parameters,
         //        new JsonClassFactory(FBObject.FromJson));
 
-        //    FacebookResult result = await sval.PostAsync();
+        //    FBResult result = await sval.PostAsync();
         //    Assert.IsTrue(result.Succeeded);
 
         //    try
@@ -650,7 +650,7 @@ namespace winsdkfb.CS.Tests
 
         //    FBTestUser user = await createTestUser(parameters);
 
-        //    FacebookResult result = await publishCustomUserObject(user);
+        //    FBResult result = await publishCustomUserObject(user);
         //    Assert.IsTrue(result.Succeeded);
 
         //    try
@@ -690,8 +690,8 @@ namespace winsdkfb.CS.Tests
             JsonClassFactory fact = new JsonClassFactory(
                 (JsonText) => dumbFunc(JsonText));
 
-            FacebookPaginatedArray likes = new FacebookPaginatedArray(graphPath, null, fact);
-            FacebookResult result = await likes.FirstAsync();
+            FBPaginatedArray likes = new FBPaginatedArray(graphPath, null, fact);
+            FBResult result = await likes.FirstAsync();
             Assert.IsTrue(likes.HasCurrent);
             Assert.IsFalse(likes.HasNext);
             Assert.IsFalse(likes.HasPrevious);

@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "GraphUriBuilder.h"
-#include "FacebookSession.h"
+#include "FBSession.h"
 
 #include <regex>
 #include <sstream>
@@ -86,7 +86,7 @@ namespace winrt::winsdkfb::implementation
 		}
 		else
 		{
-			auto session = FacebookSession::ActiveSession();
+			auto session = FBSession::ActiveSession();
 			if (session.APIMajorVersion())
 			{
 				std::wstringstream wstringstream;

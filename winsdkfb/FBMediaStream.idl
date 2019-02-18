@@ -1,0 +1,9 @@
+namespace winsdkfb
+{
+	runtimeclass FBMediaStream
+	{
+		FBMediaStream(String fileName, Windows.Storage.Streams.IRandomAccessStreamWithContentType stream);
+		String FileName{ get; };
+		Windows.Storage.Streams.IRandomAccessStreamWithContentType Stream{ get; };
+	}
+}

@@ -51,28 +51,28 @@ BlankPage::BlankPage()
 	//	return JsonText; 
 	//});
 
-	//auto likes = ref new winsdkfb::FacebookPaginatedArray(graphPath, nullptr, fact);
+	//auto likes = ref new winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
 	//auto result = concurrency::create_task(likes->FirstAsync()).get();
 }
 
 void BlankPage::SetSessionAppIds() {
-	auto session = winsdkfb::FacebookSession::ActiveSession;
-	session->FacebookAppId = "719494811465102";
+	auto session = winsdkfb::FBSession::ActiveSession;
+	session->FBAppId = "719494811465102";
 }
 
-winsdkfb::FacebookPermissions^ BlankPage::BuildPermissions() {
+winsdkfb::FBPermissions^ BlankPage::BuildPermissions() {
 	auto v = ref new Vector<String^>();
 	for (auto const& permission : requested_permissions)
 	{
 		v->Append(ref new String(permission));
 	}
-	return ref new winsdkfb::FacebookPermissions(v->GetView());
+	return ref new winsdkfb::FBPermissions(v->GetView());
 }
 
 
 void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 {
-	auto session = winsdkfb::FacebookSession::ActiveSession;
+	auto session = winsdkfb::FBSession::ActiveSession;
 	if (session->LoggedIn) {
 		create_task(session->LogoutAsync());
 		loginButton->Content = ref new Platform::String(L"Login");
@@ -80,8 +80,8 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 	}
 	else {
 		SetSessionAppIds();
-		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView)).then([&](winsdkfb::FacebookResult^ result) {
-			auto session = winsdkfb::FacebookSession::ActiveSession;
+		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView)).then([&](winsdkfb::FBResult^ result) {
+			auto session = winsdkfb::FBSession::ActiveSession;
 			if (session->LoggedIn) {
 				loginButton->Content = ref new Platform::String(L"Logout");
 				OutputDebugString(session->AccessTokenData->AccessToken->Data());
@@ -101,7 +101,7 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 
 void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
 {
-	auto session = winsdkfb::FacebookSession::ActiveSession;
+	auto session = winsdkfb::FBSession::ActiveSession;
 
 	if (session->LoggedIn) {
 		PropertySet^ params = ref new PropertySet();
@@ -109,7 +109,7 @@ void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
 		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
 		params->Insert(L"description", L"Om Nom Nom!");
 
-		create_task(session->ShowFeedDialogAsync(params)).then([=](winsdkfb::FacebookResult^ dialogResult) {
+		create_task(session->ShowFeedDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Feed' dialog.\n");
 		});
 	}
@@ -117,14 +117,14 @@ void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
 
 void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
 {
-	auto session = winsdkfb::FacebookSession::ActiveSession;
+	auto session = winsdkfb::FBSession::ActiveSession;
 
 	if (session->LoggedIn) {
 		PropertySet^ params = ref new PropertySet();
 		params->Insert(L"title", L"I love Brussels Sprouts!");
 		params->Insert(L"message", L"Om Nom Nom!");
 
-		create_task(session->ShowRequestsDialogAsync(params)).then([=](winsdkfb::FacebookResult^ dialogResult) {
+		create_task(session->ShowRequestsDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Requests' dialog.\n");
 		});
 	}
@@ -132,19 +132,19 @@ void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
 
 void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
 {
-	auto session = winsdkfb::FacebookSession::ActiveSession;
+	auto session = winsdkfb::FBSession::ActiveSession;
 
 	if (session->LoggedIn) {
 		PropertySet^ params = ref new PropertySet();
 		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
 		
-		create_task(session->ShowSendDialogAsync(params)).then([=](winsdkfb::FacebookResult^ dialogResult) {
+		create_task(session->ShowSendDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Send' dialog.\n");
 		});
 	}
 }
 
-void winsdkfb_Tests::BlankPage::OnUserInfoFetched(winsdkfb::FacebookLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo)
+void winsdkfb_Tests::BlankPage::OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo)
 {
 	profilePicture->UserId = userInfo->Id;
 }
@@ -152,7 +152,7 @@ void winsdkfb_Tests::BlankPage::OnUserInfoFetched(winsdkfb::FacebookLoginButton^
 
 void winsdkfb_Tests::BlankPage::OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	winsdkfb::FacebookSession^ sess = winsdkfb::FacebookSession::ActiveSession;
+	winsdkfb::FBSession^ sess = winsdkfb::FBSession::ActiveSession;
 	if (sess->LoggedIn)
 	{
 		// Set caption, link and description parameters
@@ -177,8 +177,8 @@ void winsdkfb_Tests::BlankPage::OnPostClicked(Platform::Object^ sender, Windows:
 			return returnObject;
 		});
 
-		winsdkfb::FacebookSingleValue^ sval = ref new winsdkfb::FacebookSingleValue(graphPath, parameters, fact);
-		create_task(sval->PostAsync()).then([=](winsdkfb::FacebookResult^ result)
+		winsdkfb::FBSingleValue^ sval = ref new winsdkfb::FBSingleValue(graphPath, parameters, fact);
+		create_task(sval->PostAsync()).then([=](winsdkfb::FBResult^ result)
 		{
 			if (result->Succeeded)
 			{
@@ -198,10 +198,10 @@ void winsdkfb_Tests::BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::
 {
 	SetSessionAppIds(); 
 	
-	auto session = winsdkfb::FacebookSession::ActiveSession;
+	auto session = winsdkfb::FBSession::ActiveSession;
 	if (!session->LoggedIn) {
-		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::Silent)).then([&](winsdkfb::FacebookResult^ result) {
-			auto session = winsdkfb::FacebookSession::ActiveSession;
+		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::Silent)).then([&](winsdkfb::FBResult^ result) {
+			auto session = winsdkfb::FBSession::ActiveSession;
 			if (session->LoggedIn) {
 				loginButton->Content = ref new Platform::String(L"Logout");
 				OutputDebugString(session->AccessTokenData->AccessToken->Data());

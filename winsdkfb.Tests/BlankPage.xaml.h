@@ -20,12 +20,12 @@ namespace winsdkfb_Tests
 	
 	private:
 		void SetSessionAppIds();
-		winsdkfb::FacebookPermissions^ BuildPermissions();
+		winsdkfb::FBPermissions^ BuildPermissions();
 		void OnLoginClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnFeedClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnRequestsClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnSendClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void OnUserInfoFetched(winsdkfb::FacebookLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo);
+		void OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo);
 		void OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};

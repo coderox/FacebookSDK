@@ -23,13 +23,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="FacebookError.cpp" />
-    <ClCompile Include="FacebookResult.cpp" />
+    <ClCompile Include="FBError.cpp" />
+    <ClCompile Include="FBResult.cpp" />
     <ClCompile Include="HlsColor.cpp" />
     <ClCompile Include="ColorLuminosityConverter.cpp" />
     <ClCompile Include="ScaleConverter.cpp" />
-    <ClCompile Include="FacebookSingleValue.cpp" />
-    <ClCompile Include="FacebookAppRequest.cpp" />
+    <ClCompile Include="FBSingleValue.cpp" />
+    <ClCompile Include="FBAppRequest.cpp" />
     <ClCompile Include="Generated\Graph.FBAppRequest.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -64,38 +64,38 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="HttpManager.cpp" />
-    <ClCompile Include="FacebookClient.cpp" />
-    <ClCompile Include="FacebookMediaObject.cpp" />
-    <ClCompile Include="FacebookAccessTokenData.cpp" />
-    <ClCompile Include="FacebookDialog.cpp" />
-    <ClCompile Include="FacebookMediaStream.cpp" />
-    <ClCompile Include="FacebookPermissions.cpp" />
-    <ClCompile Include="FacebookSession.cpp" />
+    <ClCompile Include="FBClient.cpp" />
+    <ClCompile Include="FBMediaObject.cpp" />
+    <ClCompile Include="FBAccessTokenData.cpp" />
+    <ClCompile Include="FBDialog.cpp" />
+    <ClCompile Include="FBMediaStream.cpp" />
+    <ClCompile Include="FBPermissions.cpp" />
+    <ClCompile Include="FBSession.cpp" />
     <ClCompile Include="GraphUriBuilder.cpp" />
-    <ClCompile Include="FacebookFeedRequest.cpp" />
-    <ClCompile Include="FacebookPaginatedArray.cpp" />
+    <ClCompile Include="FBFeedRequest.cpp" />
+    <ClCompile Include="FBPaginatedArray.cpp" />
     <ClCompile Include="Utilities.cpp" />
-    <ClCompile Include="FacebookProfilePictureControl.cpp" />
-    <ClCompile Include="FacebookSendRequest.cpp" />
-    <ClCompile Include="FacebookLoginButton.cpp">
+    <ClCompile Include="FBProfilePictureControl.cpp" />
+    <ClCompile Include="FBSendRequest.cpp" />
+    <ClCompile Include="FBLoginButton.cpp">
       <Filter>Controls</Filter>
     </ClCompile>
-    <ClCompile Include="FacebookAppEvents.cpp" />
+    <ClCompile Include="FBAppEvents.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="FacebookError.h" />
-    <ClInclude Include="FacebookResult.h" />
+    <ClInclude Include="FBError.h" />
+    <ClInclude Include="FBResult.h" />
     <ClInclude Include="HlsColor.h" />
     <ClInclude Include="ColorLuminosityConverter.h" />
     <ClInclude Include="ScaleConverter.h" />
     <ClInclude Include="SDKMessage.h" />
     <ClInclude Include="JsonClassFactory.h" />
-    <ClInclude Include="FacebookSingleValue.h" />
-    <ClInclude Include="FacebookAppRequest.h" />
+    <ClInclude Include="FBSingleValue.h" />
+    <ClInclude Include="FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBAppRequest.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -131,25 +131,25 @@
     </ClInclude>
     <ClInclude Include="HttpManager.h" />
     <ClInclude Include="HttpMethod.h" />
-    <ClInclude Include="FacebookClient.h" />
-    <ClInclude Include="FacebookMediaObject.h" />
-    <ClInclude Include="FacebookConstants.h" />
-    <ClInclude Include="FacebookAccessTokenData.h" />
-    <ClInclude Include="FacebookDialog.h" />
-    <ClInclude Include="FacebookMediaStream.h" />
-    <ClInclude Include="FacebookPermissions.h" />
-    <ClInclude Include="FacebookSession.h" />
+    <ClInclude Include="FBClient.h" />
+    <ClInclude Include="FBMediaObject.h" />
+    <ClInclude Include="FBConstants.h" />
+    <ClInclude Include="FBAccessTokenData.h" />
+    <ClInclude Include="FBDialog.h" />
+    <ClInclude Include="FBMediaStream.h" />
+    <ClInclude Include="FBPermissions.h" />
+    <ClInclude Include="FBSession.h" />
     <ClInclude Include="GraphUriBuilder.h" />
-    <ClInclude Include="FacebookFeedRequest.h" />
-    <ClInclude Include="FacebookPaginatedArray.h" />
+    <ClInclude Include="FBFeedRequest.h" />
+    <ClInclude Include="FBPaginatedArray.h" />
     <ClInclude Include="Utilities.h" />
-    <ClInclude Include="FacebookProfilePictureControl.h" />
-    <ClInclude Include="FacebookSendRequest.h" />
-    <ClInclude Include="FacebookLoginButton.h">
+    <ClInclude Include="FBProfilePictureControl.h" />
+    <ClInclude Include="FBSendRequest.h" />
+    <ClInclude Include="FBLoginButton.h">
       <Filter>Controls</Filter>
     </ClInclude>
-    <ClInclude Include="FacebookAppEvents.h" />
-    <ClInclude Include="FacebookLoginButton.h" />
+    <ClInclude Include="FBAppEvents.h" />
+    <ClInclude Include="FBLoginButton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -270,8 +270,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="FacebookError.idl" />
-    <Midl Include="FacebookResult.idl" />
+    <Midl Include="FBError.idl" />
+    <Midl Include="FBResult.idl" />
     <Midl Include="HlsColor.idl" />
     <Midl Include="ColorLuminosityConverter.idl">
       <Filter>Converters</Filter>
@@ -279,10 +279,10 @@
     <Midl Include="ScaleConverter.idl">
       <Filter>Converters</Filter>
     </Midl>
-    <Midl Include="FacebookSingleValue.idl" />
+    <Midl Include="FBSingleValue.idl" />
     <Midl Include="JsonClassFactory.idl" />
     <Midl Include="IHttpClient.idl" />
-    <Midl Include="FacebookAppRequest.idl" />
+    <Midl Include="FBAppRequest.idl" />
     <Midl Include="Generated\Graph.FBAppRequest.idl">
       <Filter>Generated Files</Filter>
     </Midl>
@@ -317,22 +317,22 @@
       <Filter>Generated Files</Filter>
     </Midl>
     <Midl Include="HttpManager.idl" />
-    <Midl Include="FacebookClient.idl" />
-    <Midl Include="FacebookMediaObject.idl" />
-    <Midl Include="FacebookMediaStream.idl" />
+    <Midl Include="FBClient.idl" />
+    <Midl Include="FBMediaObject.idl" />
+    <Midl Include="FBMediaStream.idl" />
     <Midl Include="GraphUriBuilder.idl" />
-    <Midl Include="FacebookSession.idl" />
-    <Midl Include="FacebookAccessTokenData.idl" />
-    <Midl Include="FacebookPermissions.idl" />
-    <Midl Include="FacebookDialog.idl" />
-    <Midl Include="FacebookFeedRequest.idl" />
-    <Midl Include="FacebookPaginatedArray.idl" />
-    <Midl Include="FacebookSendRequest.idl" />
-    <Midl Include="FacebookProfilePictureControl.idl" />
-    <Midl Include="FacebookLoginButton.idl">
+    <Midl Include="FBSession.idl" />
+    <Midl Include="FBAccessTokenData.idl" />
+    <Midl Include="FBPermissions.idl" />
+    <Midl Include="FBDialog.idl" />
+    <Midl Include="FBFeedRequest.idl" />
+    <Midl Include="FBPaginatedArray.idl" />
+    <Midl Include="FBSendRequest.idl" />
+    <Midl Include="FBProfilePictureControl.idl" />
+    <Midl Include="FBLoginButton.idl">
       <Filter>Controls</Filter>
     </Midl>
-    <Midl Include="FacebookAppEvents.idl" />
+    <Midl Include="FBAppEvents.idl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Graph.FBPage.xml">
@@ -370,10 +370,10 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="FacebookDialog.xaml">
+    <Page Include="FBDialog.xaml">
       <Filter>Controls</Filter>
     </Page>
-    <Page Include="FacebookProfilePictureControl.xaml">
+    <Page Include="FBProfilePictureControl.xaml">
       <Filter>Controls</Filter>
     </Page>
     <Page Include="Themes\Generic.xaml">

@@ -30,7 +30,7 @@
 #include <winrt/Windows.Security.Authentication.Web.Core.h>
 #include <winrt/Windows.Security.Credentials.h>
 
-#include "FacebookConstants.h"
-#include "FacebookLoginButton.h"
+#include "FBConstants.h"
+#include "FBLoginButton.h"
 #include "ScaleConverter.h"
 #include "ColorLuminosityConverter.h"
