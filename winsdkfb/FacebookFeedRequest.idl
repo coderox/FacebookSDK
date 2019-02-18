@@ -1,0 +1,9 @@
+namespace winsdkfb
+{
+	runtimeclass FacebookFeedRequest
+	{
+		FacebookFeedRequest();
+		String PostId{ get; };
+		static FacebookFeedRequest FromFeedDialogResponse(Windows.Foundation.Uri response);
+	}
+}

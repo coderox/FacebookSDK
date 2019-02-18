@@ -1,0 +1,10 @@
+namespace winsdkfb
+{
+	[default_interface]
+	runtimeclass FacebookAppEvents
+	{
+		FacebookAppEvents();
+		static void ActivateApp();
+		static Boolean UseSimulator{ get; set; };
+	}
+}

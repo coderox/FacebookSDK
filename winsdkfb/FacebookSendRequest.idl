@@ -1,0 +1,8 @@
+namespace winsdkfb
+{
+	[default_interface]
+	runtimeclass FacebookSendRequest
+	{
+		FacebookSendRequest();
+	}
+}

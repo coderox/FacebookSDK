@@ -1,0 +1,11 @@
+namespace winsdkfb
+{
+	runtimeclass FacebookPermissions
+	{
+		FacebookPermissions(Windows.Foundation.Collections.IVectorView<String> Permissions);
+		Windows.Foundation.Collections.IVectorView<String> Values{ get; };
+		String ToString();
+		static FacebookPermissions FromString(String Permissions);
+		static FacebookPermissions Difference(FacebookPermissions Minuend, FacebookPermissions Subtrahend);
+	}
+}

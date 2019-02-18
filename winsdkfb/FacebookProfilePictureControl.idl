@@ -1,0 +1,14 @@
+namespace winsdkfb
+{
+	enum CroppingType {
+		Square = 0,
+		Original = 1
+	};
+
+	runtimeclass FacebookProfilePictureControl : Windows.UI.Xaml.Controls.UserControl
+	{
+		FacebookProfilePictureControl();
+		String UserId{ get; set; };
+		CroppingType CropMode{ get; set; };
+	}
+}

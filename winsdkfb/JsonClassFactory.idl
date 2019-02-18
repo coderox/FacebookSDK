@@ -1,0 +1,4 @@
+namespace winsdkfb
+{
+	delegate Object JsonClassFactory(String jsonText);
+}
