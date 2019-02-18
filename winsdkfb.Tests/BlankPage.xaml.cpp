@@ -94,7 +94,7 @@ void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 					OutputDebugString(message->Data());
 				}
 			}
-			});
+		});
 	}
 }
 
@@ -110,7 +110,7 @@ void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
 
 		create_task(session->ShowFeedDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Feed' dialog.\n");
-			});
+		});
 	}
 }
 
@@ -125,7 +125,7 @@ void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
 
 		create_task(session->ShowRequestsDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Requests' dialog.\n");
-			});
+		});
 	}
 }
 
@@ -201,6 +201,6 @@ void BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEven
 					OutputDebugString(message->Data());
 				}
 			}
-			});
+		});
 	}
 }

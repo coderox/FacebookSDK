@@ -621,9 +621,9 @@ namespace winrt::winsdkfb::implementation
 			permStream.str().c_str(),
 			nullptr,
 			JsonClassFactory([](hstring const& JsonText) -> IInspectable
-				{
-					return Graph::FBPermission::FromJson(JsonText);
-				}));
+			{
+				return Graph::FBPermission::FromJson(JsonText);
+			}));
 
 		auto result = co_await permArr.FirstAsync();
 		if (result.Succeeded()) {
