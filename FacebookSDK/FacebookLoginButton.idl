@@ -4,13 +4,13 @@ import "FacebookPermissions.idl";
 
 namespace FacebookSDK
 {
-	delegate void FacebookLoginErrorHandler(FacebookLoginButton sender, FacebookError error);
+	delegate void FacebookLoginErrorHandler(FacebookSDK.FacebookLoginButton sender, FacebookError error);
 
-	delegate void FetchedUserInfoHandler(FacebookLoginButton sender, FacebookSDK.Graph.FBUser userInfo);
+	delegate void FetchedUserInfoHandler(FacebookSDK.FacebookLoginButton sender, FacebookSDK.Graph.FBUser userInfo);
 
-	delegate void ShowingLoggedInUserHandler(FacebookLoginButton sender);
+	delegate void ShowingLoggedInUserHandler(FacebookSDK.FacebookLoginButton sender);
 
-	delegate void ShowingLoggedOutUserHandler(FacebookLoginButton sender);
+	delegate void ShowingLoggedOutUserHandler(FacebookSDK.FacebookLoginButton sender);
 
 	runtimeclass FacebookLoginButton : Windows.UI.Xaml.Controls.Button
 	{
