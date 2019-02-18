@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include <ppltasks.h>
 
 #include "FBAccessTokenData.h"
 #include "FBSession.h"

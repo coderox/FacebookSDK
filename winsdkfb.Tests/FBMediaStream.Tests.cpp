@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../winsdkfb/FBMediaStream.h"
-#include <ppltasks.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Windows::Storage::Streams;

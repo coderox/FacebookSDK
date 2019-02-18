@@ -2,7 +2,6 @@
 
 #include "FBClient.g.h"
 #include "HttpMethod.h"
-#include <ppltasks.h>
 
 namespace winrt::winsdkfb::implementation
 {
