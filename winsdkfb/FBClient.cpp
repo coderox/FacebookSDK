@@ -5,7 +5,6 @@
 #include "SDKMessage.h"
 
 using namespace winrt;
-using namespace concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Web::Http;

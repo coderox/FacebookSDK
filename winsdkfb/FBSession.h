@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "FBSession.g.h"
-#include <ppltasks.h>
 
 namespace winrt::winsdkfb::implementation
 {
@@ -93,7 +92,6 @@ namespace winrt::winsdkfb::implementation
 		std::wstring _webViewRedirectPath;
 		winsdkfb::FBAccessTokenData _AccessTokenData{ nullptr };
 		winsdkfb::Graph::FBUser _user{ nullptr };
-		concurrency::task<winsdkfb::FBResult> _loginTask;
 		winsdkfb::FBDialog _dialog{ nullptr };
 		winsdkfb::FBResult _asyncResult{ nullptr };
 	};
