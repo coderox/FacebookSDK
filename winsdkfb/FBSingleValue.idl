@@ -1,0 +1,13 @@
+import "JsonClassFactory.idl";
+import "FBResult.idl";
+
+namespace winsdkfb
+{
+	runtimeclass FBSingleValue
+	{
+		FBSingleValue(String request, Windows.Foundation.Collections.PropertySet parameters, JsonClassFactory objectFactory);
+		Windows.Foundation.IAsyncOperation<FBResult> GetAsync();
+		Windows.Foundation.IAsyncOperation<FBResult> PostAsync();
+		Windows.Foundation.IAsyncOperation<FBResult> DeleteAsync();
+	}
+}

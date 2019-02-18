@@ -1,0 +1,28 @@
+namespace winsdkfb
+{
+	enum ErrorCode {
+		ErrorCodeOauthException = 190,
+		ErrorCodeWebAccountProviderNotFound = 5000,
+		ErrorCodeWebTokenRequestStatus = 5001,
+		ErrorCodeWebAccountProviderNotSupported = 5002,
+	};
+
+	enum ErrorSubCode {
+		ErrorSubcodeAppNotAuthorized = 458,
+		ErrorSubcodeSessionInvalidated = 466
+	};
+
+	runtimeclass FBError {
+		static FBError FromUri(Windows.Foundation.Uri ResponseUri);
+		static FBError FromJson(String JsonText);
+
+		FBError(Int32 Code, String Type, String Message);
+
+		String Message{ get; };
+		String Type{ get; };
+		Int32 Code{ get; };
+		Int32 Subcode{ get; };
+		String ErrorUserTitle{ get; };
+		String ErrorUserMessage{ get; };
+	};
+}
