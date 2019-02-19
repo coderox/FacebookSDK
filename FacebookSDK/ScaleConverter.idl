@@ -1,7 +1,0 @@
-namespace FacebookSDK
-{
-    runtimeclass ScaleConverter : Windows.UI.Xaml.Data.IValueConverter
-	{
-		ScaleConverter();
-	}
-}

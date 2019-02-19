@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" 
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props')" />
+    <PropertyGroup Label="Globals">
+        <CppWinRTEnabled>true</CppWinRTEnabled>
+        <MinimalCoreWin>true</MinimalCoreWin>
+        <ProjectGuid>{9667b8a9-57b5-426d-b8b9-00c732d2b4c4}</ProjectGuid>
+        <ProjectName>winsdkfb</ProjectName>
+        <RootNamespace>winsdkfb</RootNamespace>
+        <DefaultLanguage>en-US</DefaultLanguage>
+        <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+        <AppContainerApplication>true</AppContainerApplication>
+        <ApplicationType>Windows Store</ApplicationType>
+        <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+        <CppWinRTNamespaceMergeDepth>1</CppWinRTNamespaceMergeDepth>
+        <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
+        <WindowsTargetPlatformMinVersion>10.0.14393.0</WindowsTargetPlatformMinVersion>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+    <ItemGroup Label="ProjectConfigurations">
+        <ProjectConfiguration Include="Debug|ARM">
+            <Configuration>Debug</Configuration>
+            <Platform>ARM</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Debug|Win32">
+            <Configuration>Debug</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Debug|x64">
+            <Configuration>Debug</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|ARM">
+            <Configuration>Release</Configuration>
+            <Platform>ARM</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|Win32">
+            <Configuration>Release</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|x64">
+            <Configuration>Release</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+    </ItemGroup>
+    <PropertyGroup Label="Configuration">
+        <ConfigurationType>DynamicLibrary</ConfigurationType>
+        <PlatformToolset>v141</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+        <GenerateManifest>false</GenerateManifest>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <LinkIncremental>true</LinkIncremental>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <LinkIncremental>false</LinkIncremental>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+    <ImportGroup Label="ExtensionSettings">
+    </ImportGroup>
+    <ImportGroup Label="Shared">
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    </ImportGroup>
+    <PropertyGroup Label="UserMacros" />
+    <PropertyGroup />
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+            <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+            <WarningLevel>Level4</WarningLevel>
+            <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+            <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+            <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+            <ModuleDefinitionFile>winsdkfb.def</ModuleDefinitionFile>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+        <ClCompile>
+            <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+        <ClCompile>
+            <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <PreBuildEvent>
+            <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pushd "$(ProjectDir)"
+call codegen.cmd</Command>
+        </PreBuildEvent>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+        <Midl>
+            <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </Midl>
+    </ItemDefinitionGroup>
+    <ItemGroup>
+        <ClInclude Include="ColorLuminosityConverter.h">
+            <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBAccessTokenData.h">
+            <DependentUpon>FBAccessTokenData.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBClient.h">
+            <DependentUpon>FBClient.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBConstants.h" />
+        <ClInclude Include="FBDialog.h">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBFeedRequest.h">
+            <DependentUpon>FBFeedRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBLoginButton.h">
+            <DependentUpon>FBLoginButton.idl</DependentUpon>
+        </ClInclude>
+        <ClInclude Include="FBMediaObject.h">
+            <DependentUpon>FBMediaObject.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBMediaStream.h">
+            <DependentUpon>FBMediaStream.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBPaginatedArray.h">
+            <DependentUpon>FBPaginatedArray.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBPermissions.h">
+            <DependentUpon>FBPermissions.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBProfilePictureControl.h">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBAppEvents.h">
+            <DependentUpon>FBAppEvents.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBSendRequest.h">
+            <DependentUpon>FBSendRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBSession.h">
+            <DependentUpon>FBSession.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="Generated\Graph.FBAppRequest.h" />
+        <ClInclude Include="Generated\Graph.FBCursors.h" />
+        <ClInclude Include="Generated\Graph.FBGroup.h" />
+        <ClInclude Include="Generated\Graph.FBObject.h" />
+        <ClInclude Include="Generated\Graph.FBPage.h" />
+        <ClInclude Include="Generated\Graph.FBPageCategory.h" />
+        <ClInclude Include="Generated\Graph.FBPaging.h" />
+        <ClInclude Include="Generated\Graph.FBPermission.h" />
+        <ClInclude Include="Generated\Graph.FBProfilePicture.h" />
+        <ClInclude Include="Generated\Graph.FBProfilePictureData.h" />
+        <ClInclude Include="Generated\Graph.FBUser.h" />
+        <ClInclude Include="GraphUriBuilder.h">
+            <DependentUpon>GraphUriBuilder.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="HttpManager.h">
+            <DependentUpon>HttpManager.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="HttpMethod.h" />
+        <ClInclude Include="JsonClassFactory.h">
+            <DependentUpon>JsonClassFactory.idl</DependentUpon>
+        </ClInclude>
+        <ClInclude Include="FBAppRequest.h">
+            <DependentUpon>FBAppRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="FBResult.h">
+            <DependentUpon>FBResult.idl</DependentUpon>
+        </ClInclude>
+        <ClInclude Include="FBSingleValue.h">
+            <DependentUpon>FBSingleValue.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="HlsColor.h">
+            <DependentUpon>HlsColor.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="pch.h" />
+        <ClInclude Include="FBError.h">
+            <DependentUpon>FBError.idl</DependentUpon>
+        </ClInclude>
+        <ClInclude Include="ScaleConverter.h">
+            <DependentUpon>ScaleConverter.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClInclude>
+        <ClInclude Include="SDKMessage.h" />
+        <ClInclude Include="Utilities.h" />
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="ColorLuminosityConverter.cpp">
+            <DependentUpon>ColorLuminosityConverter.idl</DependentUpon>
+        </ClCompile>
+        <ClCompile Include="FBAccessTokenData.cpp">
+            <DependentUpon>FBAccessTokenData.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBAppRequest.cpp">
+            <DependentUpon>FBAppRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBClient.cpp">
+            <DependentUpon>FBClient.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBDialog.cpp">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBFeedRequest.cpp">
+            <DependentUpon>FBFeedRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBLoginButton.cpp">
+            <DependentUpon>FBLoginButton.idl</DependentUpon>
+        </ClCompile>
+        <ClCompile Include="FBMediaObject.cpp">
+            <DependentUpon>FBMediaObject.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBMediaStream.cpp">
+            <DependentUpon>FBMediaStream.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBPaginatedArray.cpp">
+            <DependentUpon>FBPaginatedArray.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBPermissions.cpp">
+            <DependentUpon>FBPermissions.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBProfilePictureControl.cpp">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBResult.cpp">
+            <DependentUpon>FBResult.idl</DependentUpon>
+        </ClCompile>
+        <ClCompile Include="FBAppEvents.cpp">
+            <DependentUpon>FBAppEvents.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBSendRequest.cpp">
+            <DependentUpon>FBSendRequest.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBSession.cpp">
+            <DependentUpon>FBSession.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="FBSingleValue.cpp">
+            <DependentUpon>FBSingleValue.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="Generated\Graph.FBAppRequest.cpp" />
+        <ClCompile Include="Generated\Graph.FBCursors.cpp" />
+        <ClCompile Include="Generated\Graph.FBGroup.cpp" />
+        <ClCompile Include="Generated\Graph.FBObject.cpp" />
+        <ClCompile Include="Generated\Graph.FBPage.cpp" />
+        <ClCompile Include="Generated\Graph.FBPageCategory.cpp" />
+        <ClCompile Include="Generated\Graph.FBPaging.cpp" />
+        <ClCompile Include="Generated\Graph.FBPermission.cpp" />
+        <ClCompile Include="Generated\Graph.FBProfilePicture.cpp" />
+        <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp" />
+        <ClCompile Include="Generated\Graph.FBUser.cpp" />
+        <ClCompile Include="GraphUriBuilder.cpp">
+            <DependentUpon>GraphUriBuilder.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="HlsColor.cpp">
+            <DependentUpon>HlsColor.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="HttpManager.cpp">
+            <DependentUpon>HttpManager.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="pch.cpp">
+            <PrecompiledHeader>Create</PrecompiledHeader>
+        </ClCompile>
+        <ClCompile Include="FBError.cpp">
+            <DependentUpon>FBError.idl</DependentUpon>
+        </ClCompile>
+        <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+        <ClCompile Include="ScaleConverter.cpp">
+            <DependentUpon>ScaleConverter.idl</DependentUpon>
+            <SubType>Code</SubType>
+        </ClCompile>
+        <ClCompile Include="Utilities.cpp" />
+    </ItemGroup>
+    <ItemGroup>
+        <Midl Include="ColorLuminosityConverter.idl" />
+        <Midl Include="FBAccessTokenData.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBAppRequest.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBClient.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBDialog.idl">
+            <DependentUpon>FBDialog.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Midl>
+        <Midl Include="FBError.idl" />
+        <Midl Include="FBFeedRequest.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBLoginButton.idl" />
+        <Midl Include="FBMediaObject.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBMediaStream.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBPaginatedArray.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBPermissions.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBProfilePictureControl.idl">
+            <DependentUpon>FBProfilePictureControl.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Midl>
+        <Midl Include="FBAppEvents.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBSendRequest.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBSession.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="Generated\Graph.FBAppRequest.idl" />
+        <Midl Include="Generated\Graph.FBCursors.idl" />
+        <Midl Include="Generated\Graph.FBGroup.idl" />
+        <Midl Include="Generated\Graph.FBObject.idl" />
+        <Midl Include="Generated\Graph.FBPage.idl" />
+        <Midl Include="Generated\Graph.FBPageCategory.idl" />
+        <Midl Include="Generated\Graph.FBPaging.idl" />
+        <Midl Include="Generated\Graph.FBPermission.idl" />
+        <Midl Include="Generated\Graph.FBProfilePicture.idl" />
+        <Midl Include="Generated\Graph.FBProfilePictureData.idl" />
+        <Midl Include="Generated\Graph.FBUser.idl" />
+        <Midl Include="GraphUriBuilder.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="HttpManager.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="IHttpClient.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="JsonClassFactory.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="FBResult.idl" />
+        <Midl Include="FBSingleValue.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="HlsColor.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+        <Midl Include="ScaleConverter.idl">
+            <SubType>Designer</SubType>
+        </Midl>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="codegen.cmd" />
+        <None Include="winsdkfb.def" />
+        <None Include="FBGraphObjectDefinition.ttinclude" />
+        <None Include="FBGraphObjectHeader.ttinclude" />
+        <None Include="FBGraphObjectImplementation.ttinclude" />
+        <None Include="Graph.FBAppRequest.cpp.tt" />
+        <None Include="Graph.FBAppRequest.h.tt" />
+        <None Include="Graph.FBAppRequest.idl.tt" />
+        <None Include="Graph.FBCursors.cpp.tt" />
+        <None Include="Graph.FBCursors.h.tt" />
+        <None Include="Graph.FBCursors.idl.tt" />
+        <None Include="Graph.FBGroup.cpp.tt" />
+        <None Include="Graph.FBGroup.h.tt" />
+        <None Include="Graph.FBGroup.idl.tt" />
+        <None Include="Graph.FBObject.cpp.tt" />
+        <None Include="Graph.FBObject.h.tt" />
+        <None Include="Graph.FBObject.idl.tt" />
+        <None Include="Graph.FBPage.cpp.tt" />
+        <None Include="Graph.FBPage.h.tt" />
+        <None Include="Graph.FBPage.idl.tt" />
+        <None Include="Graph.FBPageCategory.cpp.tt" />
+        <None Include="Graph.FBPageCategory.h.tt" />
+        <None Include="Graph.FBPageCategory.idl.tt" />
+        <None Include="Graph.FBPaging.cpp.tt" />
+        <None Include="Graph.FBPaging.h.tt" />
+        <None Include="Graph.FBPaging.idl.tt" />
+        <None Include="Graph.FBPermission.cpp.tt" />
+        <None Include="Graph.FBPermission.h.tt" />
+        <None Include="Graph.FBPermission.idl.tt" />
+        <None Include="Graph.FBProfilePicture.cpp.tt" />
+        <None Include="Graph.FBProfilePicture.h.tt" />
+        <None Include="Graph.FBProfilePicture.idl.tt" />
+        <None Include="Graph.FBProfilePictureData.cpp.tt" />
+        <None Include="Graph.FBProfilePictureData.h.tt" />
+        <None Include="Graph.FBProfilePictureData.idl.tt" />
+        <None Include="Graph.FBUser.cpp.tt" />
+        <None Include="Graph.FBUser.h.tt" />
+        <None Include="Graph.FBUser.idl.tt" />
+        <None Include="packages.config" />
+        <None Include="Utility.ttinclude" />
+    </ItemGroup>
+    <ItemGroup>
+        <Xml Include="Graph.FBAppRequest.xml" />
+        <Xml Include="Graph.FBCursors.xml" />
+        <Xml Include="Graph.FBGroup.xml" />
+        <Xml Include="Graph.FBObject.xml" />
+        <Xml Include="Graph.FBPage.xml" />
+        <Xml Include="Graph.FBPageCategory.xml" />
+        <Xml Include="Graph.FBPaging.xml" />
+        <Xml Include="Graph.FBPermission.xml" />
+        <Xml Include="Graph.FBProfilePicture.xml" />
+        <Xml Include="Graph.FBProfilePictureData.xml" />
+        <Xml Include="Graph.FBUser.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Page Include="FBDialog.xaml">
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Include="FBProfilePictureControl.xaml">
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Include="Themes\Generic.xaml">
+            <SubType>Designer</SubType>
+            <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+        </Page>
+        <Page Include="Themes\Styles.xaml">
+            <DeploymentContent>true</DeploymentContent>
+        </Page>
+    </ItemGroup>
+    <ItemGroup>
+        <Image Include="Images\fb_blank_profile_portrait.png" />
+    </ItemGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+    <ImportGroup Label="ExtensionTargets">
+        <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    </ImportGroup>
+    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+        <PropertyGroup>
+            <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+        </PropertyGroup>
+        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props'))" />
+        <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    </Target>
+</Project>

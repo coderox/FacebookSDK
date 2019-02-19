@@ -1,0 +1,29 @@
+import "FBError.idl";
+import "Generated/Graph.FBUser.idl";
+import "FBPermissions.idl";
+
+namespace winsdkfb
+{
+	delegate void FBLoginErrorHandler(winsdkfb.FBLoginButton sender, FBError error);
+
+	delegate void FetchedUserInfoHandler(winsdkfb.FBLoginButton sender, winsdkfb.Graph.FBUser userInfo);
+
+	delegate void ShowingLoggedInUserHandler(winsdkfb.FBLoginButton sender);
+
+	delegate void ShowingLoggedOutUserHandler(winsdkfb.FBLoginButton sender);
+
+	runtimeclass FBLoginButton : Windows.UI.Xaml.Controls.Button
+	{
+		FBLoginButton();
+
+		FBPermissions Permissions{ get; set; };
+
+		//! Ask for read permissions at login
+		void InitWithPermissions(FBPermissions permissions);
+
+		event FBLoginErrorHandler FBLoginError;
+		event FetchedUserInfoHandler FetchedUserInfo;
+		event ShowingLoggedInUserHandler ShowingLoggedInUser;
+		event ShowingLoggedOutUserHandler ShowingLoggedOutUser;
+	}
+}

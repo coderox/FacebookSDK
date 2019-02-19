@@ -1,9 +1,0 @@
-namespace FacebookSDK
-{
-    runtimeclass FacebookMediaStream 
-    {
-        FacebookMediaStream(String fileName, Windows.Storage.Streams.IRandomAccessStreamWithContentType stream);
-		String FileName{ get; };
-		Windows.Storage.Streams.IRandomAccessStreamWithContentType Stream{ get; };
-	}
-}

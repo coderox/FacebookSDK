@@ -1,0 +1,27 @@
+import "FBPermissions.idl";
+
+namespace winsdkfb
+{
+	runtimeclass FBAccessTokenData
+	{
+		static FBAccessTokenData FromUri(Windows.Foundation.Uri Response);
+		FBAccessTokenData(String AccessToken, Windows.Foundation.DateTime Expiration);
+        FBAccessTokenData(String AccessToken, Windows.Foundation.DateTime Expiration, Windows.Foundation.DateTime DataAccessExpiration);
+
+		String AccessToken{ get; };
+		
+		Windows.Foundation.DateTime ExpirationDate{ get; };
+		Windows.Foundation.DateTime DataAccessExpirationDate{ get; };
+		
+		FBPermissions GrantedPermissions{ get; };
+		FBPermissions DeclinedPermissions{ get; };
+
+		Boolean IsExpired{ get; };
+		Boolean HasExpirationDate{ get; };
+
+		Boolean IsDataAccessExpired{ get; };
+		Boolean HasDataAccessExpirationDate{ get; };
+		
+		void SetPermissions(Windows.Foundation.Collections.IVectorView<Object> perms);
+	}
+}

@@ -1,0 +1,30 @@
+import "JsonClassFactory.idl";
+import "FBResult.idl";
+
+namespace winsdkfb
+{
+	runtimeclass FBPaginatedArray
+	{
+		FBPaginatedArray(
+			String request,
+			Windows.Foundation.Collections.PropertySet parameters,
+			JsonClassFactory objectFactory
+		);
+
+		Windows.Foundation.IAsyncOperation<FBResult> FirstAsync();
+		Windows.Foundation.IAsyncOperation<FBResult> NextAsync();
+		Windows.Foundation.IAsyncOperation<FBResult> PreviousAsync();
+
+		Windows.Foundation.Collections.IVectorView<Object> Current { get; };
+		String CurrentDataString { get; };
+		Boolean HasCurrent { get; };
+		Boolean HasNext { get; };
+		Boolean HasPrevious { get; };
+
+		Windows.Foundation.Collections.IVectorView<Object>
+		ObjectArrayFromWebResponse(
+			String response,
+			JsonClassFactory classFactory
+		);
+	}
+}

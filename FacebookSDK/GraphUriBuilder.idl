@@ -1,9 +1,0 @@
-namespace FacebookSDK
-{
-    runtimeclass GraphUriBuilder 
-    {
-        GraphUriBuilder(String path);
-		Windows.Foundation.Uri MakeUri();
-		void AddQueryParam(String query, String param);
-    }
-}

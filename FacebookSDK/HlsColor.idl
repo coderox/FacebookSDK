@@ -1,8 +1,0 @@
-namespace FacebookSDK
-{
-    runtimeclass HlsColor {
-		HlsColor();
-		Windows.UI.Color RgbValue{ get; set; };
-		Double Luminosity{ get; set; };
-    }
-}
