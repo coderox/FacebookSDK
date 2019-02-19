@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{980aa99d-5cc6-4afa-a1fa-9d60dac24923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object Templates">
+      <UniqueIdentifier>{4c576227-9e26-499a-908b-cb632fdedc46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controls">
+      <UniqueIdentifier>{3071b0ac-e1df-4e19-8816-694c36338302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Themes">
+      <UniqueIdentifier>{2e1bb2b5-4031-433e-9f33-489a25a76e9d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="FBError.cpp" />
+    <ClCompile Include="FBResult.cpp" />
+    <ClCompile Include="HlsColor.cpp" />
+    <ClCompile Include="ColorLuminosityConverter.cpp" />
+    <ClCompile Include="ScaleConverter.cpp" />
+    <ClCompile Include="FBSingleValue.cpp" />
+    <ClCompile Include="FBAppRequest.cpp" />
+    <ClCompile Include="Generated\Graph.FBAppRequest.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBProfilePicture.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBProfilePictureData.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBUser.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBCursors.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBGroup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPermission.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPageCategory.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generated\Graph.FBPaging.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpManager.cpp" />
+    <ClCompile Include="FBClient.cpp" />
+    <ClCompile Include="FBMediaObject.cpp" />
+    <ClCompile Include="FBAccessTokenData.cpp" />
+    <ClCompile Include="FBDialog.cpp" />
+    <ClCompile Include="FBMediaStream.cpp" />
+    <ClCompile Include="FBPermissions.cpp" />
+    <ClCompile Include="FBSession.cpp" />
+    <ClCompile Include="GraphUriBuilder.cpp" />
+    <ClCompile Include="FBFeedRequest.cpp" />
+    <ClCompile Include="FBPaginatedArray.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="FBProfilePictureControl.cpp" />
+    <ClCompile Include="FBSendRequest.cpp" />
+    <ClCompile Include="FBLoginButton.cpp">
+      <Filter>Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="FBAppEvents.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="FBError.h" />
+    <ClInclude Include="FBResult.h" />
+    <ClInclude Include="HlsColor.h" />
+    <ClInclude Include="ColorLuminosityConverter.h" />
+    <ClInclude Include="ScaleConverter.h" />
+    <ClInclude Include="SDKMessage.h" />
+    <ClInclude Include="JsonClassFactory.h" />
+    <ClInclude Include="FBSingleValue.h" />
+    <ClInclude Include="FBAppRequest.h" />
+    <ClInclude Include="Generated\Graph.FBAppRequest.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBProfilePicture.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBProfilePictureData.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBUser.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBCursors.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBGroup.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBObject.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPermission.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPageCategory.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\Graph.FBPaging.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpManager.h" />
+    <ClInclude Include="HttpMethod.h" />
+    <ClInclude Include="FBClient.h" />
+    <ClInclude Include="FBMediaObject.h" />
+    <ClInclude Include="FBConstants.h" />
+    <ClInclude Include="FBAccessTokenData.h" />
+    <ClInclude Include="FBDialog.h" />
+    <ClInclude Include="FBMediaStream.h" />
+    <ClInclude Include="FBPermissions.h" />
+    <ClInclude Include="FBSession.h" />
+    <ClInclude Include="GraphUriBuilder.h" />
+    <ClInclude Include="FBFeedRequest.h" />
+    <ClInclude Include="FBPaginatedArray.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="FBProfilePictureControl.h" />
+    <ClInclude Include="FBSendRequest.h" />
+    <ClInclude Include="FBLoginButton.h">
+      <Filter>Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="FBAppEvents.h" />
+    <ClInclude Include="FBLoginButton.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="codegen.cmd" />
+    <None Include="Graph.FBAppRequest.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBAppRequest.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBAppRequest.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPage.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectDefinition.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectHeader.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="FBGraphObjectImplementation.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Utility.ttinclude">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePicture.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBProfilePictureData.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBUser.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBCursors.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBCursors.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBCursors.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBGroup.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBGroup.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBGroup.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBObject.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBObject.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBObject.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPermission.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPermission.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPermission.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPageCategory.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPageCategory.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPageCategory.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.cpp.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.h.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="Graph.FBPaging.idl.tt">
+      <Filter>Object Templates</Filter>
+    </None>
+    <None Include="winsdkfb.def">
+      <Filter>Generated Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="FBError.idl" />
+    <Midl Include="FBResult.idl" />
+    <Midl Include="HlsColor.idl" />
+    <Midl Include="ColorLuminosityConverter.idl">
+      <Filter>Converters</Filter>
+    </Midl>
+    <Midl Include="ScaleConverter.idl">
+      <Filter>Converters</Filter>
+    </Midl>
+    <Midl Include="FBSingleValue.idl" />
+    <Midl Include="JsonClassFactory.idl" />
+    <Midl Include="IHttpClient.idl" />
+    <Midl Include="FBAppRequest.idl" />
+    <Midl Include="Generated\Graph.FBAppRequest.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPage.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBProfilePicture.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBProfilePictureData.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBUser.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBCursors.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBGroup.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBObject.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPermission.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPageCategory.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="Generated\Graph.FBPaging.idl">
+      <Filter>Generated Files</Filter>
+    </Midl>
+    <Midl Include="HttpManager.idl" />
+    <Midl Include="FBClient.idl" />
+    <Midl Include="FBMediaObject.idl" />
+    <Midl Include="FBMediaStream.idl" />
+    <Midl Include="GraphUriBuilder.idl" />
+    <Midl Include="FBSession.idl" />
+    <Midl Include="FBAccessTokenData.idl" />
+    <Midl Include="FBPermissions.idl" />
+    <Midl Include="FBDialog.idl" />
+    <Midl Include="FBFeedRequest.idl" />
+    <Midl Include="FBPaginatedArray.idl" />
+    <Midl Include="FBSendRequest.idl" />
+    <Midl Include="FBProfilePictureControl.idl" />
+    <Midl Include="FBLoginButton.idl">
+      <Filter>Controls</Filter>
+    </Midl>
+    <Midl Include="FBAppEvents.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Graph.FBPage.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBAppRequest.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBProfilePicture.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBProfilePictureData.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBUser.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBCursors.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBGroup.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBObject.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPermission.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPageCategory.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+    <Xml Include="Graph.FBPaging.xml">
+      <Filter>Object Templates</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FBDialog.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="FBProfilePictureControl.xaml">
+      <Filter>Controls</Filter>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Filter>Themes</Filter>
+    </Page>
+    <Page Include="Themes\Styles.xaml">
+      <Filter>Themes</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\fb_blank_profile_portrait.png">
+      <Filter>Resources</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

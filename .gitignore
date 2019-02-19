@@ -261,4 +261,5 @@ __pycache__/
 *.pyc
 
 /**/Generated Files/*
-/FacebookSDK/Generated/*
+/winsdkfb/Generated/*
+.vscode/

@@ -1,0 +1,12 @@
+import "FBError.idl";
+
+namespace winsdkfb
+{
+	runtimeclass FBResult {
+		FBResult();
+		FBResult(Object Object);
+		Boolean Succeeded{ get; };
+		Object Object{ get; };
+		FBError ErrorInfo{ get; };
+	};
+}

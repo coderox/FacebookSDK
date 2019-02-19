@@ -1,8 +1,0 @@
-namespace FacebookSDK
-{
-	[default_interface]
-	runtimeclass FacebookSendRequest
-	{
-		FacebookSendRequest();
-	}
-}
