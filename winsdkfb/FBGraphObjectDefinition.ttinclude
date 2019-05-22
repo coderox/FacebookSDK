@@ -36,7 +36,8 @@ namespace winsdkfb
 {
     namespace Graph
     {
-        runtimeclass <#= className #>
+        [default_interface] 
+		runtimeclass <#= className #>
         {
             static Object FromJson(String JsonText);
 <#

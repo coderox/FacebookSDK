@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface] 
 	runtimeclass ColorLuminosityConverter : Windows.UI.Xaml.Data.IValueConverter
 	{
 		ColorLuminosityConverter();

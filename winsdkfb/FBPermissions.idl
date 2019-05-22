@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBPermissions
 	{
 		FBPermissions(Windows.Foundation.Collections.IVectorView<String> Permissions);

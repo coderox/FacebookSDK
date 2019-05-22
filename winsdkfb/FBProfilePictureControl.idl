@@ -5,10 +5,11 @@ namespace winsdkfb
 		Original = 1
 	};
 
+	[default_interface]
 	runtimeclass FBProfilePictureControl : Windows.UI.Xaml.Controls.UserControl
 	{
 		FBProfilePictureControl();
-		String UserId{ get; set; };
-		CroppingType CropMode{ get; set; };
+		//String UserId{ get; set; };
+		//CroppingType CropMode{ get; set; };
 	}
 }

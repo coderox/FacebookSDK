@@ -152,7 +152,6 @@
     <ClInclude Include="FBLoginButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="codegen.cmd" />
     <None Include="Graph.FBAppRequest.cpp.tt">
       <Filter>Object Templates</Filter>
@@ -268,6 +267,7 @@
     <None Include="winsdkfb.def">
       <Filter>Generated Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="FBError.idl" />

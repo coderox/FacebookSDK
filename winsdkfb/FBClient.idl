@@ -3,6 +3,7 @@ import "IHttpClient.idl";
 
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBClient : IHttpClient
 	{
 		FBClient();

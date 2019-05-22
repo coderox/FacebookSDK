@@ -48,11 +48,11 @@ namespace winrt::winsdkfb::implementation
 		for (auto const& current : parameters)
 		{
 			hstring key(current.Key());
-			if (FBMediaObject value{ current.Value().try_as<FBMediaObject>() }) {
-				mediaObjects.Insert(key, value);
+			if (FBMediaObject movalue{ current.Value().try_as<FBMediaObject>() }) {
+				mediaObjects.Insert(key, movalue);
 			}
-			else if (FBMediaStream value{ current.Value().try_as<FBMediaStream>() }) {
-				mediaStreams.Insert(key, value);
+			else if (FBMediaStream msvalue{ current.Value().try_as<FBMediaStream>() }) {
+				mediaStreams.Insert(key, msvalue);
 			}
 			else {
 				dictionary.Insert(key, current.Value());

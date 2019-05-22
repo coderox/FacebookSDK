@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass GraphUriBuilder
 	{
 		GraphUriBuilder(String path);

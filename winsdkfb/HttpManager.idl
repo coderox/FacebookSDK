@@ -2,6 +2,7 @@ import "IHttpClient.idl";
 
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass HttpManager : IHttpClient
 	{
 		static HttpManager Instance {get; };

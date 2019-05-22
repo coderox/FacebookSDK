@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass HlsColor {
 		HlsColor();
 		Windows.UI.Color RgbValue{ get; set; };

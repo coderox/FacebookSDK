@@ -12,6 +12,7 @@ namespace winsdkfb
 		ErrorSubcodeSessionInvalidated = 466
 	};
 
+	[default_interface]
 	runtimeclass FBError {
 		static FBError FromUri(Windows.Foundation.Uri ResponseUri);
 		static FBError FromJson(String JsonText);
