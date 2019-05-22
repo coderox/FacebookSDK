@@ -7,6 +7,7 @@ namespace winrt::winsdkfb::implementation
 	struct FBSession : FBSessionT<FBSession>
 	{
 		FBSession();
+		~FBSession();
 
 		hstring FBAppId();
 		void FBAppId(hstring const& value);
@@ -45,9 +46,6 @@ namespace winrt::winsdkfb::implementation
 		static Windows::Storage::ApplicationDataContainer DataContainer();
 
 	private:
-
-		~FBSession();
-
 		void ParseOAuthResponse(Windows::Foundation::Uri ResponseUri);
 		void SaveGrantedPermissions();
 		Windows::Foundation::Uri BuildLoginUri(Windows::Foundation::Collections::PropertySet parameters);

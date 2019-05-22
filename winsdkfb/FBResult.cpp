@@ -14,10 +14,6 @@ namespace winrt::winsdkfb::implementation
 		}
 	}
 
-	FBResult::~FBResult() {
-
-	}
-
 	bool FBResult::Succeeded()
 	{
 		return _object != nullptr;
