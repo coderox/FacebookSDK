@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "FBClient.h"
 #include "FBSession.h"
-#include "JsonClassFactory.h"
+//#include "JsonClassFactory.h"
 #include "SDKMessage.h"
 
 using namespace winrt;
