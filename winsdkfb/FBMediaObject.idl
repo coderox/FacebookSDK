@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBMediaObject
 	{
 		FBMediaObject();

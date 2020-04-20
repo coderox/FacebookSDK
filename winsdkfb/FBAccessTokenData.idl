@@ -2,6 +2,7 @@ import "FBPermissions.idl";
 
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBAccessTokenData
 	{
 		static FBAccessTokenData FromUri(Windows.Foundation.Uri Response);

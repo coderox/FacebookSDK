@@ -2,6 +2,7 @@
 #include "FBProfilePictureControl.h"
 #include "FBSingleValue.h"
 #include <string>
+#include "Generated/Graph.FBProfilePicture.h"
 
 using namespace winrt;
 using namespace Windows::Foundation;

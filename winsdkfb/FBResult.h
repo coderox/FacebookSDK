@@ -10,13 +10,13 @@ namespace winrt::winsdkfb::implementation
 	public:
 		FBResult() = default;
 		FBResult(Windows::Foundation::IInspectable const& Object);
+		~FBResult() = default;
 
 		bool Succeeded();
 		Windows::Foundation::IInspectable Object();
 		winsdkfb::FBError ErrorInfo();
-	private:
-		~FBResult();
 
+	private:
 		Windows::Foundation::IInspectable _object{ nullptr };
 		winsdkfb::FBError _error{ nullptr };
 	};

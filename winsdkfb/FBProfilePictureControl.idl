@@ -5,6 +5,7 @@ namespace winsdkfb
 		Original = 1
 	};
 
+	[default_interface]
 	runtimeclass FBProfilePictureControl : Windows.UI.Xaml.Controls.UserControl
 	{
 		FBProfilePictureControl();

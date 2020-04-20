@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface] 
 	runtimeclass ScaleConverter : Windows.UI.Xaml.Data.IValueConverter
 	{
 		ScaleConverter();

@@ -3,6 +3,7 @@ import "FBResult.idl";
 
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBPaginatedArray
 	{
 		FBPaginatedArray(

@@ -21,6 +21,7 @@ namespace winsdkfb
 		Silent
 	};
 
+	[default_interface]
 	runtimeclass FBSession
 	{
 		FBSession();

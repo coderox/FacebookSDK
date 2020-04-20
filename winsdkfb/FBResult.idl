@@ -2,6 +2,7 @@ import "FBError.idl";
 
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBResult {
 		FBResult();
 		FBResult(Object Object);

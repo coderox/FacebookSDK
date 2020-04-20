@@ -12,6 +12,7 @@ namespace winsdkfb
 
 	delegate void ShowingLoggedOutUserHandler(winsdkfb.FBLoginButton sender);
 
+	[default_interface]
 	runtimeclass FBLoginButton : Windows.UI.Xaml.Controls.Button
 	{
 		FBLoginButton();

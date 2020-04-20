@@ -816,7 +816,7 @@ namespace winrt::winsdkfb::implementation
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
 				auto tokenData = oauthResult.Object().as<winsdkfb::FBAccessTokenData>();
 				if (tokenData != nullptr && !tokenData.IsExpired()) {
-					loginResult = make<FBResult>(tokenData);
+					loginResult = FBResult(tokenData);
 				}
 			}
 			else {

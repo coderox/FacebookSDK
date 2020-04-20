@@ -1,5 +1,6 @@
 namespace winsdkfb
 {
+	[default_interface]
 	runtimeclass FBMediaStream
 	{
 		FBMediaStream(String fileName, Windows.Storage.Streams.IRandomAccessStreamWithContentType stream);
