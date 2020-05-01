@@ -52,8 +52,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FacebookSDK\FacebookSDK.vcxproj">
-      <Project>{f205f607-96ec-4346-a0da-d69f8469420e}</Project>
+    <ProjectReference Include="..\FacebookSDK\FacebookSDK.Static.vcxproj">
+      <Project>{891eb150-865f-4077-8184-d3ea63717e90}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
@@ -70,10 +70,13 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(SolutionDir)FacebookSDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\Static\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WindowsApp.lib;FacebookSDK.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -85,14 +88,14 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)FacebookSDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)FacebookSDK</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>WindowsApp.lib;FacebookSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\repos\github.com\coderox\FacebookSDK\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WindowsApp.lib;FacebookSDK.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\Static\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,12 +106,15 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(SolutionDir)FacebookSDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\Static\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WindowsApp.lib;FacebookSDK.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,12 +125,15 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(SolutionDir)FacebookSDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\Static\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WindowsApp.lib;FacebookSDK.Static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

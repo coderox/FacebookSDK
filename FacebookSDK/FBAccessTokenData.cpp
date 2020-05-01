@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBAccessTokenData.h"
 #include "Graph/FBPermission.h"
 #include <algorithm>

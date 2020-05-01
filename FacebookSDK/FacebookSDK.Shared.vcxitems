@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{e6e22ae3-6a36-47ad-95d2-a95ad7678752}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBPermissions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPermission.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBUser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBError.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBPermissions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPermission.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBUser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utilities.h" />
+  </ItemGroup>
+</Project>

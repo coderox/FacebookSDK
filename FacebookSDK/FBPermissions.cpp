@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBPermissions.h"
 #include <sstream>
 #include "Utilities.h"

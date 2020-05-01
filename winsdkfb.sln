@@ -11,9 +11,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "winsdkfb.CS.Tests", "winsdk
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb.Google.Tests", "winsdkfb.Google.Tests\winsdkfb.Google.Tests.vcxproj", "{811C7EFE-036D-459F-9300-2BA63DBA84B3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK", "FacebookSDK\FacebookSDK.vcxproj", "{F205F607-96EC-4346-A0DA-D69F8469420E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Dynamic", "FacebookSDK\FacebookSDK.Dynamic.vcxproj", "{F205F607-96EC-4346-A0DA-D69F8469420E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.TestClient", "FacebookSDK.TestClient\FacebookSDK.TestClient.vcxproj", "{853A1C19-EFA4-4E36-B8F4-9120D24CC242}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Shared", "FacebookSDK\FacebookSDK.Shared.vcxitems", "{E6E22AE3-6A36-47AD-95D2-A95AD7678752}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Static", "FacebookSDK\FacebookSDK.Static.vcxproj", "{891EB150-865F-4077-8184-D3EA63717E90}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		FacebookSDK\FacebookSDK.Shared.vcxitems*{891eb150-865f-4077-8184-d3ea63717e90}*SharedItemsImports = 4
+		FacebookSDK\FacebookSDK.Shared.vcxitems*{e6e22ae3-6a36-47ad-95d2-a95ad7678752}*SharedItemsImports = 9
+		FacebookSDK\FacebookSDK.Shared.vcxitems*{f205f607-96ec-4346-a0da-d69f8469420e}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
 		Debug|ARM64 = Debug|ARM64
@@ -111,6 +122,38 @@ Global
 		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x64.Build.0 = Release|x64
 		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x86.ActiveCfg = Release|Win32
 		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x86.Build.0 = Release|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|ARM.ActiveCfg = Debug|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|ARM.Build.0 = Debug|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|ARM.Deploy.0 = Debug|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x64.ActiveCfg = Debug|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x64.Build.0 = Debug|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x64.Deploy.0 = Debug|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x86.ActiveCfg = Debug|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x86.Build.0 = Debug|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Debug|x86.Deploy.0 = Debug|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|ARM.ActiveCfg = Release|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|ARM.Build.0 = Release|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|ARM.Deploy.0 = Release|ARM
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|ARM64.ActiveCfg = Release|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x64.ActiveCfg = Release|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x64.Build.0 = Release|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x64.Deploy.0 = Release|x64
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x86.ActiveCfg = Release|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x86.Build.0 = Release|Win32
+		{853A1C19-EFA4-4E36-B8F4-9120D24CC242}.Release|x86.Deploy.0 = Release|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|ARM.ActiveCfg = Debug|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|x64.ActiveCfg = Debug|x64
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|x64.Build.0 = Debug|x64
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|x86.ActiveCfg = Debug|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Debug|x86.Build.0 = Debug|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|ARM.ActiveCfg = Release|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|ARM64.ActiveCfg = Release|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|x64.ActiveCfg = Release|x64
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|x64.Build.0 = Release|x64
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|x86.ActiveCfg = Release|Win32
+		{891EB150-865F-4077-8184-D3EA63717E90}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBError.h"
 
 #include <winrt/Windows.Foundation.Collections.h>

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBUser.h"
 
 #include <winrt/Windows.Foundation.Collections.h>

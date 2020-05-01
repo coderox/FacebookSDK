@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "**/*.user": true,
+        "**/ARM": true,
+        "**/Debug": true,
+        "**/x64": true,
+        "**/bin": true,
+        "**/obj": true
+    }
+}

@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{F205F607-96EC-4346-A0DA-D69F8469420E}</ProjectGuid>
+    <ProjectGuid>{891EB150-865F-4077-8184-D3EA63717E90}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>FacebookSDK</RootNamespace>
+    <RootNamespace>FacebookSDKStatic</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -56,6 +56,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="FacebookSDK.Shared.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -72,26 +73,34 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Static\</OutDir>
+    <IntDir>$(Configuration)\Static\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Static\</OutDir>
+    <IntDir>$(Configuration)\Static\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Static\</OutDir>
+    <IntDir>$(Configuration)\Static\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Static\</OutDir>
+    <IntDir>$(Configuration)\Static\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,38 +157,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="FBAccessTokenData.h" />
-    <ClInclude Include="FBError.h" />
-    <ClInclude Include="FBPermissions.h" />
-    <ClInclude Include="Graph\FBProfilePicture.h" />
-    <ClInclude Include="Graph\FBProfilePictureData.h" />
-    <ClInclude Include="FBResult.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Graph\FBPage.h" />
-    <ClInclude Include="Graph\FBPermission.h" />
-    <ClInclude Include="Graph\FBUser.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Utilities.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="FBAccessTokenData.cpp" />
-    <ClCompile Include="FBError.cpp" />
-    <ClCompile Include="FBPermissions.cpp" />
-    <ClCompile Include="Graph\FBPage.cpp" />
-    <ClCompile Include="Graph\FBProfilePicture.cpp" />
-    <ClCompile Include="Graph\FBProfilePictureData.cpp" />
-    <ClCompile Include="FBResult.cpp" />
-    <ClCompile Include="Graph\FBUser.cpp" />
-    <ClCompile Include="Graph\FBPermission.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Utilities.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

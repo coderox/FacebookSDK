@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBProfilePicture.h"
 
 #include <winrt/Windows.Data.Json.h>

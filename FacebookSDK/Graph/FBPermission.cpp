@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBPermission.h"
 
 #include <winrt/Windows.Data.Json.h>

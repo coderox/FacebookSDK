@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FBPage.h"
 
 #include <winrt/Windows.Data.Json.h>
