@@ -1,6 +1,6 @@
 #pragma once
 
-#include <winrt/Windows.Foundation.h>
+#include <winrt/base.h>
 
 namespace winsdkfb::Graph
 {

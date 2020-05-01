@@ -14,6 +14,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Dynamic", "FacebookSDK\FacebookSDK.Dynamic.vcxproj", "{F205F607-96EC-4346-A0DA-D69F8469420E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.TestClient", "FacebookSDK.TestClient\FacebookSDK.TestClient.vcxproj", "{853A1C19-EFA4-4E36-B8F4-9120D24CC242}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F205F607-96EC-4346-A0DA-D69F8469420E} = {F205F607-96EC-4346-A0DA-D69F8469420E}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Shared", "FacebookSDK\FacebookSDK.Shared.vcxitems", "{E6E22AE3-6A36-47AD-95D2-A95AD7678752}"
 EndProject

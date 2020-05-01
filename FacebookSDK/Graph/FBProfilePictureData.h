@@ -1,8 +1,6 @@
 #pragma once
 #include "FBProfilePicture.h"
 
-#include <winrt/Windows.Foundation.h>
-
 namespace winsdkfb::Graph
 {
     struct FBProfilePictureData

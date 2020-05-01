@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBPermissions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPage.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPermission.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBUser.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBAppRequest.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBCursors.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBGroup.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBObject.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBPageCategory.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBPaging.cpp">
+      <Filter>Graph</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBError.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBPermissions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utilities.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPage.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPermission.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBUser.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBAppRequest.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBCursors.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBGroup.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBObject.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBPageCategory.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\repos\github.com\coderox\FacebookSDK\FacebookSDK\Graph\FBPaging.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Graph">
+      <UniqueIdentifier>{8b3cd042-862c-4ff2-8e31-bf662fa2a6c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

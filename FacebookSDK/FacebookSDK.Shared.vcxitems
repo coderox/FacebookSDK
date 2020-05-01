@@ -23,6 +23,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBUser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBAppRequest.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBCursors.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBGroup.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPageCategory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPaging.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +41,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePictureData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBUser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBAppRequest.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBCursors.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBGroup.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPageCategory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPaging.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utilities.h" />
   </ItemGroup>
 </Project>
