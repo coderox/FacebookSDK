@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb", "winsdkfb\winsdkfb.vcxproj", "{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb.Tests", "winsdkfb.Tests\winsdkfb.Tests.vcxproj", "{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "winsdkfb.CS.Tests", "winsdkfb.CS.Tests\winsdkfb.CS.Tests.csproj", "{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb.Google.Tests", "winsdkfb.Google.Tests\winsdkfb.Google.Tests.vcxproj", "{811C7EFE-036D-459F-9300-2BA63DBA84B3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK", "FacebookSDK\FacebookSDK.vcxproj", "{F205F607-96EC-4346-A0DA-D69F8469420E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,30 @@ Global
 		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.ActiveCfg = Release|x86
 		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.Build.0 = Release|x86
 		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.Deploy.0 = Release|x86
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|ARM.ActiveCfg = Debug|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x64.ActiveCfg = Debug|x64
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x64.Build.0 = Debug|x64
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x86.ActiveCfg = Debug|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x86.Build.0 = Debug|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|ARM.ActiveCfg = Release|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|ARM64.ActiveCfg = Release|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|x64.ActiveCfg = Release|x64
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|x64.Build.0 = Release|x64
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|x86.ActiveCfg = Release|Win32
+		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Release|x86.Build.0 = Release|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|ARM.ActiveCfg = Debug|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|x64.ActiveCfg = Debug|x64
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|x64.Build.0 = Debug|x64
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|x86.ActiveCfg = Debug|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Debug|x86.Build.0 = Debug|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|ARM.ActiveCfg = Release|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|ARM64.ActiveCfg = Release|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x64.ActiveCfg = Release|x64
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x64.Build.0 = Release|x64
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x86.ActiveCfg = Release|Win32
+		{F205F607-96EC-4346-A0DA-D69F8469420E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
