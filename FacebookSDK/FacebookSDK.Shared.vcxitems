@@ -33,9 +33,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAppEvents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAppRequest.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBConstants.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBDialog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBError.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBFeedRequest.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBMediaObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBMediaStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBPaginatedArray.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBPermissions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBSendRequest.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBSession.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBSingleValue.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GraphUriBuilder.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPermission.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.h" />
@@ -47,6 +60,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPageCategory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graph\FBPaging.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HttpManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HttpMethod.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IHttpClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SDKMessage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utilities.h" />
   </ItemGroup>
 </Project>
