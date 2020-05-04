@@ -1,19 +1,20 @@
 #pragma once
 #include "FBProfilePicture.h"
+#include "../FBResult.h"
 
 namespace winsdkfb::Graph
 {
-    struct FBProfilePictureData
+    struct FBProfilePictureData : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBProfilePictureData> FromJson(
+        static winsdkfb::Graph::FBProfilePictureData FromJson(
             winrt::hstring const& JsonText
         );
 
-        std::shared_ptr<winsdkfb::Graph::FBProfilePicture> Data();
-        void Data(std::shared_ptr<winsdkfb::Graph::FBProfilePicture> value);
+        winsdkfb::Graph::FBProfilePicture Data();
+        void Data(winsdkfb::Graph::FBProfilePicture value);
 
     private:
 
-        std::shared_ptr<winsdkfb::Graph::FBProfilePicture> _data{ nullptr };
+        winsdkfb::Graph::FBProfilePicture _data;
     };
 }

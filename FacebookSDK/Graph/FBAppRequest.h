@@ -1,14 +1,12 @@
 #pragma once
 
-#include <winrt/base.h>
-
 #include "FBUser.h"
 
 namespace winsdkfb::Graph
 {
-    struct FBAppRequest
+    struct FBAppRequest : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBAppRequest> FromJson(
+        static winsdkfb::Graph::FBAppRequest FromJson(
             winrt::hstring const& JsonText
         );
 
@@ -21,8 +19,8 @@ namespace winsdkfb::Graph
         winrt::hstring Data();
         void Data(winrt::hstring const& value);
 
-        std::shared_ptr<winsdkfb::Graph::FBUser> From();
-        void From(std::shared_ptr<winsdkfb::Graph::FBUser> value);
+        winsdkfb::Graph::FBUser From();
+        void From(winsdkfb::Graph::FBUser value);
 
         winrt::hstring Id();
         void Id(winrt::hstring const& value);
@@ -30,17 +28,17 @@ namespace winsdkfb::Graph
         winrt::hstring Message();
         void Message(winrt::hstring const& value);
 
-        std::shared_ptr<winsdkfb::Graph::FBUser> To();
-        void To(std::shared_ptr<winsdkfb::Graph::FBUser> value);
+        winsdkfb::Graph::FBUser To();
+        void To(winsdkfb::Graph::FBUser value);
 
     private:
 
         winrt::hstring _action_type;
         winrt::hstring _created_time;
         winrt::hstring _data;
-        std::shared_ptr<winsdkfb::Graph::FBUser> _from{ nullptr };
+        winsdkfb::Graph::FBUser _from;
         winrt::hstring _id;
         winrt::hstring _message;
-        std::shared_ptr<winsdkfb::Graph::FBUser> _to{ nullptr };
+        winsdkfb::Graph::FBUser _to;
     };
 }

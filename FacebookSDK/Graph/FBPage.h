@@ -1,12 +1,12 @@
 #pragma once
 
-#include <winrt/base.h>
+#include "../FBResult.h"
 
 namespace winsdkfb::Graph
 {
-    struct FBPage
+    struct FBPage : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBPage> FromJson(
+        static winsdkfb::Graph::FBPage FromJson(
             winrt::hstring const& JsonText
         );
 

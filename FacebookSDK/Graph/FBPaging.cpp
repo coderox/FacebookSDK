@@ -11,11 +11,11 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    shared_ptr<FBCursors> FBPaging::Cursors()
+    FBCursors FBPaging::Cursors()
     {
         return _cursors;
     }
-    void FBPaging::Cursors(shared_ptr<FBCursors> value)
+    void FBPaging::Cursors(FBCursors value)
     {
         _cursors = value;
     }
@@ -38,11 +38,11 @@ namespace winsdkfb::Graph
         _previous = value;
     }
 
-    shared_ptr<FBPaging> FBPaging::FromJson(
+    FBPaging FBPaging::FromJson(
         hstring const& JsonText 
         )
     {
-        auto result = make_shared<FBPaging>();
+        FBPaging result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -57,22 +57,22 @@ namespace winsdkfb::Graph
                     if  (key == L"cursors")
                     {
                         found++;
-                        result->Cursors(FBCursors::FromJson(current.Value().Stringify()));
+                        result.Cursors(FBCursors::FromJson(current.Value().Stringify()));
                     }
                     else if (key == L"next")
                     {
                         found++;
-                        result->Next(current.Value().GetString());
+                        result.Next(current.Value().GetString());
                     }
                     else if (key == L"previous")
                     {
                         found++;
-                        result->Previous(current.Value().GetString());
+                        result.Previous(current.Value().GetString());
                     }
                 }
 
-				if(!found){
-					result = nullptr;
+				if(found){
+					result._succeeded = true;
 				}
             }
         }

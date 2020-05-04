@@ -20,11 +20,11 @@ namespace winsdkfb::Graph
         _id = value;
     }
 
-    shared_ptr<FBObject> FBObject::FromJson(
+    FBObject FBObject::FromJson(
         hstring const& JsonText 
         )
     {
-        auto result = make_shared<FBObject>();
+        FBObject result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -39,12 +39,12 @@ namespace winsdkfb::Graph
                     if  (key == L"id")
                     {
                         found++;
-                        result->Id(current.Value().GetString());
+                        result.Id(current.Value().GetString());
                     }
                 }
 
-				if(!found){
-					result = nullptr;
+				if(found){
+					result._succeeded;
 				}
             }
         }

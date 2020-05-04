@@ -6,9 +6,9 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBUser : public FBResult
+    struct FBUser : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBUser> FromJson(
+        static winsdkfb::Graph::FBUser FromJson(
             winrt::hstring const& JsonText
         );
 
@@ -33,14 +33,14 @@ namespace winsdkfb::Graph
         winrt::hstring Locale();
         void Locale(winrt::hstring const& value);
 
-        std::shared_ptr<winsdkfb::Graph::FBPage> Location();
-        void Location(std::shared_ptr<winsdkfb::Graph::FBPage> value);
+        winsdkfb::Graph::FBPage Location();
+        void Location(winsdkfb::Graph::FBPage value);
 
         winrt::hstring Name();
         void Name(winrt::hstring const& value);
 
-        std::shared_ptr<winsdkfb::Graph::FBProfilePictureData> Picture();
-        void Picture(std::shared_ptr<winsdkfb::Graph::FBProfilePictureData> value);
+        winsdkfb::Graph::FBProfilePictureData Picture();
+        void Picture(winsdkfb::Graph::FBProfilePictureData value);
 
         int Timezone();
         void Timezone(int const& value);
@@ -60,9 +60,9 @@ namespace winsdkfb::Graph
         winrt::hstring _email;
         winrt::hstring _link;
         winrt::hstring _locale;
-        std::shared_ptr<winsdkfb::Graph::FBPage> _location{ nullptr };
+        winsdkfb::Graph::FBPage _location;
         winrt::hstring _name;
-        std::shared_ptr<winsdkfb::Graph::FBProfilePictureData> _picture{ nullptr };
+        winsdkfb::Graph::FBProfilePictureData _picture;
         int __timezone;
         winrt::hstring _updated_time;
         bool _verified;

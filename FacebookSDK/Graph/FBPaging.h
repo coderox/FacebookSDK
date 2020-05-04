@@ -4,14 +4,14 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBPaging
+    struct FBPaging : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBPaging> FromJson(
+        static winsdkfb::Graph::FBPaging FromJson(
             winrt::hstring const& JsonText
         );
 
-        std::shared_ptr<winsdkfb::Graph::FBCursors> Cursors();
-        void Cursors(std::shared_ptr<winsdkfb::Graph::FBCursors> value);
+        winsdkfb::Graph::FBCursors Cursors();
+        void Cursors(winsdkfb::Graph::FBCursors value);
 
         winrt::hstring Next();
         void Next(winrt::hstring const& value);
@@ -21,7 +21,7 @@ namespace winsdkfb::Graph
 
     private:
 
-        std::shared_ptr<winsdkfb::Graph::FBCursors> _cursors{ nullptr };
+        winsdkfb::Graph::FBCursors _cursors;
         winrt::hstring _next;
         winrt::hstring _previous;
     };

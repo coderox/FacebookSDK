@@ -11,20 +11,20 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    shared_ptr<FBProfilePicture> FBProfilePictureData::Data()
+    FBProfilePicture FBProfilePictureData::Data()
     {
         return _data;
     }
-    void FBProfilePictureData::Data(shared_ptr<FBProfilePicture> value)
+    void FBProfilePictureData::Data(FBProfilePicture value)
     {
         _data = value;
     }
 
-    shared_ptr<FBProfilePictureData> FBProfilePictureData::FromJson(
+    FBProfilePictureData FBProfilePictureData::FromJson(
         hstring const& JsonText
     )
     {
-        auto result = make_shared<FBProfilePictureData>();
+        FBProfilePictureData result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -39,12 +39,12 @@ namespace winsdkfb::Graph
                     if (key == L"data")
                     {
                         found++;
-                        result->Data(FBProfilePicture::FromJson(current.Value().Stringify()));
+                        result.Data(FBProfilePicture::FromJson(current.Value().Stringify()));
                     }
                 }
 
-                if (!found) {
-                    result = nullptr;
+                if (found) {
+                    result._succeeded = true;
                 }
             }
         }

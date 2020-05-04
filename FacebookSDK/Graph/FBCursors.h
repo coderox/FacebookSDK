@@ -1,12 +1,12 @@
 #pragma once
 
-#include <winrt/base.h>
+#include "../FBResult.h"
 
 namespace winsdkfb::Graph
 {
-    struct FBCursors
+    struct FBCursors : public winsdkfb::FBResult
     {
-        static std::shared_ptr<winsdkfb::Graph::FBCursors> FromJson(
+        static winsdkfb::Graph::FBCursors FromJson(
             winrt::hstring const& JsonText
         );
 

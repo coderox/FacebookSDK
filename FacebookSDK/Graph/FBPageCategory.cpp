@@ -3,7 +3,6 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
-using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -29,11 +28,11 @@ namespace winsdkfb::Graph
         _name = value;
     }
 
-    shared_ptr<FBPageCategory> FBPageCategory::FromJson(
+    FBPageCategory FBPageCategory::FromJson(
         hstring const& JsonText 
         )
     {
-        auto result = make_shared<FBPageCategory>();
+        FBPageCategory result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -48,17 +47,17 @@ namespace winsdkfb::Graph
                     if  (key == L"id")
                     {
                         found++;
-                        result->Id(current.Value().GetString());
+                        result.Id(current.Value().GetString());
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        result->Name(current.Value().GetString());
+                        result.Name(current.Value().GetString());
                     }
                 }
 
-				if(!found){
-					result = nullptr;
+				if(found){
+					result._succeeded = true;
 				}
             }
         }

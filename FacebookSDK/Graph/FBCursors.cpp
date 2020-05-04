@@ -29,11 +29,11 @@ namespace winsdkfb::Graph
         _before = value;
     }
 
-    shared_ptr<FBCursors> FBCursors::FromJson(
+    FBCursors FBCursors::FromJson(
         hstring const& JsonText 
         )
     {
-        auto result = make_shared<FBCursors>();
+        FBCursors result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -48,17 +48,17 @@ namespace winsdkfb::Graph
                     if  (key == L"after")
                     {
                         found++;
-                        result->After(current.Value().GetString());
+                        result.After(current.Value().GetString());
                     }
                     else if (key == L"before")
                     {
                         found++;
-                        result->Before(current.Value().GetString());
+                        result.Before(current.Value().GetString());
                     }
                 }
 
-				if(!found){
-					result = nullptr;
+				if(found){
+                    result._succeeded = true;
 				}
             }
         }

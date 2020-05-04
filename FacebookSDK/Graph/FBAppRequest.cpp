@@ -38,11 +38,11 @@ namespace winsdkfb::Graph
         _data = value;
     }
 
-    shared_ptr<winsdkfb::Graph::FBUser> FBAppRequest::From()
+    winsdkfb::Graph::FBUser FBAppRequest::From()
     {
         return _from;
     }
-    void FBAppRequest::From(shared_ptr<winsdkfb::Graph::FBUser> value)
+    void FBAppRequest::From(winsdkfb::Graph::FBUser value)
     {
         _from = value;
     }
@@ -65,20 +65,20 @@ namespace winsdkfb::Graph
         _message = value;
     }
 
-    shared_ptr<winsdkfb::Graph::FBUser> FBAppRequest::To()
+    winsdkfb::Graph::FBUser FBAppRequest::To()
     {
         return _to;
     }
-    void FBAppRequest::To(shared_ptr<winsdkfb::Graph::FBUser> value)
+    void FBAppRequest::To(winsdkfb::Graph::FBUser value)
     {
         _to = value;
     }
 
-    shared_ptr<winsdkfb::Graph::FBAppRequest> FBAppRequest::FromJson(
+    winsdkfb::Graph::FBAppRequest FBAppRequest::FromJson(
         hstring const& JsonText 
         )
     {
-        auto result = make_shared<FBAppRequest>();
+        FBAppRequest result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -93,42 +93,42 @@ namespace winsdkfb::Graph
                     if  (key == L"action_type")
                     {
                         found++;
-                        result->ActionType(current.Value().GetString());
+                        result.ActionType(current.Value().GetString());
                     }
                     else if (key == L"created_time")
                     {
                         found++;
-                        result->CreatedTime(current.Value().GetString());
+                        result.CreatedTime(current.Value().GetString());
                     }
                     else if (key == L"data")
                     {
                         found++;
-                        result->Data(current.Value().GetString());
+                        result.Data(current.Value().GetString());
                     }
                     else if (key == L"from")
                     {
                         found++;
-                        result->From(FBUser::FromJson(current.Value().Stringify()));
+                        result.From(FBUser::FromJson(current.Value().Stringify()));
                     }
                     else if (key == L"id")
                     {
                         found++;
-                        result->Id(current.Value().GetString());
+                        result.Id(current.Value().GetString());
                     }
                     else if (key == L"message")
                     {
                         found++;
-                        result->Message(current.Value().GetString());
+                        result.Message(current.Value().GetString());
                     }
                     else if (key == L"to")
                     {
                         found++;
-                        result->To(FBUser::FromJson(current.Value().Stringify()));
+                        result.To(FBUser::FromJson(current.Value().Stringify()));
                     }
                 }
 
-				if(!found){
-					result = nullptr;
+				if(found){
+					result._succeeded = true;
 				}
             }
         }

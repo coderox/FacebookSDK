@@ -2,7 +2,6 @@
 
 #include <winrt/Windows.Data.Json.h>
 
-using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -28,11 +27,11 @@ namespace winsdkfb::Graph
         _status = value;
     }
 
-    shared_ptr<FBResult> FBPermission::FromJson(
+    FBResult FBPermission::FromJson(
         hstring const& JsonText
     )
     {
-        auto result = std::make_shared<FBPermission>();
+        FBPermission result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -47,17 +46,17 @@ namespace winsdkfb::Graph
                     if (key == L"permission")
                     {
                         found++;
-                        result->Permission(current.Value().GetString());
+                        result.Permission(current.Value().GetString());
                     }
                     else if (key == L"status")
                     {
                         found++;
-                        result->Status(current.Value().GetString());
+                        result.Status(current.Value().GetString());
                     }
                 }
 
-                if (!found) {
-                    result = nullptr;
+                if (found) {
+                    result._succeeded = true;
                 }
             }
         }

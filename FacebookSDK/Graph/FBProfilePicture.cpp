@@ -47,11 +47,11 @@ namespace winsdkfb::Graph
         _width = value;
     }
 
-    shared_ptr<FBProfilePicture> FBProfilePicture::FromJson(
+    FBProfilePicture FBProfilePicture::FromJson(
         hstring const& JsonText
     )
     {
-        auto result = make_shared<FBProfilePicture>();
+        FBProfilePicture result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -66,27 +66,27 @@ namespace winsdkfb::Graph
                     if (key == L"height")
                     {
                         found++;
-                        result->Height(static_cast<int>(current.Value().GetNumber()));
+                        result.Height(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"is_silhouette")
                     {
                         found++;
-                        result->IsSilhouette(current.Value().GetBoolean());
+                        result.IsSilhouette(current.Value().GetBoolean());
                     }
                     else if (key == L"url")
                     {
                         found++;
-                        result->Url(current.Value().GetString());
+                        result.Url(current.Value().GetString());
                     }
                     else if (key == L"width")
                     {
                         found++;
-                        result->Width(static_cast<int>(current.Value().GetNumber()));
+                        result.Width(static_cast<int>(current.Value().GetNumber()));
                     }
                 }
 
-                if (!found) {
-                    result = nullptr;
+                if (found) {
+                    result._succeeded = true;
                 }
             }
         }

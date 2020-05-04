@@ -3,7 +3,6 @@
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.Collections.h>
 
-using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -74,11 +73,11 @@ namespace winsdkfb::Graph
         _name = value;
     }
 
-    shared_ptr<FBPage> FBPage::FromJson(
+    FBPage FBPage::FromJson(
         hstring const& JsonText
     )
     {
-        auto result = make_shared<FBPage>();
+        FBPage result;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -93,42 +92,42 @@ namespace winsdkfb::Graph
                     if (key == L"id")
                     {
                         found++;
-                        result->Id(current.Value().GetString());
+                        result.Id(current.Value().GetString());
                     }
                     else if (key == L"category")
                     {
                         found++;
-                        result->Category(current.Value().GetString());
+                        result.Category(current.Value().GetString());
                     }
                     else if (key == L"checkins")
                     {
                         found++;
-                        result->Checkins(static_cast<int>(current.Value().GetNumber()));
+                        result.Checkins(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"description")
                     {
                         found++;
-                        result->Description(current.Value().GetString());
+                        result.Description(current.Value().GetString());
                     }
                     else if (key == L"likes")
                     {
                         found++;
-                        result->Likes(static_cast<int>(current.Value().GetNumber()));
+                        result.Likes(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        result->Link(current.Value().GetString());
+                        result.Link(current.Value().GetString());
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        result->Name(current.Value().GetString());
+                        result.Name(current.Value().GetString());
                     }
                 }
 
-                if (!found) {
-                    result = nullptr;
+                if (found) {
+                    result._succeeded = true;
                 }
             }
         }
