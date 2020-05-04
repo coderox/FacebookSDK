@@ -1,20 +1,22 @@
 ﻿#pragma once
 
 #include "HttpMethod.h"
+#include "IHttpClient.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Web.Http.h>
 
 namespace winsdkfb
 {
-	struct FBClient
+	struct FBClient : public IHttpClient
 	{
 		FBClient() = default;
 
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::hstring ParametersToQueryString(winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const& parameters);
+		// IHttpClient
+		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		virtual winrt::hstring ParametersToQueryString(winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
 
 	private:
 
@@ -163,7 +165,7 @@ namespace winsdkfb
 		);
 
 		winrt::Windows::Foundation::Collections::PropertySet MapViewToPropertySet(
-			winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const& mapView
+			winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const mapView
 		);
 
 		void ValidateMediaStreams(

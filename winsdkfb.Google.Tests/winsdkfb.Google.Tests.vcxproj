@@ -39,6 +39,7 @@
     <ClCompile Include="DateTime.gtest.cpp" />
     <ClCompile Include="FBAccessTokenData.gtest.cpp" />
     <ClCompile Include="FBError.gtest.cpp" />
+    <ClCompile Include="FBMediaObject.gtest.cpp" />
     <ClCompile Include="FBResult.gtest.cpp" />
     <ClCompile Include="Graph.gtest.cpp" />
     <ClCompile Include="pch.cpp">

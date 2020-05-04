@@ -16,6 +16,8 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPermissions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBResult.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPage.cpp" />
@@ -29,6 +31,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPageCategory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPaging.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HttpManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>

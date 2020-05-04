@@ -39,6 +39,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBAppRequest.cpp">
       <Filter>Graph</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HttpManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />

@@ -4,7 +4,7 @@
 
 namespace winsdkfb
 {
-	struct FBMediaObject
+	struct FBMediaObject : winrt::implements<FBMediaObject, winrt::Windows::Foundation::IActivationFactory, winrt::Windows::Foundation::IInspectable>
 	{
 		FBMediaObject() = default;
 
@@ -12,8 +12,17 @@ namespace winsdkfb
 		void ContentType(winrt::hstring const& value);
 		winrt::hstring FileName();
 		void FileName(winrt::hstring const& value);
-		winsdkfb::FBMediaObject SetValue(winrt::array_view<const uint8_t> value);
-		winrt::com_array<uint8_t> GetValue();
+		void SetValue(std::vector<uint8_t> value);
+		std::vector<uint8_t> GetValue();
+	
+		winrt::hstring GetRuntimeClassName() const
+		{
+			return L"winsdkfb.FBMediaObject";
+		}
+		auto ActivateInstance() const
+		{
+			return winrt::make<FBMediaObject>();
+		}
 
 	private:
 		std::vector<uint8_t> _value;

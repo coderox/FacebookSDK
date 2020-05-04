@@ -1,19 +1,26 @@
 ﻿#pragma once
 
+#include <pplawait.h>
+
 #include "HttpMethod.h"
 #include "FBResult.h"
 #include "Utilities.h"
 
 namespace winsdkfb
 {
-	struct FBSingleValue
+	//struct JsonClassFactory
+	//{
+	//	//winrt::Windows::Foundation::IInspectable operator()(winrt::hstring const& d);
+	//};
+
+	struct FBSingleValue : public FBResult
 	{
 	public:
-		FBSingleValue(winrt::hstring const& request, winrt::Windows::Foundation::Collections::PropertySet const& parameters, winsdkfb::JsonClassFactory const& objectFactory);
+		FBSingleValue(winrt::hstring const& request, winrt::Windows::Foundation::Collections::PropertySet const& parameters, winsdkfb::JsonClassFactory objectFactory);
 
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetAsync();
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> PostAsync();
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> DeleteAsync();
+		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> GetAsync();
+		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> PostAsync();
+		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> DeleteAsync();
 
 	private:
 		/**
@@ -27,17 +34,17 @@ namespace winsdkfb
 		 * @exception InvalidArgumentException if ObjectyFactory is unable
 		 * to instantiate an object or if the JsonText is unparsable.
 		 */
-		winsdkfb::FBResult ConsumeSingleValue(
+		std::shared_ptr<winsdkfb::FBResult> ConsumeSingleValue(
 			winrt::hstring JsonText
 		);
 
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> MakeHttpRequest(
-			::winsdkfb::HttpMethod httpMethod
+		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> MakeHttpRequest(
+			winsdkfb::HttpMethod httpMethod
 		);
 
-		winsdkfb::FBResult _result{ nullptr };
+		std::shared_ptr<winsdkfb::FBResult> _result{ nullptr };
 		std::wstring _request;
 		winrt::Windows::Foundation::Collections::PropertySet _parameters;
-		winsdkfb::JsonClassFactory _objectFactory;
+		winsdkfb::JsonClassFactory _objectFactory{ nullptr };
 	};
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 namespace winsdkfb {
-	enum HttpMethod {
+	enum class HttpMethod {
 		Get,
 		Post,
 		Delete
