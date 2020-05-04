@@ -13,7 +13,7 @@ namespace winsdkfb
 	{
 	}
 
-	vector<hstring> FBPermissions::Values()
+	vector<hstring> FBPermissions::Values() const
 	{
 		return _values;
 	}
@@ -38,20 +38,20 @@ namespace winsdkfb
 		return permissions;
 	}
 
-	shared_ptr<FBPermissions> FBPermissions::FromString(hstring const& permissions)
+	FBPermissions FBPermissions::FromString(hstring const& permissions)
 	{
-		return make_shared<FBPermissions>(ParsePermissionsFromString(permissions));
+		return FBPermissions(ParsePermissionsFromString(permissions));
 	}
 
-	shared_ptr<FBPermissions> FBPermissions::Difference(shared_ptr<FBPermissions> Minuend, shared_ptr<FBPermissions> Subtrahend)
+	FBPermissions FBPermissions::Difference(const FBPermissions& Minuend, const FBPermissions& Subtrahend)
 	{
 		vector<hstring> remainingPermissions;
 		// stick each permissions into vector manually since copy constructor won't work with IVectorView
-		for (hstring const& perm : Minuend->Values())
+		for (hstring const& perm : Minuend.Values())
 		{
 			remainingPermissions.push_back(perm);
 		}
-		for (hstring const& otherPerm : Subtrahend->Values())
+		for (hstring const& otherPerm : Subtrahend.Values())
 		{
 			for (unsigned int i = 0; i < remainingPermissions.size(); ++i)
 			{
@@ -63,7 +63,7 @@ namespace winsdkfb
 				}
 			}
 		}
-		return make_shared<FBPermissions>(remainingPermissions);
+		return FBPermissions(remainingPermissions);
 	}
 
 	vector<hstring> FBPermissions::ParsePermissionsFromString(hstring const& permissions) {

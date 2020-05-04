@@ -1,12 +1,11 @@
 #include "FBResult.h"
 
-using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
 
 namespace winsdkfb
 {
-	FBResult::FBResult(shared_ptr<FBError> error)
+	FBResult::FBResult(FBError error)
 		: _error(error)
 		, _succeeded(false)
 	{
@@ -18,7 +17,7 @@ namespace winsdkfb
 		return _succeeded;
 	}
 
-	shared_ptr<FBError> FBResult::ErrorInfo()
+	FBError FBResult::ErrorInfo()
 	{
 		return _error;
 	}

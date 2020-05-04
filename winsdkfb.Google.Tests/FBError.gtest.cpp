@@ -11,12 +11,11 @@ TEST(FBErrorTests, CreateInstance)
 	winrt::hstring message(L"message");
 
 	// act
-	auto fbError = std::make_shared<winsdkfb::FBError>(0, type, message);
+	auto fbError = winsdkfb::FBError(0, type, message);
 
 	// assert
-	EXPECT_NE(fbError, nullptr);
-	EXPECT_EQ(type, fbError->Type());
-	EXPECT_EQ(message, fbError->Message());
+	EXPECT_EQ(type, fbError.Type());
+	EXPECT_EQ(message, fbError.Message());
 }
 
 TEST(FBErrorTests, CreationFromJson)
@@ -28,9 +27,8 @@ TEST(FBErrorTests, CreationFromJson)
 	auto fbError = winsdkfb::FBError::FromJson(json);
 
 	// assert
-	EXPECT_NE(fbError, nullptr);
-	EXPECT_EQ(L"type", fbError->Type());
-	EXPECT_EQ(L"message", fbError->Message());
+	EXPECT_EQ(L"type", fbError.Type());
+	EXPECT_EQ(L"message", fbError.Message());
 }
 
 TEST(FBErrorTests, AnotherCreationFromJson)
@@ -42,13 +40,12 @@ TEST(FBErrorTests, AnotherCreationFromJson)
 	auto fbError = winsdkfb::FBError::FromJson(json);
 
 	// assert
-	EXPECT_NE(fbError, nullptr);
-	EXPECT_EQ(L"Message describing the error", fbError->Message());
-	EXPECT_EQ(L"OAuthException", fbError->Type());
-	EXPECT_EQ(190, fbError->Code());
-	EXPECT_EQ(460, fbError->Subcode());
-	EXPECT_EQ(L"A title", fbError->ErrorUserTitle());
-	EXPECT_EQ(L"A message", fbError->ErrorUserMessage());
+	EXPECT_EQ(L"Message describing the error", fbError.Message());
+	EXPECT_EQ(L"OAuthException", fbError.Type());
+	EXPECT_EQ(190, fbError.Code());
+	EXPECT_EQ(460, fbError.Subcode());
+	EXPECT_EQ(L"A title", fbError.ErrorUserTitle());
+	EXPECT_EQ(L"A message", fbError.ErrorUserMessage());
 }
 
 TEST(FBErrorTests, AppropriateFBErrorJsonMessage)
@@ -65,10 +62,9 @@ TEST(FBErrorTests, AppropriateFBErrorJsonMessage)
 	auto fbError = winsdkfb::FBError::FromJson(json);
 
 	// assert
-	EXPECT_NE(fbError, nullptr);
-	EXPECT_EQ(L"OAuthException", fbError->Type());
-	EXPECT_EQ(190, fbError->Code());
-	EXPECT_EQ(458, fbError->Subcode());
+	EXPECT_EQ(L"OAuthException", fbError.Type());
+	EXPECT_EQ(190, fbError.Code());
+	EXPECT_EQ(458, fbError.Subcode());
 }
 
 TEST(FBErrorTests, CreationFromUri)
@@ -80,7 +76,6 @@ TEST(FBErrorTests, CreationFromUri)
 	auto fbError = winsdkfb::FBError::FromUri(uri);
 
 	// assert
-	EXPECT_NE(fbError, nullptr);
-	EXPECT_EQ(L"Permissions error", fbError->Message());
-	EXPECT_EQ(L"user_denied", fbError->Type());
+	EXPECT_EQ(L"Permissions error", fbError.Message());
+	EXPECT_EQ(L"user_denied", fbError.Type());
 }

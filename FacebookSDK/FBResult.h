@@ -8,14 +8,14 @@ namespace winsdkfb
 	{
 	public:
 		FBResult() = default;
-		FBResult(std::shared_ptr<winsdkfb::FBError> error);
+		FBResult(winsdkfb::FBError error);
 		~FBResult() = default;
 
 		bool Succeeded();
-		std::shared_ptr<winsdkfb::FBError> ErrorInfo();
+		winsdkfb::FBError ErrorInfo();
 
 	protected:
 		bool _succeeded = false;
-		std::shared_ptr<winsdkfb::FBError> _error{ nullptr };
+		winsdkfb::FBError _error;
 	};
 }

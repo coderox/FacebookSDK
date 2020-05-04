@@ -51,9 +51,9 @@ namespace winsdkfb
 		return  _errorUserMessage.c_str();
 	}
 
-	std::shared_ptr<FBError> FBError::FromUri(Uri const& ResponseUri)
+	FBError FBError::FromUri(Uri const& ResponseUri)
 	{
-		auto result = std::make_shared<FBError>();
+		FBError result;
 		bool foundCode = false;
 		bool foundDescription = false;
 		bool foundMessage = false;
@@ -95,15 +95,15 @@ namespace winsdkfb
 
 			if (foundCode || foundDescription || foundMessage || foundReason)
 			{
-				result->_code = code;
-				result->_type = reason;
+				result._code = code;
+				result._type = reason;
 				if (foundDescription)
 				{
-					result->_message = description;
+					result._message = description;
 				}
 				else
 				{
-					result->_message = message;
+					result._message = message;
 				}
 			}
 		}
@@ -111,9 +111,9 @@ namespace winsdkfb
 		return result;
 	}
 
-	std::shared_ptr<FBError> FBError::FromJson(hstring const& JsonText)
+	FBError FBError::FromJson(hstring const& JsonText)
 	{
-		std::shared_ptr<FBError> result = nullptr;
+		FBError result;
 		JsonValue val{ nullptr };
 
 		if (JsonValue::TryParse(JsonText, val))
@@ -123,7 +123,6 @@ namespace winsdkfb
 				obj = obj.GetNamedObject(L"error");
 			}
 
-			result = std::make_shared<FBError>();
 			int found = 0;
 
 			for (auto&& current : obj)
@@ -133,37 +132,33 @@ namespace winsdkfb
 				if (key == L"message")
 				{
 					found++;
-					result->_message = current.Value().GetString();
+					result._message = current.Value().GetString();
 				}
 				else if (key == L"type")
 				{
 					found++;
-					result->_type = current.Value().GetString();
+					result._type = current.Value().GetString();
 				}
 				else if (key == L"code")
 				{
 					found++;
-					result->_code = static_cast<int>(current.Value().GetNumber());
+					result._code = static_cast<int>(current.Value().GetNumber());
 				}
 				else if (key == L"error_subcode")
 				{
 					found++;
-					result->_subcode = static_cast<int>(current.Value().GetNumber());
+					result._subcode = static_cast<int>(current.Value().GetNumber());
 				}
 				else if (key == L"error_user_title")
 				{
 					found++;
-					result->_errorUserTitle = current.Value().GetString();
+					result._errorUserTitle = current.Value().GetString();
 				}
 				else if (key == L"error_user_msg")
 				{
 					found++;
-					result->_errorUserMessage = current.Value().GetString();
+					result._errorUserMessage = current.Value().GetString();
 				}
-			}
-
-			if (!found) {
-				result = nullptr;
 			}
 		}
 		return result;

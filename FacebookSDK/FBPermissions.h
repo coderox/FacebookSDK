@@ -9,11 +9,11 @@ namespace winsdkfb
 		FBPermissions() = default;
 		FBPermissions(std::vector<winrt::hstring> Permissions);
 
-		std::vector<winrt::hstring> Values();
+		std::vector<winrt::hstring> Values() const;
 		winrt::hstring ToString();
 
-		static std::shared_ptr<winsdkfb::FBPermissions> FromString(winrt::hstring const& Permissions);
-		static std::shared_ptr<winsdkfb::FBPermissions> Difference(std::shared_ptr<winsdkfb::FBPermissions> Minuend, std::shared_ptr<winsdkfb::FBPermissions> Subtrahend);
+		static winsdkfb::FBPermissions FromString(winrt::hstring const& Permissions);
+		static winsdkfb::FBPermissions Difference(const winsdkfb::FBPermissions& Minuend, const winsdkfb::FBPermissions& Subtrahend);
 
 	private:
 		static std::vector<winrt::hstring> ParsePermissionsFromString(

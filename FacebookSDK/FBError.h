@@ -7,8 +7,8 @@ namespace winsdkfb
 	struct FBError
 	{
 	public:
-		static std::shared_ptr<FBError> FromUri(winrt::Windows::Foundation::Uri const& ResponseUri);
-		static std::shared_ptr<FBError> FromJson(winrt::hstring const& JsonText);
+		static FBError FromUri(winrt::Windows::Foundation::Uri const& ResponseUri);
+		static FBError FromJson(winrt::hstring const& JsonText);
 
 		FBError();
 		FBError(int32_t Code, winrt::hstring const& Type, winrt::hstring const& Message);
