@@ -10,17 +10,17 @@ namespace winsdkfb
 {
 	struct FBAccessTokenData : public FBResult
 	{
-		//FBAccessTokenData() = default;
+		FBAccessTokenData() = default;
 		FBAccessTokenData(winrt::hstring const& AccessToken, winrt::Windows::Foundation::DateTime const& Expiration);
 
 		winrt::hstring AccessToken();
 		winrt::Windows::Foundation::DateTime ExpirationDate();
-		std::shared_ptr<winsdkfb::FBPermissions> GrantedPermissions();
-		std::shared_ptr<winsdkfb::FBPermissions> DeclinedPermissions();
+		winsdkfb::FBPermissions GrantedPermissions();
+		winsdkfb::FBPermissions DeclinedPermissions();
 		bool IsExpired();
 		void SetPermissions(std::vector<winsdkfb::Graph::FBPermission> const& perms);
 
-		static std::shared_ptr<winsdkfb::FBAccessTokenData> FromUri(winrt::Windows::Foundation::Uri const& Response);
+		static winsdkfb::FBAccessTokenData FromUri(winrt::Windows::Foundation::Uri const& Response);
 
 		FBAccessTokenData(
 			std::wstring accessToken,
@@ -51,7 +51,7 @@ namespace winsdkfb
 
 		std::wstring _accessToken;
 		winrt::Windows::Foundation::DateTime _expirationDate;
-		std::shared_ptr<winsdkfb::FBPermissions> _grantedPermissions{ nullptr };
-		std::shared_ptr<winsdkfb::FBPermissions> _declinedPermissions{ nullptr };
+		winsdkfb::FBPermissions _grantedPermissions;
+		winsdkfb::FBPermissions _declinedPermissions;
 	};
 }

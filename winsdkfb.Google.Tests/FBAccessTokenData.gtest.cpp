@@ -10,26 +10,25 @@ using namespace Windows::Foundation;
 TEST(FBAccessTokenDataTests, CreateInstance)
 {
 	// arrange
-	auto instance = make_shared<winsdkfb::FBAccessTokenData>(L"SECRET_TOKEN", DateTime());
+	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime());
 
 	// act
 
 	// assert
-	EXPECT_TRUE(instance != nullptr);
+	EXPECT_FALSE(instance.AccessToken().empty());
 }
 
 TEST(FBAccessTokenDataTests, CreateInstanceOfFBResult)
 {
 	// arrange
 	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456");
-	shared_ptr<winsdkfb::FBResult> fbResult = winsdkfb::FBAccessTokenData::FromUri(uri);
+	winsdkfb::FBResult fbResult = winsdkfb::FBAccessTokenData::FromUri(uri);
 
 	// act
-	shared_ptr<winsdkfb::FBAccessTokenData> fbAccessTokenData = static_pointer_cast<winsdkfb::FBAccessTokenData>(fbResult);
+	winsdkfb::FBAccessTokenData& fbAccessTokenData = static_cast<winsdkfb::FBAccessTokenData&>(fbResult);
 
 	// assert
-	EXPECT_TRUE(fbAccessTokenData != nullptr);
-	EXPECT_TRUE(fbResult->Succeeded());
+	EXPECT_TRUE(fbAccessTokenData.Succeeded());
 }
 
 TEST(FBAccessTokenDataTests, CreateInstanceFromUri)
@@ -41,9 +40,8 @@ TEST(FBAccessTokenDataTests, CreateInstanceFromUri)
 	auto instance = winsdkfb::FBAccessTokenData::FromUri(uri);
 
 	// assert
-	EXPECT_TRUE(instance != nullptr);
-	EXPECT_STREQ(L"ACCESS_TOKEN", instance->AccessToken().c_str());
-	EXPECT_FALSE(instance->IsExpired());
+	EXPECT_STREQ(L"ACCESS_TOKEN", instance.AccessToken().c_str());
+	EXPECT_FALSE(instance.IsExpired());
 }
 
 TEST(FBAccessTokenDataTests, IsExpiredYesterdayShouldBeTrue)
@@ -55,6 +53,5 @@ TEST(FBAccessTokenDataTests, IsExpiredYesterdayShouldBeTrue)
 	auto instance = winsdkfb::FBAccessTokenData::FromUri(uri);
 
 	// assert
-	EXPECT_TRUE(instance != nullptr);
-	EXPECT_TRUE(instance->IsExpired());
+	EXPECT_TRUE(instance.IsExpired());
 }

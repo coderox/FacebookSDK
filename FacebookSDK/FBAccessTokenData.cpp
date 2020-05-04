@@ -33,13 +33,12 @@ namespace winsdkfb
 	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, DateTime const& expiration)
 		: _accessToken(accessToken.c_str())
 		, _expirationDate(expiration)
+		, _grantedPermissions()
+		, _declinedPermissions()
 	{
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
-		auto v = std::vector<hstring>();
-		_grantedPermissions = make_shared<FBPermissions>(v);
-		_declinedPermissions = make_shared<FBPermissions>(v);
 		_succeeded = true;
 	}
 
@@ -53,12 +52,12 @@ namespace winsdkfb
 		return _expirationDate;
 	}
 
-	shared_ptr<FBPermissions> FBAccessTokenData::GrantedPermissions()
+	FBPermissions FBAccessTokenData::GrantedPermissions()
 	{
 		return _grantedPermissions;
 	}
 
-	shared_ptr<FBPermissions> FBAccessTokenData::DeclinedPermissions()
+	FBPermissions FBAccessTokenData::DeclinedPermissions()
 	{
 		return _declinedPermissions;
 	}
@@ -74,8 +73,6 @@ namespace winsdkfb
 
 	void FBAccessTokenData::SetPermissions(std::vector<Graph::FBPermission> const& perms)
 	{
-		_grantedPermissions = nullptr;
-		_declinedPermissions = nullptr;
 		std::vector<hstring> granted;
 		std::vector<hstring> declined;
 
@@ -93,17 +90,17 @@ namespace winsdkfb
 			}
 		}
 
-		_grantedPermissions = make_shared<FBPermissions>(granted);
-		_declinedPermissions = make_shared<FBPermissions>(declined);
+		_grantedPermissions = FBPermissions(granted);
+		_declinedPermissions = FBPermissions(declined);
 	}
 
-	shared_ptr<FBAccessTokenData> FBAccessTokenData::FromUri(Uri const& response)
+	FBAccessTokenData FBAccessTokenData::FromUri(Uri const& response)
 	{
 		bool gotToken = false;
 		bool gotExpiration = false;
 		hstring token;
 		hstring expiration;
-		shared_ptr<winsdkfb::FBAccessTokenData> data{ nullptr };
+		winsdkfb::FBAccessTokenData data;
 
 		WwwFormUrlDecoder decoder = FBAccessTokenData::ParametersFromResponse(response);
 
@@ -125,7 +122,7 @@ namespace winsdkfb
 
 		if (gotToken && gotExpiration)
 		{
-			data = make_shared<FBAccessTokenData>(token.c_str(), expiration.c_str());
+			data = FBAccessTokenData(token.c_str(), expiration.c_str());
 		}
 
 		return data;
