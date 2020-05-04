@@ -39,20 +39,6 @@ const wchar_t* requested_permissions[] = {
 BlankPage::BlankPage()
 {
 	InitializeComponent();
-
-	//MockHttpClient^ mockHttpClient = ref new MockHttpClient();
-	//winsdkfb::HttpManager::Instance->SetHttpClient(mockHttpClient);
-	//// test no values returned from request
-	//mockHttpClient->ResponseData = L"{\"data\":[]}";
-	//String^ graphPath = L"/12345 / likes";
-
-	//auto fact = ref new winsdkfb::JsonClassFactory([=](Platform::String^ JsonText)
-	//{ 
-	//	return JsonText; 
-	//});
-
-	//auto likes = ref new winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
-	//auto result = concurrency::create_task(likes->FirstAsync()).get();
 }
 
 void BlankPage::SetSessionAppIds() {
@@ -72,31 +58,53 @@ winsdkfb::FBPermissions^ BlankPage::BuildPermissions() {
 
 void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 {
-	auto session = winsdkfb::FBSession::ActiveSession;
-	if (session->LoggedIn) {
-		create_task(session->LogoutAsync());
-		loginButton->Content = ref new Platform::String(L"Login");
-		profilePicture->UserId = "";
-	}
-	else {
-		SetSessionAppIds();
-		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView)).then([&](winsdkfb::FBResult^ result) {
-			auto session = winsdkfb::FBSession::ActiveSession;
-			if (session->LoggedIn) {
-				loginButton->Content = ref new Platform::String(L"Logout");
-				OutputDebugString(session->AccessTokenData->AccessToken->Data());
-				auto user = session->User;
-				Platform::String^ userId = user->Id;
-				profilePicture->UserId = userId;
-			}
-			else {
-				if (!result->Succeeded && result->ErrorInfo != nullptr) {
-					auto message = result->ErrorInfo->Message;
-					OutputDebugString(message->Data());
-				}
-			}
+	create_task([]() {
+		MockHttpClient^ mockHttpClient = ref new MockHttpClient();
+		winsdkfb::HttpManager::Instance->SetHttpClient(mockHttpClient);
+		// test no values returned from request
+		mockHttpClient->ResponseData = L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}";
+
+		String^ graphPath = L"/12345/users";
+
+		auto fact = ref new winsdkfb::JsonClassFactory([=](Platform::String^ JsonText)
+		{
+			return winsdkfb::Graph::FBUser::FromJson(JsonText);
 		});
-	}
+
+		auto likes = ref new winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
+		auto result = concurrency::create_task(likes->FirstAsync()).get();
+
+		bool succeeded = result->Succeeded;
+		auto users = dynamic_cast<IVectorView<Object^>^>(result->Object);		
+		auto user = dynamic_cast<winsdkfb::Graph::FBUser^>(users->GetAt(0));
+		auto firstName = user->FirstName;
+	});
+
+	//auto session = winsdkfb::FBSession::ActiveSession;
+	//if (session->LoggedIn) {
+	//	create_task(session->LogoutAsync());
+	//	loginButton->Content = ref new Platform::String(L"Login");
+	//	profilePicture->UserId = "";
+	//}
+	//else {
+	//	SetSessionAppIds();
+	//	create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView)).then([&](winsdkfb::FBResult^ result) {
+	//		auto session = winsdkfb::FBSession::ActiveSession;
+	//		if (session->LoggedIn) {
+	//			loginButton->Content = ref new Platform::String(L"Logout");
+	//			OutputDebugString(session->AccessTokenData->AccessToken->Data());
+	//			auto user = session->User;
+	//			Platform::String^ userId = user->Id;
+	//			profilePicture->UserId = userId;
+	//		}
+	//		else {
+	//			if (!result->Succeeded && result->ErrorInfo != nullptr) {
+	//				auto message = result->ErrorInfo->Message;
+	//				OutputDebugString(message->Data());
+	//			}
+	//		}
+	//	});
+	//}
 }
 
 void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)

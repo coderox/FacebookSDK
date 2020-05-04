@@ -1,27 +1,33 @@
 ﻿#include "pch.h"
+
 #include "MainPage.h"
 #include "MainPage.g.cpp"
-
+#include "MockHttpClient.h"
+#include "HttpManager.h"
+#include "Utilities.h"
+#include "FBPaginatedArray.h"
+#include "Graph/FBUser.h"
 #include "FBResult.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
+using namespace Windows::Foundation;
 
 namespace winrt::FacebookSDK_TestClient::implementation
 {
-    MainPage::MainPage()
-    {
-        InitializeComponent();
-    }
+	MainPage::MainPage()
+	{
+		InitializeComponent();
+	}
 
 	const wchar_t* requested_permissions[] = {
-	L"public_profile",
-	L"user_friends",
-	L"user_likes",
-	L"user_location",
-	L"publish_pages",
-	L"manage_pages",
-	L"user_posts"
+		L"public_profile",
+		L"user_friends",
+		L"user_likes",
+		L"user_location",
+		L"publish_pages",
+		L"manage_pages",
+		L"user_posts"
 	};
 
 	void SetSessionAppIds() {
@@ -188,40 +194,53 @@ namespace winrt::FacebookSDK_TestClient::implementation
 	//			});
 	//	}
 	//}
-}
+
+	void MainPage::OnLoaded(IInspectable const&, RoutedEventArgs const&)
+	{
+		SetSessionAppIds();
+	}
+
+	void MainPage::OnLoginClicked(IInspectable const&, RoutedEventArgs const&)
+	{
+
+	}
+
+	void MainPage::OnFeedClicked(IInspectable const&, RoutedEventArgs const&)
+	{
+
+	}
+
+	void MainPage::OnRequestsClicked(IInspectable const&, RoutedEventArgs const&)
+	{
+		//auto mockHttpClient = std::make_shared<MockHttpClient>();
+		//winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
+		//// test no values returned from request
+		//mockHttpClient->ResponseData(L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}");
+
+		//auto graphPath = L"/12345/users";
+
+		//winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText)
+		//{
+		//	return std::static_pointer_cast<winsdkfb::FBResult>(winsdkfb::Graph::FBUser::FromJson(JsonText));
+		//};
+
+		//auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
+		//auto result = concurrency::create_task(likes->FirstAsync()).get();
+
+		//bool succeeded = result->Succeeded;
+		//auto users = dynamic_cast<IVectorView<Object^>^>(result->Object);
+		//auto user = dynamic_cast<winsdkfb::Graph::FBUser^>(users->GetAt(0));
+		//auto firstName = user->FirstName;
+	}
 
 
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnLoaded(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-	SetSessionAppIds();
-}
+	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
+	{
 
+	}
 
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnLoginClicked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
+	void MainPage::OnPostClicked(IInspectable const&, RoutedEventArgs const&)
+	{
 
-}
-
-
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnFeedClicked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
-}
-
-
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnRequestsClicked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
-}
-
-
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnSendClicked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
-}
-
-
-void winrt::FacebookSDK_TestClient::implementation::MainPage::OnPostClicked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
+	}
 }

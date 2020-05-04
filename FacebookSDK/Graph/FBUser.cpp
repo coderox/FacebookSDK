@@ -216,6 +216,7 @@ namespace winsdkfb::Graph
                 }
             }
         }
+        result->_succeeded = true;
         return result;
     }
 }

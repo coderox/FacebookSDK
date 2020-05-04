@@ -74,7 +74,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 	auto session = winsdkfb::FBSession::ActiveSession;
 	session->FBAppId = "719494811465102";
-	winsdkfb::FBAppEvents::ActivateApp();
+	//winsdkfb::FBAppEvents::ActivateApp();
 }
 
 /// <summary>

@@ -1,5 +1,4 @@
-﻿#include "pch.h"
-#include "Utilities.h"
+﻿#include "Utilities.h"
 #include "SDKMessage.h"
 #include "FBPaginatedArray.h"
 #include "FBResult.h"
@@ -15,7 +14,7 @@ using namespace Windows::Foundation::Collections;
 using namespace Windows::Web::Http;
 using namespace Windows::Web::Http::Filters;
 
-namespace winrt::winsdkfb::implementation
+namespace winsdkfb
 {
 	FBPaginatedArray::FBPaginatedArray(hstring const& request, PropertySet const& parameters, winsdkfb::JsonClassFactory const& objectFactory)
 		: _current(nullptr)
@@ -38,10 +37,10 @@ namespace winrt::winsdkfb::implementation
 	{
 		if (!HasNext())
 		{
-			co_return make<FBResult>(make<FBError>(0, L"Invalid SDK call", L"No next page"));
+			co_return FBResult(FBError(0, L"Invalid SDK call", L"No next page"));
 		}
-
-		return GetPageAsync(_paging.Next().c_str());
+	
+		co_return co_await GetPageAsync(_paging->Next().c_str());
 	}
 
 	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::PreviousAsync()
@@ -51,7 +50,7 @@ namespace winrt::winsdkfb::implementation
 			co_return make<FBResult>(make<FBError>(0, L"Invalid SDK call", L"No previous page"));
 		}
 
-		return GetPageAsync(_paging.Previous().c_str());
+		return GetPageAsync(_paging->Previous().c_str());
 	}
 
 	IVectorView<IInspectable> FBPaginatedArray::Current()

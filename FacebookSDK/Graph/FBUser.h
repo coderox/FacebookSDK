@@ -2,10 +2,11 @@
 
 #include "FBPage.h"
 #include "FBProfilePictureData.h"
+#include "../FBResult.h"
 
 namespace winsdkfb::Graph
 {
-    struct FBUser 
+    struct FBUser : public FBResult
     {
         static std::shared_ptr<winsdkfb::Graph::FBUser> FromJson(
             winrt::hstring const& JsonText

@@ -3,6 +3,7 @@
 #include "Graph/FBPaging.h"
 #include "FBResult.h"
 #include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Data.Json.h>
 #include "Utilities.h"
 
 namespace winsdkfb
@@ -42,6 +43,6 @@ namespace winsdkfb
 		winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Foundation::IInspectable> _current{ nullptr };
 		std::shared_ptr<winsdkfb::Graph::FBPaging> _paging{ nullptr };
 		winrt::Windows::Foundation::Collections::PropertySet _parameters = nullptr;
-		std::shared_ptr<winsdkfb::JsonClassFactory> _objectFactory = nullptr;
+		winsdkfb::JsonClassFactory _objectFactory;
 	};
 }
