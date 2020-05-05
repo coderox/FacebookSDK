@@ -10,7 +10,7 @@ namespace winsdkfb
 {
 	HttpManager::HttpManager(shared_ptr<IHttpClient> httpClient)
 	{
-		_httpClient = httpClient;
+		SetHttpClient(httpClient);
 	}
 
 	void HttpManager::SetHttpClient(shared_ptr<IHttpClient> httpClient)

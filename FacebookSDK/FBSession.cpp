@@ -1,6 +1,4 @@
-﻿#include "pch.h"
-
-#include "FBAccessTokenData.h"
+﻿#include "FBAccessTokenData.h"
 #include "FBSession.h"
 #include "FBAppRequest.h"
 #include "FBDialog.h"
@@ -8,14 +6,18 @@
 #include "FBFeedRequest.h"
 #include "FBPaginatedArray.h"
 #include "FBResult.h"
-#include "Generated/Graph.FBPermission.h"
+#include "Graph/FBPermission.h"
 #include "FBSingleValue.h"
-#include "Generated/Graph.FBUser.h"
+#include "Graph/FBUser.h"
 #include "SDKMessage.h"
 #include <regex>
 #include "Utilities.h"
 #include <sstream>
 #include <string>
+#include <FBConstants.h>
+
+#include <winrt/Windows.Security.Cryptography.DataProtection.h>
+#include <winrt/Windows.Data.Json.h>
 
 using namespace std;
 using namespace winrt;
@@ -68,15 +70,9 @@ extern const wchar_t* ErrorObjectJson;
 namespace winsdkfb
 {
 	HANDLE login_evt = NULL;
-}
 
-namespace winrt::winsdkfb::implementation
-{
 	FBSession::FBSession()
-		: _AccessTokenData(nullptr)
-		, _loggedIn(false)
-		, _user(nullptr)
-		, _asyncResult(nullptr)
+		:  _loggedIn(false)
 	{
 		if (!::winsdkfb::login_evt)
 		{
@@ -84,11 +80,7 @@ namespace winrt::winsdkfb::implementation
 		}
 		_APIMajorVersion = 2;
 		_APIMinorVersion = 6;
-#if WINAPI_FAMILY==WINAPI_FAMILY_PHONE_APP
-		_webViewRedirectDomain = FACEBOOK_MOBILE_SERVER_NAME;
-#else
 		_webViewRedirectDomain = FACEBOOK_DESKTOP_SERVER_NAME;
-#endif
 		_webViewRedirectPath = FACEBOOK_LOGIN_SUCCESS_PATH;
 	}
 
@@ -141,7 +133,7 @@ namespace winrt::winsdkfb::implementation
 		return _AccessTokenData;
 	}
 
-	void FBSession::AccessTokenData(winsdkfb::FBAccessTokenData const& value)
+	void FBSession::AccessTokenData(winsdkfb::FBAccessTokenData value)
 	{
 		_AccessTokenData = value;
 
@@ -176,10 +168,10 @@ namespace winrt::winsdkfb::implementation
 
 	IAsyncAction FBSession::LogoutAsync()
 	{
-		_user = nullptr;
+		_user = winsdkfb::Graph::FBUser();
 		_FBAppId.clear();
 		_WinAppId.clear();
-		_AccessTokenData = nullptr;
+		_AccessTokenData = FBAccessTokenData();
 		_AppResponse.clear();
 		_loggedIn = false;
 
@@ -188,74 +180,70 @@ namespace winrt::winsdkfb::implementation
 		return TryDeleteTokenDataAsync();
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::ShowFeedDialogAsync(PropertySet const Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::ShowFeedDialogAsync(PropertySet const Parameters)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		FBDialog dialog;
 		try {
 			result = co_await dialog.ShowFeedDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = make<FBResult>(err);
+			result = FBResult(err);
 		}
 
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::ShowRequestsDialogAsync(PropertySet const Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::ShowRequestsDialogAsync(PropertySet const Parameters)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		FBDialog dialog;
 		try {
 			result = co_await dialog.ShowRequestsDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = make<FBResult>(err);
+			result = FBResult(err);
 		}
 
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::ShowSendDialogAsync(PropertySet const Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::ShowSendDialogAsync(PropertySet const Parameters)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		FBDialog dialog;
 		try {
 			result = co_await dialog.ShowSendDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = make<FBResult>(err);
+			result = FBResult(err);
 		}
 
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::LoginAsync()
+	concurrency::task<winsdkfb::FBResult> FBSession::LoginAsync()
 	{
-		return LoginAsync(nullptr, winsdkfb::SessionLoginBehavior::DefaultOrdering);
+		return LoginAsync(FBPermissions(), winsdkfb::SessionLoginBehavior::DefaultOrdering);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::LoginAsync(winsdkfb::FBPermissions permissions)
+	concurrency::task<winsdkfb::FBResult> FBSession::LoginAsync(winsdkfb::FBPermissions permissions)
 	{
 		return LoginAsync(permissions, winsdkfb::SessionLoginBehavior::DefaultOrdering);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior)
+	concurrency::task<winsdkfb::FBResult> FBSession::LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior)
 	{
-		if (!permissions) {
-			permissions = make<FBPermissions>();
-		}
-
 		PropertySet parameters;
 		parameters.Insert(ScopeKey, box_value(permissions.ToString()));
 
 		if (LoggedIn()) {
 			parameters.Insert(AuthTypeKey, box_value(Rerequest));
 		}
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		switch (behavior)
 		{
 		case SessionLoginBehavior::WebView:
@@ -273,9 +261,9 @@ namespace winrt::winsdkfb::implementation
 		case SessionLoginBehavior::DefaultOrdering:
 			_asyncResult = co_await TryLoginViaWebAccountProviderAsync(permissions);
 
-			if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr && _asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
+			if (!_asyncResult.Succeeded() || (_asyncResult.ErrorInfo().Code() == (int)ErrorCode::ErrorCodeWebAccountProviderNotFound)) {
 				_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
-				if (_asyncResult == nullptr || (_asyncResult.ErrorInfo() != nullptr)) {
+				if (!_asyncResult.Succeeded()) {
 					_asyncResult = co_await TryLoginViaWebAuthBrokerAsync(parameters);
 				}
 			}
@@ -287,21 +275,19 @@ namespace winrt::winsdkfb::implementation
 		default:
 			OutputDebugString(L"Invalid SessionLoginBehavior member!\n");
 			// TODO need a real error code
-			_asyncResult = make<FBResult>(make<FBError>(0, L"Login Error", L"Invalid SessionLoginBehavior member"));
+			_asyncResult = FBResult(FBError(0, L"Login Error", L"Invalid SessionLoginBehavior member"));
 			break;
 		}
 
 		auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
 		auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
 
-		if (finalResult == nullptr || !finalResult.Succeeded()) {
+		if (!finalResult.Succeeded()) {
 			_loggedIn = false;
-			AccessTokenData(nullptr);
+			AccessTokenData(FBAccessTokenData());
 
-			if (finalResult == nullptr) {
-				finalResult = make<FBResult>(make<FBError>(0, L"Unexpected error", L"Log in attempt failed"));
-				OutputDebugString(L"LoginAsync was about to return nullptr, created FBResult object to return instead");
-			}
+			finalResult = FBResult(FBError(0, L"Unexpected error", L"Log in attempt failed"));
+			OutputDebugString(L"LoginAsync was about to return nullptr, created FBResult object to return instead");
 		}
 		else {
 			SaveGrantedPermissions();
@@ -327,7 +313,7 @@ namespace winrt::winsdkfb::implementation
 
 	winsdkfb::FBSession FBSession::ActiveSession()
 	{
-		static winsdkfb::FBSession activeFBSession = make<FBSession>();
+		static winsdkfb::FBSession activeFBSession;
 		return activeFBSession;
 	}
 
@@ -341,7 +327,7 @@ namespace winrt::winsdkfb::implementation
 		return localSettings.Containers().Lookup(SDK_APP_DATA_CONTAINER);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryRefreshAccessTokenAsync()
+	concurrency::task<winsdkfb::FBResult>FBSession::TryRefreshAccessTokenAsync()
 	{
 		WebTokenRequestResult result{ nullptr };
 
@@ -412,17 +398,17 @@ namespace winrt::winsdkfb::implementation
 		return endURI.DisplayUri();
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::GetUserInfoAsync(
-		winsdkfb::FBAccessTokenData const& tokenData
+	concurrency::task<winsdkfb::FBResult> FBSession::GetUserInfoAsync(
+		winsdkfb::FBAccessTokenData const tokenData
 	) {
 		PropertySet parameters;
 		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
-		auto objectFactory = JsonClassFactory([](hstring jsonText) -> IInspectable
+		auto objectFactory = JsonClassFactory([](hstring jsonText) -> FBResult
 		{
 			return Graph::FBUser::FromJson(jsonText);
 		});
 
-		winsdkfb::FBSingleValue value = make<FBSingleValue>(
+		winsdkfb::FBSingleValue value = FBSingleValue(
 			L"/me",
 			parameters,
 			objectFactory);
@@ -435,12 +421,12 @@ namespace winrt::winsdkfb::implementation
 		throw hresult_not_implemented();
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::CheckForExistingTokenAsync()
+	concurrency::task<winsdkfb::FBResult> FBSession::CheckForExistingTokenAsync()
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		if (LoggedIn())
 		{
-			result = make<FBResult>(this->AccessTokenData());
+			result = AccessTokenData();
 		}
 		else
 		{
@@ -467,8 +453,8 @@ namespace winrt::winsdkfb::implementation
 						OutputDebugString(msg.c_str());
 
 						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-						winsdkfb::FBAccessTokenData cachedData = make<FBAccessTokenData>(accessToken, expirationTime);
-						result = make<FBResult>(cachedData);
+						winsdkfb::FBAccessTokenData cachedData = FBAccessTokenData(accessToken, expirationTime);
+						result = FBResult(cachedData);
 					}
 				}
 			}
@@ -524,38 +510,41 @@ namespace winrt::winsdkfb::implementation
 		}
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::GetAppPermissionsAsync()
+	concurrency::task<winsdkfb::FBResult> FBSession::GetAppPermissionsAsync()
 	{
 		wstringstream permStream;
 		permStream << L"/" << _user.Id().c_str() << L"/permissions";
+
+		auto factory = JsonClassFactory([](hstring const& JsonText) -> FBResult
+		{
+			return Graph::FBPermission::FromJson(JsonText);
+		});
+
 		FBPaginatedArray permArr(
 			permStream.str().c_str(),
 			nullptr,
-			JsonClassFactory([](hstring const& JsonText) -> IInspectable
-		{
-			return Graph::FBPermission::FromJson(JsonText);
-		}));
+			factory);
 
 		auto result = co_await permArr.FirstAsync();
 		if (result.Succeeded()) {
-			auto perms = result.Object().as<IVectorView<IInspectable>>();
-			_AccessTokenData.SetPermissions(perms);
+			//auto perms = result.Object().as<IVectorView<IInspectable>>();
+			//_AccessTokenData.SetPermissions(perms);
 		}
-		co_return make<FBResult>(_user);
+		co_return FBResult(_user);
 	}
 
 	winsdkfb::FBResult FBSession::ProcessAuthResult(WebAuthenticationResult authResult)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		hstring uriString;
-		winsdkfb::FBAccessTokenData tokenData{ nullptr };
+		winsdkfb::FBAccessTokenData tokenData;
 		Uri uri{ nullptr };
 
 		switch (authResult.ResponseStatus())
 		{
 		case WebAuthenticationStatus::ErrorHttp:
 			//TODO: need a real error code
-			result = make<FBResult>(make<FBError>(0,
+			result = FBResult(FBError(0,
 				L"Communication error",
 				L"An Http error occurred"));
 			break;
@@ -564,17 +553,17 @@ namespace winrt::winsdkfb::implementation
 			uriString = authResult.ResponseData();
 			uri = Uri(uriString);
 			tokenData = FBAccessTokenData::FromUri(uri);
-			if (!tokenData)
+			if (!tokenData.Succeeded())
 			{
-				result = make<FBResult>(FBError::FromUri(uri));
+				result = FBResult(FBError::FromUri(uri));
 			}
 			else
 			{
-				result = make<FBResult>(tokenData);
+				result = tokenData;
 			}
 			break;
 		case WebAuthenticationStatus::UserCancel:
-			result = make<FBResult>(make<FBError>(0,
+			result = FBResult(FBError(0,
 				L"User canceled",
 				L"The login operation was canceled"));
 			break;
@@ -584,13 +573,13 @@ namespace winrt::winsdkfb::implementation
 		return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryGetUserInfoAfterLoginAsync(winsdkfb::FBResult loginResult)
+	concurrency::task<winsdkfb::FBResult> FBSession::TryGetUserInfoAfterLoginAsync(winsdkfb::FBResult loginResult)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 
-		if (loginResult != nullptr && loginResult.Succeeded())
+		if (loginResult.Succeeded())
 		{
-			_AccessTokenData = loginResult.Object().as<winsdkfb::FBAccessTokenData>();
+			_AccessTokenData = static_cast<FBAccessTokenData&>(loginResult);
 			_loggedIn = true;
 			TrySaveTokenData();
 			result = co_await GetUserInfoAsync(_AccessTokenData);
@@ -603,12 +592,12 @@ namespace winrt::winsdkfb::implementation
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryGetAppPermissionsAfterLoginAsync(winsdkfb::FBResult loginResult)
+	concurrency::task<winsdkfb::FBResult> FBSession::TryGetAppPermissionsAfterLoginAsync(winsdkfb::FBResult loginResult)
 	{
-		winsdkfb::FBResult result{ nullptr };
-		if (loginResult != nullptr && loginResult.Succeeded())
+		winsdkfb::FBResult result;
+		if (loginResult.Succeeded())
 		{
-			_user = loginResult.Object().as<Graph::FBUser>();
+			_user = static_cast<Graph::FBUser&>(loginResult);
 			result = co_await GetAppPermissionsAsync();
 		}
 		else
@@ -619,11 +608,11 @@ namespace winrt::winsdkfb::implementation
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::RunOAuthOnUiThreadAsync(PropertySet Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::RunOAuthOnUiThreadAsync(PropertySet Parameters)
 	{
 		try
 		{
-			_asyncResult = nullptr;
+			_asyncResult = FBResult();
 			auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
 			auto function = [](FBSession *self, HANDLE event, PropertySet parameters) -> IAsyncAction {
 				auto authResult = co_await WebAuthenticationBroker::AuthenticateAsync(
@@ -648,11 +637,11 @@ namespace winrt::winsdkfb::implementation
 		co_return _asyncResult;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::RunWebViewLoginOnUIThreadAsync(PropertySet Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::RunWebViewLoginOnUIThreadAsync(PropertySet Parameters)
 	{
 		try
 		{
-			_asyncResult = nullptr;
+			_asyncResult = FBResult();
 			auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
 			auto function = [](FBSession *self, HANDLE event, PropertySet parameters) -> IAsyncAction {
 				auto result = co_await self->ShowLoginDialogAsync(parameters);
@@ -674,39 +663,38 @@ namespace winrt::winsdkfb::implementation
 		co_return _asyncResult;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::ShowLoginDialogAsync(PropertySet const& Parameters)
+	concurrency::task<winsdkfb::FBResult> FBSession::ShowLoginDialogAsync(PropertySet const Parameters)
 	{
-		winsdkfb::FBResult result{ nullptr };
+		FBResult result;
 		FBDialog dialog;
 		try {
 			result = co_await dialog.ShowLoginDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = make<FBResult>(err);
+			result = FBResult(err);
 		}
 
 		if (result.Succeeded())
 		{
-			AccessTokenData(result.Object().as<winsdkfb::FBAccessTokenData>());
+			AccessTokenData(static_cast<FBAccessTokenData&>(result));
 		}
 
 		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryLoginViaWebViewAsync(
+	concurrency::task<winsdkfb::FBResult> FBSession::TryLoginViaWebViewAsync(
 		PropertySet parameters
 	) {
-		winsdkfb::FBResult loginResult{ nullptr };
+		FBResult loginResult;
 		auto session = FBSession::ActiveSession();
 
 		if (!IsRerequest(parameters)) {
-			auto oauthResult = co_await CheckForExistingTokenAsync();
-			if (oauthResult != nullptr && oauthResult.Succeeded()) {
-				if (winsdkfb::FBAccessTokenData tokenData{ oauthResult.Object().try_as<winsdkfb::FBAccessTokenData>() }) {
-					if (!tokenData.IsExpired()) {
-						loginResult = make<FBResult>(tokenData);
-					}
+			FBResult oauthResult = co_await CheckForExistingTokenAsync();
+			if (oauthResult.Succeeded()) {
+				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
+				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
+					loginResult = FBResult(tokenData);
 				}
 			}
 			else {
@@ -716,17 +704,17 @@ namespace winrt::winsdkfb::implementation
 		co_return loginResult;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryLoginViaWebAuthBrokerAsync(
+	concurrency::task<winsdkfb::FBResult> FBSession::TryLoginViaWebAuthBrokerAsync(
 		PropertySet parameters
 	) {
-		winsdkfb::FBResult loginResult{ nullptr };
+		FBResult loginResult;
 		auto session = FBSession::ActiveSession();
 
 		if (!IsRerequest(parameters)) {
-			auto oauthResult = co_await CheckForExistingTokenAsync();
-			if (oauthResult != nullptr && oauthResult.Succeeded()) {
-				auto tokenData = oauthResult.Object().as<winsdkfb::FBAccessTokenData>();
-				if (tokenData != nullptr && !tokenData.IsExpired()) {
+			FBResult oauthResult = co_await CheckForExistingTokenAsync();
+			if (oauthResult.Succeeded()) {
+				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
+				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
 					loginResult = FBResult(tokenData);
 				}
 			}
@@ -737,10 +725,10 @@ namespace winrt::winsdkfb::implementation
 		co_return loginResult;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryLoginSilentlyAsync(
+	task<FBResult> FBSession::TryLoginSilentlyAsync(
 		PropertySet parameters
 	) {
-		winsdkfb::FBResult loginResult{ nullptr };
+		FBResult loginResult;
 		auto session = FBSession::ActiveSession();
 
 		auto grantedPermissions = FBPermissions::FromString(GetGrantedPermissions());
@@ -751,24 +739,24 @@ namespace winrt::winsdkfb::implementation
 
 		auto diffPermissions = FBPermissions::Difference(requestingPermissions, grantedPermissions);
 
-		winsdkfb::FBResult oauthResult{ nullptr };
-		if (diffPermissions.Values().Size() == 0) {
+		FBResult oauthResult;
+		if (diffPermissions.Values().size() == 0) {
 			oauthResult = co_await CheckForExistingTokenAsync();
-			if (oauthResult != nullptr && oauthResult.Succeeded()) {
-				auto tokenData = oauthResult.Object().as<winsdkfb::FBAccessTokenData>();
-				if (tokenData != nullptr && !tokenData.IsExpired()) {
-					loginResult = make<FBResult>(tokenData);
+			if (oauthResult.Succeeded()) {
+				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
+				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
+					loginResult = FBResult(tokenData);
 				}
 				else {
-					loginResult = make<FBResult>(make<FBError>(0, L"Restore Session Error", L"Could not find a valid access token or token has expired"));
+					loginResult = FBResult(FBError(0, L"Restore Session Error", L"Could not find a valid access token or token has expired"));
 				}
 			}
 			else {
-				loginResult = make<FBResult>(make<FBError>(0, L"Restore Session Error", L"Could not find a valid access token"));
+				loginResult = FBResult(FBError(0, L"Restore Session Error", L"Could not find a valid access token"));
 			}
 		}
 		else {
-			loginResult = make<FBResult>(make<FBError>(0, L"Restore Session Error", L"Requested permissions are different from granted"));
+			loginResult = FBResult(FBError(0, L"Restore Session Error", L"Requested permissions are different from granted"));
 		}
 		co_return loginResult;
 	}
@@ -797,13 +785,13 @@ namespace winrt::winsdkfb::implementation
 		return L"msft-" + phoneAppId + L"://login_success";
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::CheckWebAccountProviderForExistingTokenAsync(
+	concurrency::task<winsdkfb::FBResult> FBSession::CheckWebAccountProviderForExistingTokenAsync(
 		winsdkfb::FBPermissions permissions
 	) {
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 		if (LoggedIn())
 		{
-			co_return make<FBResult>(AccessTokenData());
+			co_return AccessTokenData();
 		}
 		else
 		{
@@ -823,25 +811,25 @@ namespace winrt::winsdkfb::implementation
 			}
 		}
 
-		return result;
+		co_return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::TryLoginViaWebAccountProviderAsync(
+	concurrency::task<winsdkfb::FBResult> FBSession::TryLoginViaWebAccountProviderAsync(
 		winsdkfb::FBPermissions permissions
 	) {
 		return CheckWebAccountProviderForExistingTokenAsync(permissions);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBSession::CallWebAccountProviderOnUiThreadAsync(
+	concurrency::task<winsdkfb::FBResult> FBSession::CallWebAccountProviderOnUiThreadAsync(
 		winsdkfb::FBPermissions permissions
 	) {
-		_asyncResult = nullptr;
+		_asyncResult = FBResult();
 		auto asyncEvent = CreateEvent(nullptr, true, false, nullptr);
 		auto function = [](FBSession *self, HANDLE event, winsdkfb::FBPermissions const& permissions) -> IAsyncAction {
 			try {
 				auto provider = co_await WebAuthenticationCoreManager::FindAccountProviderAsync(FBAccountProvider);
 				WebTokenRequestResult result = nullptr;
-				if (provider) {
+				if (provider) {					
 					WebTokenRequest request(provider, permissions.ToString(), self->FBAppId());
 					request.Properties().Insert(RedirectUriKey, self->GetWebAccountProviderRedirectUriString());
 					result = co_await WebAuthenticationCoreManager::RequestTokenAsync(request);
@@ -866,7 +854,7 @@ namespace winrt::winsdkfb::implementation
 	winsdkfb::FBResult FBSession::ExtractAccessTokenDataFromResponseData(
 		IVectorView<WebTokenResponse> responseData
 	) {
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 
 		if (responseData.Size() > 0)
 		{
@@ -882,7 +870,7 @@ namespace winrt::winsdkfb::implementation
 			long long minimumExpiryInTicks = now.time_since_epoch().count() + _90_MINUTES_IN_TICKS;
 			DateTime expiration = winrt::clock::from_time_t(minimumExpiryInTicks);
 			FBAccessTokenData token(response.Token(), expiration);
-			result = make<FBResult>(token);
+			result = FBResult(token);
 
 #ifdef _DEBUG
 			hstring msg(L"Token is: " + response.Token() + L"\n");
@@ -912,7 +900,7 @@ namespace winrt::winsdkfb::implementation
 	winsdkfb::FBResult FBSession::FBResultFromTokenRequestResult(
 		WebTokenRequestResult requestResult
 	) {
-		winsdkfb::FBResult result{ nullptr };
+		winsdkfb::FBResult result;
 
 		if (requestResult != nullptr)
 		{
@@ -943,29 +931,21 @@ namespace winrt::winsdkfb::implementation
 					OutputDebugString(msg.c_str());
 				}
 #endif
-				result = make<FBResult>(make<FBError>((int)ErrorCode::ErrorCodeWebTokenRequestStatus, L"WebTokenRequestStatus Error", WebTokenRequestStatusToString(status)));
+				result = FBResult(FBError((int)ErrorCode::ErrorCodeWebTokenRequestStatus, L"WebTokenRequestStatus Error", WebTokenRequestStatusToString(status)));
 				break;
 			}
 		}
 		else
 		{
 			// We don't have a provider
-			result = make<FBResult>(make<FBError>((int)ErrorCode::ErrorCodeWebAccountProviderNotFound, L"WebAccountProvider Error", L"No appropriate WebAccountProvider was found"));
+			result = FBResult(FBError((int)ErrorCode::ErrorCodeWebAccountProviderNotFound, L"WebAccountProvider Error", L"No appropriate WebAccountProvider was found"));
 		}
 
 		return result;
 	}
 #endif
 
-#if WINAPI_FAMILY==WINAPI_FAMILY_PHONE_APP
-	Windows::Foundation::Ur FBSession::RemoveJSONFromBrowserResponseUri(
-		Windows::Foundation::Uri responseUri
-	) {
-		throw hresult_not_implemented();
-	}
-#endif
-
-	BOOL FBSession::IsRerequest(PropertySet parameters) {
+	bool FBSession::IsRerequest(PropertySet const& parameters) {
 		bool isRerequest = false;
 		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
 			hstring value = parameters.Lookup(AuthTypeKey).as<IStringable>().ToString();

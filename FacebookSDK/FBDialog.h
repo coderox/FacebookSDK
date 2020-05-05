@@ -4,6 +4,7 @@
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <Windows.h>
 #include "Utilities.h"
+#include <pplawait.h>
 
 namespace winsdkfb
 {
@@ -13,10 +14,10 @@ namespace winsdkfb
 
 		void InitDialog();
 		void UninitDialog();
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowLoginDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowFeedDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowRequestsDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowSendDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowLoginDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowFeedDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowRequestsDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowSendDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const parameters);
 
 		static winrt::hstring GetFBServerUrl();
 		static void DeleteCookies();
@@ -27,7 +28,7 @@ namespace winsdkfb
 		);
 
 	private:
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowDialog(
+		concurrency::task<winsdkfb::FBResult> ShowDialog(
 			winsdkfb::DialogUriBuilder const& uriBuilder,
 			winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, winrt::Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs> EventHandlerStarting,
 			winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, winrt::Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs > EventHandlerCompleted,
@@ -105,7 +106,7 @@ namespace winsdkfb
 		winrt::event_token sizeChangedEventRegistrationToken;
 		winrt::Windows::UI::Xaml::Controls::Grid _grid{ nullptr };
 		winrt::Windows::UI::Xaml::Controls::Primitives::Popup _popup{ nullptr };
-		winsdkfb::FBResult _dialogResponse{ nullptr };
+		winsdkfb::FBResult _dialogResponse;
 		HANDLE _dialogEventHandle;
 	};
 }

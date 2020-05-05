@@ -17,7 +17,7 @@ namespace winsdkfb
 		winrt::hstring RequestId();
 		winrt::Windows::Foundation::Collections::IVectorView<winrt::hstring> RecipientIds();
 
-		static winsdkfb::FBAppRequest FromRequestDialogResponse(Windows::Foundation::Uri const& response);
+		static winsdkfb::FBAppRequest FromRequestDialogResponse(winrt::Windows::Foundation::Uri const& response);
 	private:
 		winrt::Windows::Foundation::Collections::IVector<winrt::hstring> _recipients;
 		std::wstring _requestId;

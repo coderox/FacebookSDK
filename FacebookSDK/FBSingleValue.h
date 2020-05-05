@@ -18,9 +18,9 @@ namespace winsdkfb
 	public:
 		FBSingleValue(winrt::hstring const& request, winrt::Windows::Foundation::Collections::PropertySet const& parameters, winsdkfb::JsonClassFactory objectFactory);
 
-		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> GetAsync();
-		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> PostAsync();
-		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> DeleteAsync();
+		concurrency::task<winsdkfb::FBResult> GetAsync();
+		concurrency::task<winsdkfb::FBResult> PostAsync();
+		concurrency::task<winsdkfb::FBResult> DeleteAsync();
 
 	private:
 		/**
@@ -34,15 +34,15 @@ namespace winsdkfb
 		 * @exception InvalidArgumentException if ObjectyFactory is unable
 		 * to instantiate an object or if the JsonText is unparsable.
 		 */
-		std::shared_ptr<winsdkfb::FBResult> ConsumeSingleValue(
+		winsdkfb::FBResult ConsumeSingleValue(
 			winrt::hstring JsonText
 		);
 
-		concurrency::task<std::shared_ptr<winsdkfb::FBResult>> MakeHttpRequest(
+		concurrency::task<winsdkfb::FBResult> MakeHttpRequest(
 			winsdkfb::HttpMethod httpMethod
 		);
 
-		std::shared_ptr<winsdkfb::FBResult> _result{ nullptr };
+		winsdkfb::FBResult _result;
 		std::wstring _request;
 		winrt::Windows::Foundation::Collections::PropertySet _parameters;
 		winsdkfb::JsonClassFactory _objectFactory{ nullptr };

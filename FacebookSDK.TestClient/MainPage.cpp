@@ -212,8 +212,8 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 	void MainPage::OnRequestsClicked(IInspectable const&, RoutedEventArgs const&)
 	{
-		//auto mockHttpClient = std::make_shared<MockHttpClient>();
-		//winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
+		auto mockHttpClient = std::make_shared<MockHttpClient>();
+		winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
 		//// test no values returned from request
 		//mockHttpClient->ResponseData(L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}");
 

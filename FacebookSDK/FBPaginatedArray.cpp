@@ -5,8 +5,11 @@
 #include "FBSession.h"
 #include "HttpManager.h"
 
+#include <winrt/Windows.Foundation.Collections.h>
+
 using namespace std;
 using namespace winrt;
+using namespace concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Data::Json;
@@ -17,8 +20,7 @@ using namespace Windows::Web::Http::Filters;
 namespace winsdkfb
 {
 	FBPaginatedArray::FBPaginatedArray(hstring const& request, PropertySet const& parameters, winsdkfb::JsonClassFactory const& objectFactory)
-		: _current(nullptr)
-		, _currentDataString(L"")
+		: _currentDataString(L"")
 		, _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
@@ -28,32 +30,32 @@ namespace winsdkfb
 		}
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::FirstAsync()
+	task<winsdkfb::FBResult> FBPaginatedArray::FirstAsync()
 	{
 		return GetPageAsync(_request);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::NextAsync()
+	task<winsdkfb::FBResult> FBPaginatedArray::NextAsync()
 	{
 		if (!HasNext())
 		{
 			co_return FBResult(FBError(0, L"Invalid SDK call", L"No next page"));
 		}
 	
-		co_return co_await GetPageAsync(_paging->Next().c_str());
+		co_return co_await GetPageAsync(_paging.Next().c_str());
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::PreviousAsync()
+	task<winsdkfb::FBResult> FBPaginatedArray::PreviousAsync()
 	{
 		if (!HasPrevious())
 		{
-			co_return make<FBResult>(make<FBError>(0, L"Invalid SDK call", L"No previous page"));
+			co_return FBResult(FBError(0, L"Invalid SDK call", L"No previous page"));
 		}
 
-		return GetPageAsync(_paging->Previous().c_str());
+		co_return co_await GetPageAsync(_paging.Previous().c_str());
 	}
 
-	IVectorView<IInspectable> FBPaginatedArray::Current()
+	vector<FBResult> FBPaginatedArray::Current()
 	{
 		if (!HasCurrent())
 		{
@@ -75,22 +77,22 @@ namespace winsdkfb
 
 	bool FBPaginatedArray::HasCurrent()
 	{
-		return (_current != nullptr);
+		return !_current.empty();
 	}
 
 	bool FBPaginatedArray::HasNext()
 	{
-		return(_paging && (!_paging.Next().empty()));
+		return(!_paging.Next().empty());
 	}
 
 	bool FBPaginatedArray::HasPrevious()
 	{
-		return(_paging && (!_paging.Previous().empty()));
+		return(!_paging.Previous().empty());
 	}
 
-	IVectorView<IInspectable> FBPaginatedArray::ObjectArrayFromWebResponse(hstring const& Response, winsdkfb::JsonClassFactory const& classFactory)
+	vector<FBResult> FBPaginatedArray::VectorFromWebResponse(hstring const& Response, winsdkfb::JsonClassFactory const& classFactory)
 	{
-		IVectorView<IInspectable> result = { nullptr };
+		vector<FBResult> result;
 		JsonObject rootObject = nullptr;
 
 		if (JsonObject::TryParse(Response, rootObject))
@@ -104,7 +106,7 @@ namespace winsdkfb
 				if ((compare_ordinal(key.c_str(), L"data") == 0) &&
 					(t == JsonValueType::Array))
 				{
-					result = ObjectArrayFromJsonArray(it.Current().Value().GetArray(), classFactory);
+					result = VectorFromJsonArray(it.Current().Value().GetArray(), classFactory);
 				}
 			}
 		}
@@ -112,29 +114,29 @@ namespace winsdkfb
 		return result;
 	}
 
-	IVectorView<Windows::Foundation::IInspectable> FBPaginatedArray::ObjectArrayFromJsonArray(
+	vector<FBResult> FBPaginatedArray::VectorFromJsonArray(
 		JsonArray values,
 		winsdkfb::JsonClassFactory classFactory
 	) {
-		IVector<IInspectable> result = { winrt::single_threaded_vector<IInspectable>() };
+		vector<FBResult> result;
 
 		for (auto const& current : values)
 		{
 			auto jsonText = current.Stringify();
 			auto item = classFactory(jsonText);
-			if (item == nullptr) {
+			if (!item.Succeeded()) {
 				throw hresult_invalid_argument(SDKMessageBadObject);
 			}
-			result.Append(item);
+			result.push_back(item);
 		}
 
-		return result.GetView();
+		return result;
 	}
 
 	winsdkfb::FBResult FBPaginatedArray::ConsumePagedResponse(
 		wstring jsonText
 	) {
-		winsdkfb::FBResult result = nullptr;
+		winsdkfb::FBResult result;
 		JsonValue value{ nullptr };
 		bool foundPaging = false;
 		bool foundData = false;
@@ -144,6 +146,7 @@ namespace winsdkfb
 		{
 			if (value.ValueType() == JsonValueType::Object)
 			{
+#undef GetObject
 				JsonObject obj = value.GetObject();
 
 				IIterator<IKeyValuePair<hstring, IJsonValue>> it = nullptr;
@@ -152,14 +155,14 @@ namespace winsdkfb
 					if (compare_ordinal(it.Current().Key().c_str(), L"error") == 0)
 					{
 						auto err = FBError::FromJson(it.Current().Value().Stringify());
-						result = make<FBResult>(err);
+						result = FBResult(err);
 						foundError = true;
 						break;
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") == 0)
 					{
-						_paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify()).as<Graph::FBPaging>();
-						if (_paging)
+						_paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify());
+						if (_paging.Succeeded())
 						{
 							foundPaging = true;
 						}
@@ -172,8 +175,8 @@ namespace winsdkfb
 						}
 
 						_currentDataString = it.Current().Value().as<IStringable>().ToString();
-						_current = ObjectArrayFromJsonArray(it.Current().Value().GetArray(), _objectFactory);
-						if (_current)
+						_current = VectorFromJsonArray(it.Current().Value().GetArray(), _objectFactory);
+						if (!_current.empty())
 						{
 							foundData = true;
 						}
@@ -191,18 +194,18 @@ namespace winsdkfb
 
 			if (!foundError)
 			{
-				result = make<FBResult>(_current);
+				//result = FBResult(_current);
 			}
 		}
 
 		return result;
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::GetPageAsync(wstring path) {
-		hstring responseString = co_await HttpManager::Instance().GetTaskAsync(path, _parameters.GetView());
+	task<winsdkfb::FBResult> FBPaginatedArray::GetPageAsync(hstring path) {
+		hstring responseString = co_await HttpManager::Instance()->GetTaskAsync(path, _parameters.GetView());
 		if (responseString.empty())
 		{
-			co_return make<FBResult>(make<FBError>(0, L"HTTP request failed", L"unable to receive response"));
+			co_return FBResult(FBError(0, L"HTTP request failed", L"unable to receive response"));
 		}
 		else
 		{

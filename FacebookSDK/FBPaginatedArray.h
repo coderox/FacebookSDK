@@ -5,6 +5,8 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 #include "Utilities.h"
+#include <pplawait.h>
+#include <vector>
 
 namespace winsdkfb
 {
@@ -13,19 +15,19 @@ namespace winsdkfb
 		FBPaginatedArray() = delete;
 		FBPaginatedArray(winrt::hstring const& Request, winrt::Windows::Foundation::Collections::PropertySet const& Parameters, winsdkfb::JsonClassFactory const& ObjectFactory);
 
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> FirstAsync();
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> NextAsync();
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> PreviousAsync();
-		winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Foundation::IInspectable> Current();
+		concurrency::task<winsdkfb::FBResult> FirstAsync();
+		concurrency::task<winsdkfb::FBResult> NextAsync();
+		concurrency::task<winsdkfb::FBResult> PreviousAsync();
+		std::vector<winsdkfb::FBResult> Current();
 		winrt::hstring CurrentDataString();
 		bool HasCurrent();
 		bool HasNext();
 		bool HasPrevious();
-		winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Foundation::IInspectable> ObjectArrayFromWebResponse(winrt::hstring const& Response, winsdkfb::JsonClassFactory const& classFactory);
+		std::vector<winsdkfb::FBResult> VectorFromWebResponse(winrt::hstring const& Response, winsdkfb::JsonClassFactory const& classFactory);
 
 	private:
-		winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Foundation::IInspectable>
-			ObjectArrayFromJsonArray(
+		std::vector<winsdkfb::FBResult>
+			VectorFromJsonArray(
 				winrt::Windows::Data::Json::JsonArray values,
 				winsdkfb::JsonClassFactory classFactory
 			);
@@ -34,14 +36,14 @@ namespace winsdkfb
 			std::wstring jsonText
 		);
 
-		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetPageAsync(
-			std::wstring path
+		concurrency::task<winsdkfb::FBResult> GetPageAsync(
+			winrt::hstring path
 		);
 
-		std::wstring _currentDataString;
-		std::wstring _request;
-		winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Foundation::IInspectable> _current{ nullptr };
-		std::shared_ptr<winsdkfb::Graph::FBPaging> _paging{ nullptr };
+		winrt::hstring _currentDataString;
+		winrt::hstring _request;
+		std::vector<winsdkfb::FBResult> _current;
+		winsdkfb::Graph::FBPaging _paging;
 		winrt::Windows::Foundation::Collections::PropertySet _parameters = nullptr;
 		winsdkfb::JsonClassFactory _objectFactory;
 	};

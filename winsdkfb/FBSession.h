@@ -30,14 +30,14 @@ namespace winrt::winsdkfb::implementation
 		hstring WebViewRedirectDomain();
 		hstring WebViewRedirectPath();
 
-		Windows::Foundation::IAsyncAction LogoutAsync();
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowFeedDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowRequestsDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowSendDialogAsync(Windows::Foundation::Collections::PropertySet const Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync();
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryRefreshAccessTokenAsync();
+		winrt::Windows::Foundation::IAsyncAction LogoutAsync();
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowFeedDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowRequestsDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowSendDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync();
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryRefreshAccessTokenAsync();
 
 		void SetApiVersion(int32_t major, int32_t minor);
 		void SetWebViewRedirectUrl(hstring const& domain, hstring const& Path);
@@ -50,34 +50,34 @@ namespace winrt::winsdkfb::implementation
 		void SaveGrantedPermissions();
 		Windows::Foundation::Uri BuildLoginUri(Windows::Foundation::Collections::PropertySet parameters);
 
-		BOOL IsRerequest(Windows::Foundation::Collections::PropertySet Parameters);
+		BOOL IsRerequest(winrt::Windows::Foundation::Collections::PropertySet Parameters);
 
 		hstring GetGrantedPermissions();
 		hstring GetWebAuthRedirectUriString();
 		winrt::fire_and_forget TrySaveTokenData();
-		Windows::Foundation::IAsyncAction TryDeleteTokenDataAsync();
+		winrt::Windows::Foundation::IAsyncAction TryDeleteTokenDataAsync();
 		winsdkfb::FBResult ProcessAuthResult(Windows::Security::Authentication::Web::WebAuthenticationResult authResult);
 
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetUserInfoAsync(winsdkfb::FBAccessTokenData const& tokenData);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CheckForExistingTokenAsync();
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetAppPermissionsAsync();
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowLoginDialogAsync(Windows::Foundation::Collections::PropertySet const& Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetUserInfoAsync(winsdkfb::FBAccessTokenData const& tokenData);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CheckForExistingTokenAsync();
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> GetAppPermissionsAsync();
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ShowLoginDialogAsync(winrt::Windows::Foundation::Collections::PropertySet const& Parameters);
 
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryGetUserInfoAfterLoginAsync(winsdkfb::FBResult loginResult);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryGetAppPermissionsAfterLoginAsync(winsdkfb::FBResult loginResult);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> RunOAuthOnUiThreadAsync(Windows::Foundation::Collections::PropertySet Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> RunWebViewLoginOnUIThreadAsync(Windows::Foundation::Collections::PropertySet Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebViewAsync(Windows::Foundation::Collections::PropertySet Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebAuthBrokerAsync(Windows::Foundation::Collections::PropertySet Parameters);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginSilentlyAsync(Windows::Foundation::Collections::PropertySet Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryGetUserInfoAfterLoginAsync(winsdkfb::FBResult loginResult);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryGetAppPermissionsAfterLoginAsync(winsdkfb::FBResult loginResult);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> RunOAuthOnUiThreadAsync(winrt::Windows::Foundation::Collections::PropertySet Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> RunWebViewLoginOnUIThreadAsync(winrt::Windows::Foundation::Collections::PropertySet Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebViewAsync(winrt::Windows::Foundation::Collections::PropertySet Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebAuthBrokerAsync(winrt::Windows::Foundation::Collections::PropertySet Parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginSilentlyAsync(winrt::Windows::Foundation::Collections::PropertySet Parameters);
 
 #if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 		hstring GetWebAccountProviderRedirectUriString();
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CheckWebAccountProviderForExistingTokenAsync(winsdkfb::FBPermissions Permissions);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebAccountProviderAsync(winsdkfb::FBPermissions Permissions);
-		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CallWebAccountProviderOnUiThreadAsync(winsdkfb::FBPermissions Permissions);
-		winsdkfb::FBResult ExtractAccessTokenDataFromResponseData(Windows::Foundation::Collections::IVectorView<Windows::Security::Authentication::Web::Core::WebTokenResponse> ResponseData);
-		winsdkfb::FBResult FBResultFromTokenRequestResult(Windows::Security::Authentication::Web::Core::WebTokenRequestResult RequestResult);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CheckWebAccountProviderForExistingTokenAsync(winsdkfb::FBPermissions Permissions);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryLoginViaWebAccountProviderAsync(winsdkfb::FBPermissions Permissions);
+		winrt::Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> CallWebAccountProviderOnUiThreadAsync(winsdkfb::FBPermissions Permissions);
+		winsdkfb::FBResult ExtractAccessTokenDataFromResponseData(winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Security::Authentication::Web::Core::WebTokenResponse> ResponseData);
+		winsdkfb::FBResult FBResultFromTokenRequestResult(winrt::Windows::Security::Authentication::Web::Core::WebTokenRequestResult RequestResult);
 #endif
 
 		bool _loggedIn;

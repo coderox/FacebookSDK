@@ -15,11 +15,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBPaginatedArray.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPermissions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBSession.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPermission.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.cpp" />

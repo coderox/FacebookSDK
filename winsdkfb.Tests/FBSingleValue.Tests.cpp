@@ -14,7 +14,7 @@ namespace winsdkfb_Tests
 			// arrange
 			auto request = ref new Platform::String(L"");
 			// act
-			auto instance = ref new winsdkfb::FBSingleValue(request, nullptr, nullptr);
+			auto instance = ref new winsdkfb::FBSingleValue(request, nullptr, nullptr);			
 
 			// assert
 			Assert::IsNotNull(instance);

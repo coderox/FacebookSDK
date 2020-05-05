@@ -16,5 +16,5 @@ winrt::hstring WebTokenRequestStatusToString(winrt::Windows::Security::Authentic
 namespace winsdkfb {
 	typedef std::function<winrt::Windows::Foundation::Uri(winrt::Windows::Foundation::Collections::PropertySet)> DialogUriBuilder;
 
-	typedef std::function<std::shared_ptr<winsdkfb::FBResult>(winrt::hstring)> JsonClassFactory;
+	typedef std::function<winsdkfb::FBResult(winrt::hstring)> JsonClassFactory;
 }

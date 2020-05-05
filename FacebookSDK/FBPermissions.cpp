@@ -18,7 +18,7 @@ namespace winsdkfb
 		return _values;
 	}
 
-	hstring FBPermissions::ToString()
+	hstring FBPermissions::ToString() const
 	{
 		hstring permissions;
 		if (!_values.empty())

@@ -9,7 +9,7 @@ namespace winsdkfb
 		FBFeedRequest() = default;
 		FBFeedRequest(winrt::hstring postId);
 
-		hstring PostId();
+		winrt::hstring PostId();
 
 		static winsdkfb::FBFeedRequest FromFeedDialogResponse(winrt::Windows::Foundation::Uri const& response);
 

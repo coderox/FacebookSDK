@@ -114,28 +114,28 @@ namespace winsdkfb
 		_popup.Child(nullptr);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBDialog::ShowLoginDialogAsync(PropertySet const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowLoginDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FBDialog::dialogWebView_LoginNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FBDialog::dialogWebView_NavCompleted);
 		return ShowDialog(DialogUriBuilder(this, &FBDialog::BuildLoginDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBDialog::ShowFeedDialogAsync(PropertySet const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowFeedDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FBDialog::dialogWebView_FeedNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FBDialog::dialogWebView_NavCompleted);
 		return ShowDialog(DialogUriBuilder(this, &FBDialog::BuildFeedDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBDialog::ShowRequestsDialogAsync(PropertySet const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowRequestsDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FBDialog::dialogWebView_RequestNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FBDialog::dialogWebView_NavCompleted);
 		return ShowDialog(DialogUriBuilder(this, &FBDialog::BuildRequestsDialogUrl), handlerStarting, handlerCompleted, parameters);
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBDialog::ShowSendDialogAsync(PropertySet const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowSendDialogAsync(PropertySet const parameters)
 	{
 		auto handlerStarting = TypedEventHandler<WebView, WebViewNavigationStartingEventArgs>(this, &FBDialog::dialogWebView_SendNavStarting);
 		auto handlerCompleted = TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs>(this, &FBDialog::dialogWebView_NavCompleted);
@@ -158,7 +158,7 @@ namespace winsdkfb
 		}
 	}
 
-	IAsyncOperation<winsdkfb::FBResult> FBDialog::ShowDialog(
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowDialog(
 		DialogUriBuilder const& uriBuilder,
 		TypedEventHandler<WebView, WebViewNavigationStartingEventArgs> eventHandlerStarting,
 		TypedEventHandler<WebView, WebViewNavigationCompletedEventArgs > eventHandlerCompleted,

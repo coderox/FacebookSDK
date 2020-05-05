@@ -160,7 +160,7 @@ namespace winsdkfb
 			winrt::Windows::Foundation::Collections::PropertySet const& Streams
 		);
 
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> TryReceiveHttpResponse(
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> TryReceiveHttpResponseAsync(
 			winrt::Windows::Web::Http::HttpResponseMessage const& responseMessage
 		);
 

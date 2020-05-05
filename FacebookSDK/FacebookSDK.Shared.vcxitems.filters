@@ -42,6 +42,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)HttpManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBSession.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBPaginatedArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />

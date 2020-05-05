@@ -55,17 +55,17 @@ namespace winsdkfb
 		for (auto const& current : parameters)
 		{
 			hstring key(current.Key());
-			auto movalue = current.Value().try_as<FBMediaObject>();
-			auto msvalue = current.Value().try_as<FBMediaStream>();
-			if (movalue) {
-				mediaObjects.Insert(key, movalue.as<IInspectable>());
-			}
-			else if (msvalue) {
-				mediaStreams.Insert(key, msvalue.as<IInspectable>());
-			}
-			else {
+			//auto movalue = current.Value().try_as<FBMediaObject>();
+			//auto msvalue = current.Value().try_as<FBMediaStream>();
+			//if (movalue) {
+			//	mediaObjects.Insert(key, movalue.as<IInspectable>());
+			//}
+			//else if (msvalue) {
+			//	mediaStreams.Insert(key, msvalue.as<IInspectable>());
+			//}
+			//else {
 				dictionary.Insert(key, current.Value());
-			}
+			//}
 		}
 
 		return dictionary;
@@ -78,11 +78,11 @@ namespace winsdkfb
 
 		auto response = co_await FBClient::GetTaskInternalAsync(uri);
 
-		//if (FBClient::IsOAuthErrorResponse(response)) {
+		if (FBClient::IsOAuthErrorResponse(response)) {
 		//	auto sess = FBSession::ActiveSession();
 		//	co_await sess.TryRefreshAccessTokenAsync();
 		//	response = co_await FBClient::GetTaskInternalAsync(uri);
-		//}
+		}
 		co_return response;
 	}
 
@@ -97,7 +97,7 @@ namespace winsdkfb
 		hstring result;
 		try {
 			auto response = co_await httpClient.GetAsync(RequestUri);
-			result = co_await TryReceiveHttpResponse(response);
+			result = co_await TryReceiveHttpResponseAsync(response);
 		}
 		catch (hresult_error e) {
 			OutputDebugString(e.message().data());
@@ -105,7 +105,7 @@ namespace winsdkfb
 		co_return result;
 	}
 
-	IAsyncOperation<hstring> FBClient::TryReceiveHttpResponse(
+	IAsyncOperation<hstring> FBClient::TryReceiveHttpResponseAsync(
 		HttpResponseMessage const& responseMessage)
 	{
 		hstring result;
@@ -320,11 +320,11 @@ namespace winsdkfb
 		}
 
 		if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
-			(sess->AccessTokenData() != nullptr) &&
-			(sess->AccessTokenData()->AccessToken().data() != nullptr) &&
-			(sess->AccessTokenData()->AccessToken().size() > 0))
+			(sess.AccessTokenData().Succeeded()) &&
+			(sess.AccessTokenData().AccessToken().data() != nullptr) &&
+			(sess.AccessTokenData().AccessToken().size() > 0))
 		{
-			parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess->AccessTokenData()->AccessToken()));
+			parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess.AccessTokenData().AccessToken()));
 		}
 
 		if (parametersWithoutMediaObjects.HasKey(L"format"))
@@ -374,16 +374,16 @@ namespace winsdkfb
 		}
 	}
 
-	///**
-	// * Checks if Response is an OAuth error response.
-	// * @param Response response to check
-	// * @return true if Response does indicate an OAuth error, false otherwise.
-	// */
-	//bool FBClient::IsOAuthErrorResponse(hstring const& response)
-	//{
-	//	auto err = FBError::FromJson(response);
-	//	return (err && err->Code() == 190);
-	//}
+	/**
+	 * Checks if Response is an OAuth error response.
+	 * @param Response response to check
+	 * @return true if Response does indicate an OAuth error, false otherwise.
+	 */
+	bool FBClient::IsOAuthErrorResponse(hstring const& response)
+	{
+		auto err = FBError::FromJson(response);
+		return (err.Code() == 190);
+	}
 
 
 	///**
@@ -453,50 +453,50 @@ namespace winsdkfb
 
 	void FBClient::ValidateMediaStreams(PropertySet const& mediaStreams)
 	{
-		if (mediaStreams.Size() > 0)
-		{
-			for (auto const& current : mediaStreams)
-			{
-				auto mediaStream = unbox_value<FBMediaStream>(current.Value());
+		//if (mediaStreams.Size() > 0)
+		//{
+		//	for (auto const& current : mediaStreams)
+		//	{
+		//		auto mediaStream = unbox_value<FBMediaStream>(current.Value());
 
-				IRandomAccessStream stream(mediaStream.Stream());
-				if (stream == nullptr)
-				{
-					throw hresult_invalid_argument(AttachmentValueIsNull);
-				}
+		//		IRandomAccessStream stream(mediaStream.Stream());
+		//		if (stream == nullptr)
+		//		{
+		//			throw hresult_invalid_argument(AttachmentValueIsNull);
+		//		}
 
-				if ((mediaStream.Stream() == nullptr) ||
-					(mediaStream.Stream().ContentType().empty()) ||
-					(mediaStream.FileName().empty()))
-				{
-					throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
-				}
+		//		if ((mediaStream.Stream() == nullptr) ||
+		//			(mediaStream.Stream().ContentType().empty()) ||
+		//			(mediaStream.FileName().empty()))
+		//		{
+		//			throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
+		//		}
 
-			}
-		}
+		//	}
+		//}
 	}
 
 	void FBClient::ValidateMediaObjects(PropertySet const& mediaObjects)
 	{
-		if (mediaObjects.Size() > 0)
-		{
-			for (auto const& current : mediaObjects)
-			{
-				auto mediaObject = unbox_value<FBMediaObject>(current.Value());
+		//if (mediaObjects.Size() > 0)
+		//{
+		//	for (auto const& current : mediaObjects)
+		//	{
+		//		auto mediaObject = unbox_value<FBMediaObject>(current.Value());
 
-				if (mediaObject.GetValue().empty())
-				{
-					throw hresult_invalid_argument(AttachmentValueIsNull);
-				}
+		//		if (mediaObject.GetValue().empty())
+		//		{
+		//			throw hresult_invalid_argument(AttachmentValueIsNull);
+		//		}
 
-				if ((mediaObject.GetValue().empty()) ||
-					(mediaObject.ContentType().empty()) ||
-					(mediaObject.FileName().empty()))
-				{
-					throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
-				}
+		//		if ((mediaObject.GetValue().empty()) ||
+		//			(mediaObject.ContentType().empty()) ||
+		//			(mediaObject.FileName().empty()))
+		//		{
+		//			throw hresult_invalid_argument(AttachmentMustHavePropertiesSetError);
+		//		}
 
-			}
-		}
+		//	}
+		//}
 	}
 }

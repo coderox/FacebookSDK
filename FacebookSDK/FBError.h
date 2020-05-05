@@ -4,6 +4,18 @@
 
 namespace winsdkfb
 {
+	enum class ErrorCode {
+		ErrorCodeOauthException = 190,
+		ErrorCodeWebAccountProviderNotFound = 5000,
+		ErrorCodeWebTokenRequestStatus = 5001,
+		ErrorCodeWebAccountProviderNotSupported = 5002,
+	};
+
+	enum class ErrorSubCode {
+		ErrorSubcodeAppNotAuthorized = 458,
+		ErrorSubcodeSessionInvalidated = 466
+	};
+
 	struct FBError
 	{
 	public:
