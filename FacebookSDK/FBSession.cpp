@@ -1,23 +1,18 @@
-﻿#include "FBAccessTokenData.h"
-#include "FBSession.h"
-#include "FBAppRequest.h"
-#include "FBDialog.h"
-#include "FBError.h"
-#include "FBFeedRequest.h"
-#include "FBPaginatedArray.h"
-#include "FBResult.h"
-#include "Graph/FBPermission.h"
-#include "FBSingleValue.h"
-#include "Graph/FBUser.h"
-#include "SDKMessage.h"
-#include <regex>
-#include "Utilities.h"
-#include <sstream>
-#include <string>
-#include <FBConstants.h>
-
+﻿#include "FBSession.h"
+//#include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Security.Cryptography.DataProtection.h>
-#include <winrt/Windows.Data.Json.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.Globalization.h>
+#include <winrt/Windows.Security.Credentials.h>
+
+#undef GetObject
+#include "FBPaginatedArray.h"
+#include "FBSingleValue.h"
+#include <FBConstants.h>
+#include "SDKMessage.h"
+
+#include <sstream>
 
 using namespace std;
 using namespace winrt;
@@ -175,7 +170,7 @@ namespace winsdkfb
 		_AppResponse.clear();
 		_loggedIn = false;
 
-		FBDialog::DeleteCookies();
+		//FBDialog::DeleteCookies();
 
 		return TryDeleteTokenDataAsync();
 	}
@@ -183,14 +178,14 @@ namespace winsdkfb
 	concurrency::task<winsdkfb::FBResult> FBSession::ShowFeedDialogAsync(PropertySet const Parameters)
 	{
 		winsdkfb::FBResult result;
-		FBDialog dialog;
-		try {
-			result = co_await dialog.ShowFeedDialogAsync(Parameters);
-		}
-		catch (hresult_error e) {
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = FBResult(err);
-		}
+		//FBDialog dialog;
+		//try {
+		//	result = co_await dialog.ShowFeedDialogAsync(Parameters);
+		//}
+		//catch (hresult_error e) {
+		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
+		//	result = FBResult(err);
+		//}
 
 		co_return result;
 	}
@@ -198,14 +193,14 @@ namespace winsdkfb
 	concurrency::task<winsdkfb::FBResult> FBSession::ShowRequestsDialogAsync(PropertySet const Parameters)
 	{
 		winsdkfb::FBResult result;
-		FBDialog dialog;
-		try {
-			result = co_await dialog.ShowRequestsDialogAsync(Parameters);
-		}
-		catch (hresult_error e) {
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = FBResult(err);
-		}
+		//FBDialog dialog;
+		//try {
+		//	result = co_await dialog.ShowRequestsDialogAsync(Parameters);
+		//}
+		//catch (hresult_error e) {
+		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
+		//	result = FBResult(err);
+		//}
 
 		co_return result;
 	}
@@ -213,14 +208,14 @@ namespace winsdkfb
 	concurrency::task<winsdkfb::FBResult> FBSession::ShowSendDialogAsync(PropertySet const Parameters)
 	{
 		winsdkfb::FBResult result;
-		FBDialog dialog;
-		try {
-			result = co_await dialog.ShowSendDialogAsync(Parameters);
-		}
-		catch (hresult_error e) {
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = FBResult(err);
-		}
+		//FBDialog dialog;
+		//try {
+		//	result = co_await dialog.ShowSendDialogAsync(Parameters);
+		//}
+		//catch (hresult_error e) {
+		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
+		//	result = FBResult(err);
+		//}
 
 		co_return result;
 	}
@@ -520,16 +515,16 @@ namespace winsdkfb
 			return Graph::FBPermission::FromJson(JsonText);
 		});
 
-		FBPaginatedArray permArr(
-			permStream.str().c_str(),
-			nullptr,
-			factory);
+		//FBPaginatedArray permArr(
+		//	permStream.str().c_str(),
+		//	nullptr,
+		//	factory);
 
-		auto result = co_await permArr.FirstAsync();
-		if (result.Succeeded()) {
-			//auto perms = result.Object().as<IVectorView<IInspectable>>();
-			//_AccessTokenData.SetPermissions(perms);
-		}
+		//auto result = co_await permArr.FirstAsync();
+		//if (result.Succeeded()) {
+		//	//auto perms = result.Object().as<IVectorView<IInspectable>>();
+		//	//_AccessTokenData.SetPermissions(perms);
+		//}
 		co_return FBResult(_user);
 	}
 
@@ -666,19 +661,19 @@ namespace winsdkfb
 	concurrency::task<winsdkfb::FBResult> FBSession::ShowLoginDialogAsync(PropertySet const Parameters)
 	{
 		FBResult result;
-		FBDialog dialog;
-		try {
-			result = co_await dialog.ShowLoginDialogAsync(Parameters);
-		}
-		catch (hresult_error e) {
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
-			result = FBResult(err);
-		}
+		//FBDialog dialog;
+		//try {
+		//	result = co_await dialog.ShowLoginDialogAsync(Parameters);
+		//}
+		//catch (hresult_error e) {
+		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
+		//	result = FBResult(err);
+		//}
 
-		if (result.Succeeded())
-		{
-			AccessTokenData(static_cast<FBAccessTokenData&>(result));
-		}
+		//if (result.Succeeded())
+		//{
+		//	AccessTokenData(static_cast<FBAccessTokenData&>(result));
+		//}
 
 		co_return result;
 	}

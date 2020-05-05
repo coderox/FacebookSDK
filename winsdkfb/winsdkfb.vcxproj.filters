@@ -93,7 +93,6 @@
     <ClInclude Include="ColorLuminosityConverter.h" />
     <ClInclude Include="ScaleConverter.h" />
     <ClInclude Include="SDKMessage.h" />
-    <ClInclude Include="JsonClassFactory.h" />
     <ClInclude Include="FBSingleValue.h" />
     <ClInclude Include="FBAppRequest.h" />
     <ClInclude Include="Generated\Graph.FBAppRequest.h">

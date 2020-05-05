@@ -1,11 +1,10 @@
-﻿#include "Utilities.h"
-#include "SDKMessage.h"
-#include "FBPaginatedArray.h"
-#include "FBResult.h"
-#include "FBSession.h"
-#include "HttpManager.h"
+﻿#include "FBPaginatedArray.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Web.Http.Filters.h>
+
+#include "SDKMessage.h"
+#include "HttpManager.h"
 
 using namespace std;
 using namespace winrt;
@@ -146,7 +145,6 @@ namespace winsdkfb
 		{
 			if (value.ValueType() == JsonValueType::Object)
 			{
-#undef GetObject
 				JsonObject obj = value.GetObject();
 
 				IIterator<IKeyValuePair<hstring, IJsonValue>> it = nullptr;
@@ -194,7 +192,7 @@ namespace winsdkfb
 
 			if (!foundError)
 			{
-				//result = FBResult(_current);
+				result = FBVectorOfResults(_current);
 			}
 		}
 

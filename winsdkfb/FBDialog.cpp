@@ -242,7 +242,7 @@ namespace winrt::winsdkfb::implementation
 			<< "&" << DisplayKey << "=" << displayType.c_str()
 			<< "&" << ResponseTypeKey << "=" << responseType.c_str();
 
-		return uriString.str().c_str();
+		return Uri(uriString.str());
 	}
 
 	Windows::Foundation::Uri FBDialog::BuildFeedDialogUrl(

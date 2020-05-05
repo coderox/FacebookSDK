@@ -112,7 +112,6 @@ namespace winsdkfb
 		std::wstring _webViewRedirectPath;
 		winsdkfb::FBAccessTokenData _AccessTokenData;
 		winsdkfb::Graph::FBUser _user;
-		winsdkfb::FBDialog _dialog;
 		winsdkfb::FBResult _asyncResult;
 	};
 }

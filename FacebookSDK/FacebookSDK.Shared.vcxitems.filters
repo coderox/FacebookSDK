@@ -45,6 +45,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FBClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBSession.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPaginatedArray.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GraphUriBuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBSingleValue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />

@@ -17,33 +17,32 @@ namespace winsdkfb
 		: _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
-		, _result(nullptr)
 	{
 
 	}
 
-	task<shared_ptr<FBResult>> FBSingleValue::GetAsync()
+	task<FBResult> FBSingleValue::GetAsync()
 	{
 		return MakeHttpRequest(winsdkfb::HttpMethod::Get);
 	}
 
-	task<shared_ptr<FBResult>> FBSingleValue::PostAsync()
+	task<FBResult> FBSingleValue::PostAsync()
 	{
 		return MakeHttpRequest(winsdkfb::HttpMethod::Post);
 	}
 
-	task<shared_ptr<FBResult>> FBSingleValue::DeleteAsync()
+	task<FBResult> FBSingleValue::DeleteAsync()
 	{
 		return MakeHttpRequest(winsdkfb::HttpMethod::Delete);
 	}
 
-	shared_ptr<FBResult> FBSingleValue::ConsumeSingleValue(hstring jsonText)
+	FBResult FBSingleValue::ConsumeSingleValue(hstring jsonText)
 	{
-		shared_ptr<FBResult> result{ nullptr };
+		FBResult result;
 
 		JsonValue val{ nullptr };
-		shared_ptr<FBError> err{ nullptr };
-		shared_ptr<FBResult> item{ nullptr };
+		FBError err;
+		FBResult item;
 
 		if (JsonValue::TryParse(jsonText, val))
 		{
@@ -52,9 +51,9 @@ namespace winsdkfb
 				//TODO: Check for error here first.  User's object serializer may
 				//produce a false positive.
 				err = FBError::FromJson(jsonText);
-				if (!err) {
+				if (err.Code()) {
 					item = _objectFactory(jsonText);
-					if (!item) {
+					if (!item.Succeeded()) {
 						auto obj = val.GetObject();
 						for (auto&& current : obj)
 						{
@@ -70,7 +69,7 @@ namespace winsdkfb
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
 								item = _objectFactory(current.Value().GetString());
-								if (!item) {
+								if (!item.Succeeded()) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
 							}
@@ -79,8 +78,8 @@ namespace winsdkfb
 				}
 			}
 
-			if (err) {
-				result = make_shared<FBResult>(err);
+			if (err.Code()) {
+				result = FBResult(err);
 			}
 			else {
 				throw hresult_invalid_argument(SDKMessageNoData);
@@ -90,7 +89,7 @@ namespace winsdkfb
 		return result;
 	}
 
-	task<shared_ptr<FBResult>> FBSingleValue::MakeHttpRequest(winsdkfb::HttpMethod httpMethod)
+	task<FBResult> FBSingleValue::MakeHttpRequest(HttpMethod httpMethod)
 	{
 		if (_parameters == nullptr) {
 			_parameters = PropertySet();
@@ -101,13 +100,13 @@ namespace winsdkfb
 		hstring responseString;
 		switch (httpMethod)
 		{
-		case winsdkfb::HttpMethod::Get:
+		case HttpMethod::Get:
 			responseString = co_await HttpManager::Instance()->GetTaskAsync(_request.c_str(), _parameters.GetView());
 			break;
-		case ::winsdkfb::HttpMethod::Post:
+		case HttpMethod::Post:
 			responseString = co_await HttpManager::Instance()->PostTaskAsync(_request.c_str(), _parameters.GetView());
 			break;
-		case ::winsdkfb::HttpMethod::Delete:
+		case HttpMethod::Delete:
 			responseString = co_await HttpManager::Instance()->DeleteTaskAsync(_request.c_str(), _parameters.GetView());
 			break;
 		default:
@@ -117,8 +116,8 @@ namespace winsdkfb
 		}
 
 		if (responseString.empty()) {
-			auto error = make_shared<winsdkfb::FBError>(0, L"HTTP request failed", L"Unable to receive response");
-			co_return(make_shared<winsdkfb::FBResult>(error));
+			auto error = FBError(0, L"HTTP request failed", L"Unable to receive response");
+			co_return FBResult(error);
 		}
 		else {
 			co_return(ConsumeSingleValue(responseString));

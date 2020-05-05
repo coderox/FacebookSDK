@@ -6,7 +6,6 @@ namespace winsdkfb
 {
 	struct FBResult
 	{
-	public:
 		FBResult() = default;
 		FBResult(winsdkfb::FBError error);
 		~FBResult() = default;
@@ -14,8 +13,18 @@ namespace winsdkfb
 		bool Succeeded();
 		winsdkfb::FBError ErrorInfo();
 
-	protected:
 		bool _succeeded = false;
 		winsdkfb::FBError _error;
+	};
+
+	struct FBVectorOfResults : public FBResult
+	{
+		FBVectorOfResults(std::vector<FBResult> vectorOfResults) 
+			: _vectorOfResults(vectorOfResults)
+		{
+			_succeeded = true;
+		}
+
+		std::vector<FBResult> _vectorOfResults;
 	};
 }

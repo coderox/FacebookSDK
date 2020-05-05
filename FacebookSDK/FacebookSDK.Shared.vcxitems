@@ -23,6 +23,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPermissions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBResult.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBSession.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBSingleValue.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GraphUriBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBPermission.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graph\FBProfilePicture.cpp" />

@@ -2,6 +2,7 @@
 #include "Graph/FBPermission.h"
 #include <algorithm>
 #include <string>
+#include <sstream>
 #include "Utilities.h"
 
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
@@ -168,8 +169,10 @@ namespace winsdkfb
 			// we'll just end up with a Uri with the same fragment and an empty
 			// query.
 			wstring frag(nonConstResponse.Fragment().c_str());
-
-			responseString = L"file:///dev/null?" + hstring(frag.substr(1).c_str());
+			std::wostringstream wostringstream;
+			wostringstream << L"file:///dev/null?" << frag.substr(1).c_str() << std::endl;
+			
+			responseString = wostringstream.str().c_str();
 			//OutputDebugString(responseString.c_str());
 			//OutputDebugString(L"\n");
 
@@ -184,7 +187,9 @@ namespace winsdkfb
 	) {
 		DateTimeFormatter dtfDay(YearFormat::Default, MonthFormat::Default, DayFormat::Default, DayOfWeekFormat::Default);
 		DateTimeFormatter dtfTime(HourFormat::Default, MinuteFormat::Default, SecondFormat::Default);
-		hstring msgString = L"Token expires at " + dtfDay.Format(_expirationDate) + L", " + dtfTime.Format(_expirationDate) + L"\n";
+		std::wostringstream wostringstream;
+		wostringstream << L"Token expires at " << dtfDay.Format(_expirationDate).c_str() << L", " << dtfTime.Format(_expirationDate).c_str() << std::endl;
+		hstring msgString(wostringstream.str().c_str());
 		//OutputDebugString(msgString.c_str());
 	}
 #endif

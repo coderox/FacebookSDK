@@ -41,7 +41,7 @@ namespace winrt::winsdkfb::implementation
 			co_return make<FBResult>(make<FBError>(0, L"Invalid SDK call", L"No next page"));
 		}
 
-		return GetPageAsync(_paging.Next().c_str());
+		co_return co_await GetPageAsync(_paging.Next().c_str());
 	}
 
 	IAsyncOperation<winsdkfb::FBResult> FBPaginatedArray::PreviousAsync()
@@ -51,7 +51,7 @@ namespace winrt::winsdkfb::implementation
 			co_return make<FBResult>(make<FBError>(0, L"Invalid SDK call", L"No previous page"));
 		}
 
-		return GetPageAsync(_paging.Previous().c_str());
+		co_return co_await GetPageAsync(_paging.Previous().c_str());
 	}
 
 	IVectorView<IInspectable> FBPaginatedArray::Current()

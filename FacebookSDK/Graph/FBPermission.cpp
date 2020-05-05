@@ -1,5 +1,6 @@
 #include "FBPermission.h"
 
+#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
 using namespace winrt;
@@ -40,7 +41,8 @@ namespace winsdkfb::Graph
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
-                for (auto&& current : obj)
+                
+                for (auto const& current : obj)
                 {
                     winrt::hstring key = current.Key();
                     if (key == L"permission")

@@ -13,9 +13,10 @@ TEST(FBAccessTokenDataTests, CreateInstance)
 	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime());
 
 	// act
+	auto accessToken = instance.AccessToken();
 
 	// assert
-	EXPECT_FALSE(instance.AccessToken().empty());
+	EXPECT_FALSE(accessToken.empty());
 }
 
 TEST(FBAccessTokenDataTests, CreateInstanceOfFBResult)

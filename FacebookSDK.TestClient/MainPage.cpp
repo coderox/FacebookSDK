@@ -214,23 +214,23 @@ namespace winrt::FacebookSDK_TestClient::implementation
 	{
 		auto mockHttpClient = std::make_shared<MockHttpClient>();
 		winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
-		//// test no values returned from request
-		//mockHttpClient->ResponseData(L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}");
+		// test no values returned from request
+		mockHttpClient->ResponseData(L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}");
 
-		//auto graphPath = L"/12345/users";
+		auto graphPath = L"/12345/users";
 
-		//winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText)
-		//{
-		//	return std::static_pointer_cast<winsdkfb::FBResult>(winsdkfb::Graph::FBUser::FromJson(JsonText));
-		//};
+		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::Graph::FBUser
+		{
+			return winsdkfb::Graph::FBUser::FromJson(JsonText);
+		};
 
-		//auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
-		//auto result = concurrency::create_task(likes->FirstAsync()).get();
+		auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
+		auto result = concurrency::create_task(likes.FirstAsync()).get();
 
-		//bool succeeded = result->Succeeded;
+		bool succeeded = result.Succeeded();
 		//auto users = dynamic_cast<IVectorView<Object^>^>(result->Object);
 		//auto user = dynamic_cast<winsdkfb::Graph::FBUser^>(users->GetAt(0));
-		//auto firstName = user->FirstName;
+		//auto firstName = user.FirstName;
 	}
 
 

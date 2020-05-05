@@ -1,5 +1,7 @@
 ﻿#include "FBMediaObject.h"
 
+#include <winrt/Windows.Foundation.Collections.h>
+
 using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation::Collections;

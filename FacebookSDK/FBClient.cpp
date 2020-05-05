@@ -185,104 +185,104 @@ namespace winsdkfb
 		return queryString;
 	}
 
-	///**
-	// * Finds all FBMediaStream object in parameters.
-	// * @param parameters The PropertySet to search for FBMediaStream objects in
-	// * @return PropertySet containing all FBMediaStream objects found. If
-	// * none are found, nullptr is instead returned.
-	// */
-	//PropertySet FBClient::GetStreamsToUpload(PropertySet const& parameters)
-	//{
-	//	PropertySet streams = nullptr;
+	/**
+	 * Finds all FBMediaStream object in parameters.
+	 * @param parameters The PropertySet to search for FBMediaStream objects in
+	 * @return PropertySet containing all FBMediaStream objects found. If
+	 * none are found, nullptr is instead returned.
+	 */
+	PropertySet FBClient::GetStreamsToUpload(PropertySet const& parameters)
+	{
+		PropertySet streams = nullptr;
 
-	//	// Enumerate through all the parameters
-	//	for (auto const& current : parameters)
-	//	{
-	//		if (FBMediaStream stream{ current.Value().try_as<FBMediaStream>() }) {
-	//			if (!streams) {
-	//				streams = PropertySet();
-	//			}
-	//			streams.Insert(current.Key(), current);
-	//		}
-	//	}
+		// Enumerate through all the parameters
+		for (auto const& current : parameters)
+		{
+			//if (FBMediaStream stream{ current.Value().try_as<FBMediaStream>() }) {
+			//	if (!streams) {
+			//		streams = PropertySet();
+			//	}
+			//	streams.Insert(current.Key(), current);
+			//}
+		}
 
-	//	return streams;
-	//}
+		return streams;
+	}
 
-	///**
-	// * Adds FBMediaStream objects to Form.
-	// * @param Parameters PropertySet that contains FBMediaStream objects to
-	// * attach to Form. Will skip any values in Parameters that cannot be
-	// * cast to FBMediaStream.
-	// * @param Form The form to attach FBMediaStream objects to.
-	// */
-	//void FBClient::AddStreamsToForm(PropertySet const& Parameters, HttpMultipartFormDataContent const& Form) {
-	//	HttpStreamContent fileContent = nullptr;
-	//	// Enumerate through all the parameters
-	//	for (auto const& current : Parameters) {
-	//		hstring key(current.Key());
-	//		FBMediaStream stream = current.Value().as<FBMediaStream>();
-	//		if (stream) {
-	//			fileContent = HttpStreamContent(stream.Stream());
-	//			HttpContentHeaderCollection headers(fileContent.Headers());
-	//			headers.Insert(L"Content-Type", stream.Stream().ContentType());
-	//			Form.Add(fileContent, key, stream.FileName());
-	//		}
-	//	}
-	//}
+	/**
+	 * Adds FBMediaStream objects to Form.
+	 * @param Parameters PropertySet that contains FBMediaStream objects to
+	 * attach to Form. Will skip any values in Parameters that cannot be
+	 * cast to FBMediaStream.
+	 * @param Form The form to attach FBMediaStream objects to.
+	 */
+	void FBClient::AddStreamsToForm(PropertySet const& Parameters, HttpMultipartFormDataContent const& Form) {
+		//HttpStreamContent fileContent = nullptr;
+		//// Enumerate through all the parameters
+		//for (auto const& current : Parameters) {
+		//	hstring key(current.Key());
+		//	FBMediaStream stream = current.Value().as<FBMediaStream>();
+		//	if (stream) {
+		//		fileContent = HttpStreamContent(stream.Stream());
+		//		HttpContentHeaderCollection headers(fileContent.Headers());
+		//		headers.Insert(L"Content-Type", stream.Stream().ContentType());
+		//		Form.Add(fileContent, key, stream.FileName());
+		//	}
+		//}
+	}
 
-	///**
-	// * Non-stream HTTP POST flow.
-	// * @param path URL to send POST request to
-	// * @param parameters query parameters to attach to POST request
-	// * @return IAsyncOperation containing the response content
-	// * @exception Can throw any exception that is thrown by SimplePlostInternalAsync
-	// */
-	//IAsyncOperation<hstring> FBClient::SimplePostAsync(hstring const& path, PropertySet const& parameters) {
-	//	Uri uri(FBClient::PrepareRequestUri(path, parameters));
+	/**
+	 * Non-stream HTTP POST flow.
+	 * @param path URL to send POST request to
+	 * @param parameters query parameters to attach to POST request
+	 * @return IAsyncOperation containing the response content
+	 * @exception Can throw any exception that is thrown by SimplePlostInternalAsync
+	 */
+	IAsyncOperation<hstring> FBClient::SimplePostAsync(hstring const& path, PropertySet const& parameters) {
+		Uri uri(FBClient::PrepareRequestUri(path, parameters));
 
-	//	hstring result;
-	//	hstring response = co_await FBClient::SimplePostInternalAsync(uri);
-	//	if (FBClient::IsOAuthErrorResponse(response)) {
-	//		//FBSession^ sess = FBSession::ActiveSession;
-	//		//return FBSession::ActiveSession->TryRefreshAccessToken();
-	//		result = co_await FBClient::SimplePostInternalAsync(uri);
-	//	}
-	//	else {
-	//		result = response;
-	//	}
+		hstring result;
+		hstring response = co_await FBClient::SimplePostInternalAsync(uri);
+		if (FBClient::IsOAuthErrorResponse(response)) {
+			//FBSession^ sess = FBSession::ActiveSession;
+			//return FBSession::ActiveSession->TryRefreshAccessToken();
+			result = co_await FBClient::SimplePostInternalAsync(uri);
+		}
+		else {
+			result = response;
+		}
 
-	//	co_return result;
-	//}
+		co_return result;
+	}
 
-	///**
-	// * HTTP POST request flow with streams.
-	// * @param path URL to send POST request to
-	// * @param parameters query parameters to attach to POST request
-	// * @param streams streams to attach to POST request
-	// * @return IASyncOperation containing the response content
-	// * @exception Can throw any exception that is thrown by MultipartPostInternalAsync
-	// */
-	//IAsyncOperation<hstring> FBClient::MultipartPostAsync(
-	//	hstring const& path,
-	//	PropertySet const& streams,
-	//	PropertySet const& parameters)
-	//{
-	//	Uri uri(FBClient::PrepareRequestUri(path, parameters));
+	/**
+	 * HTTP POST request flow with streams.
+	 * @param path URL to send POST request to
+	 * @param parameters query parameters to attach to POST request
+	 * @param streams streams to attach to POST request
+	 * @return IASyncOperation containing the response content
+	 * @exception Can throw any exception that is thrown by MultipartPostInternalAsync
+	 */
+	IAsyncOperation<hstring> FBClient::MultipartPostAsync(
+		hstring const& path,
+		PropertySet const& streams,
+		PropertySet const& parameters)
+	{
+		Uri uri(FBClient::PrepareRequestUri(path, parameters));
 
-	//	hstring result;
-	//	hstring response = co_await FBClient::MultipartPostInternalAsync(uri, streams);
-	//	if (FBClient::IsOAuthErrorResponse(response)) {
-	//		auto sess = FBSession::ActiveSession();
-	//		co_await sess.TryRefreshAccessTokenAsync();
-	//		result = co_await FBClient::MultipartPostInternalAsync(uri, streams);
-	//	}
-	//	else {
-	//		result = response;
-	//	}
+		hstring result;
+		hstring response = co_await FBClient::MultipartPostInternalAsync(uri, streams);
+		if (FBClient::IsOAuthErrorResponse(response)) {
+			auto sess = FBSession::ActiveSession();
+			co_await sess.TryRefreshAccessTokenAsync();
+			result = co_await FBClient::MultipartPostInternalAsync(uri, streams);
+		}
+		else {
+			result = response;
+		}
 
-	//	co_return result;
-	//}
+		co_return result;
+	}
 
 
 	/**
@@ -386,60 +386,60 @@ namespace winsdkfb
 	}
 
 
-	///**
-	// * Performs the actual HTTP DELETE request.
-	// * @param RequestUri the full URI of the request
-	// * @return The response content
-	// * @exception Exception Any exception that can occur during the request
-	// */
-	//IAsyncOperation<hstring> FBClient::DeleteTaskInternalAsync(Uri const& RequestUri)
-	//{
-	//	HttpBaseProtocolFilter filter;
-	//	HttpClient httpClient(filter);
-	//	httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+	/**
+	 * Performs the actual HTTP DELETE request.
+	 * @param RequestUri the full URI of the request
+	 * @return The response content
+	 * @exception Exception Any exception that can occur during the request
+	 */
+	IAsyncOperation<hstring> FBClient::DeleteTaskInternalAsync(Uri const& RequestUri)
+	{
+		HttpBaseProtocolFilter filter;
+		HttpClient httpClient(filter);
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
 
-	//	auto response = co_await httpClient.DeleteAsync(RequestUri);
-	//	auto result = co_await TryReceiveHttpResponse(response);
-	//	co_return result;
-	//}
+		auto response = co_await httpClient.DeleteAsync(RequestUri);
+		auto result = co_await TryReceiveHttpResponseAsync(response);
+		co_return result;
+	}
 
-	///**
-	// * Performs the actual HTTP POST request with no POST data.
-	// * @param RequestUri the full URI of the request
-	// * @return The response content
-	// * @exception Exception Any exception that can occur during the request
-	// */
-	//IAsyncOperation<hstring> FBClient::SimplePostInternalAsync(Uri const& RequestUri)
-	//{
-	//	HttpBaseProtocolFilter filter;
-	//	HttpClient httpClient(filter);
-	//	httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
-	//	OutputDebugString(RequestUri.AbsoluteUri().c_str());
-	//	auto response = co_await httpClient.PostAsync(RequestUri, HttpStringContent(L""));
-	//	auto result = co_await TryReceiveHttpResponse(response);
-	//	co_return result;
-	//}
+	/**
+	 * Performs the actual HTTP POST request with no POST data.
+	 * @param RequestUri the full URI of the request
+	 * @return The response content
+	 * @exception Exception Any exception that can occur during the request
+	 */
+	IAsyncOperation<hstring> FBClient::SimplePostInternalAsync(Uri const& RequestUri)
+	{
+		HttpBaseProtocolFilter filter;
+		HttpClient httpClient(filter);
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+		OutputDebugString(RequestUri.AbsoluteUri().c_str());
+		auto response = co_await httpClient.PostAsync(RequestUri, HttpStringContent(L""));
+		auto result = co_await TryReceiveHttpResponseAsync(response);
+		co_return result;
+	}
 
-	///**
-	// * Performs the actual HTTP POST request with POST stream data.
-	// * @param RequestUri the full URI of the request
-	// * @return The response content
-	// * @exception Exception Any exception that can occur during the request
-	// */
-	//IAsyncOperation<hstring> FBClient::MultipartPostInternalAsync(
-	//	Uri const& RequestUri,
-	//	PropertySet const& Streams
-	//) {
-	//	HttpClient httpClient;
-	//	httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
-	//	HttpMultipartFormDataContent form;
+	/**
+	 * Performs the actual HTTP POST request with POST stream data.
+	 * @param RequestUri the full URI of the request
+	 * @return The response content
+	 * @exception Exception Any exception that can occur during the request
+	 */
+	IAsyncOperation<hstring> FBClient::MultipartPostInternalAsync(
+		Uri const& RequestUri,
+		PropertySet const& Streams
+	) {
+		HttpClient httpClient;
+		httpClient.DefaultRequestHeaders().Append(UserAgent, WinSDKFBUserAgentString);
+		HttpMultipartFormDataContent form;
 
-	//	FBClient::AddStreamsToForm(Streams, form);
+		FBClient::AddStreamsToForm(Streams, form);
 
-	//	auto response = co_await httpClient.PostAsync(RequestUri, form);
-	//	auto result = co_await TryReceiveHttpResponse(response);
-	//	co_return result;
-	//}
+		auto response = co_await httpClient.PostAsync(RequestUri, form);
+		auto result = co_await TryReceiveHttpResponseAsync(response);
+		co_return result;
+	}
 
 	PropertySet FBClient::MapViewToPropertySet(IMapView<hstring, IInspectable> const mapView)
 	{

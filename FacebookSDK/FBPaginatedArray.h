@@ -2,9 +2,11 @@
 
 #include "Graph/FBPaging.h"
 #include "FBResult.h"
+#include "Utilities.h"
+
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
-#include "Utilities.h"
+
 #include <pplawait.h>
 #include <vector>
 
