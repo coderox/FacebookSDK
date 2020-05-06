@@ -8,7 +8,7 @@
 
 namespace winsdkfb
 {
-	struct FBAccessTokenData : public FBResult
+	struct FBAccessTokenData
 	{
 		FBAccessTokenData() = default;
 		FBAccessTokenData(winrt::hstring const& AccessToken, winrt::Windows::Foundation::DateTime const& Expiration);

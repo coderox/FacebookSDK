@@ -4,7 +4,7 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBObject : public winsdkfb::FBResult
+    struct FBObject
     {
         static FBObject FromJson(
             winrt::hstring const& JsonText

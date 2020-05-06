@@ -1,30 +1,23 @@
 #pragma once
-
+#include <any>
 #include "FBError.h"
 
 namespace winsdkfb
 {
-	struct FBResult
+	class FBResult
 	{
+	public:
 		FBResult() = default;
-		FBResult(winsdkfb::FBError error);
-		~FBResult() = default;
-
+		FBResult(std::any object);
+		~FBResult();
+		
+		template<typename T>
+		T Object();
 		bool Succeeded();
 		winsdkfb::FBError ErrorInfo();
-
-		bool _succeeded = false;
-		winsdkfb::FBError _error;
-	};
-
-	struct FBVectorOfResults : public FBResult
-	{
-		FBVectorOfResults(std::vector<FBResult> vectorOfResults) 
-			: _vectorOfResults(vectorOfResults)
-		{
-			_succeeded = true;
-		}
-
-		std::vector<FBResult> _vectorOfResults;
+	
+	private:
+		std::any _object{ nullptr };
+		winsdkfb::FBError* _error;
 	};
 }

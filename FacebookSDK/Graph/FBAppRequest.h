@@ -4,7 +4,7 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBAppRequest : public winsdkfb::FBResult
+    struct FBAppRequest
     {
         static winsdkfb::Graph::FBAppRequest FromJson(
             winrt::hstring const& JsonText

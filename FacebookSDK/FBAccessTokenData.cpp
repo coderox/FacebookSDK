@@ -28,7 +28,6 @@ namespace winsdkfb
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
-		_succeeded = true;
 	}
 
 	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, DateTime const& expiration)
@@ -40,7 +39,6 @@ namespace winsdkfb
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
-		_succeeded = true;
 	}
 
 	hstring FBAccessTokenData::AccessToken()

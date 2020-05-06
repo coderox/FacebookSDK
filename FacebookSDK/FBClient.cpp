@@ -320,7 +320,6 @@ namespace winsdkfb
 		}
 
 		if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
-			(sess.AccessTokenData().Succeeded()) &&
 			(sess.AccessTokenData().AccessToken().data() != nullptr) &&
 			(sess.AccessTokenData().AccessToken().size() > 0))
 		{

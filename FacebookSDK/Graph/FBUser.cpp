@@ -127,11 +127,12 @@ namespace winsdkfb::Graph
         _verified = value;
     }
 
-    FBUser FBUser::FromJson(
+    std::any FBUser::FromJson(
         hstring const& JsonText
     )
     {
-        FBUser result;
+        std::any result;
+        FBUser user;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -146,72 +147,72 @@ namespace winsdkfb::Graph
                     if (key == L"id")
                     {
                         found++;
-                        result.Id(current.Value().GetString());
+                        user.Id(current.Value().GetString());
                     }
                     else if (key == L"first_name")
                     {
                         found++;
-                        result.FirstName(current.Value().GetString());
+                        user.FirstName(current.Value().GetString());
                     }
                     else if (key == L"gender")
                     {
                         found++;
-                        result.Gender(current.Value().GetString());
+                        user.Gender(current.Value().GetString());
                     }
                     else if (key == L"last_name")
                     {
                         found++;
-                        result.LastName(current.Value().GetString());
+                        user.LastName(current.Value().GetString());
                     }
                     else if (key == L"email")
                     {
                         found++;
-                        result.Email(current.Value().GetString());
+                        user.Email(current.Value().GetString());
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        result.Link(current.Value().GetString());
+                        user.Link(current.Value().GetString());
                     }
                     else if (key == L"locale")
                     {
                         found++;
-                        result.Locale(current.Value().GetString());
+                        user.Locale(current.Value().GetString());
                     }
                     else if (key == L"location")
                     {
                         found++;
-                        result.Location(FBPage::FromJson(current.Value().Stringify()));
+                        user.Location(FBPage::FromJson(current.Value().Stringify()));
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        result.Name(current.Value().GetString());
+                        user.Name(current.Value().GetString());
                     }
                     else if (key == L"picture")
                     {
                         found++;
-                        result.Picture(FBProfilePictureData::FromJson(current.Value().Stringify()));
+                        user.Picture(FBProfilePictureData::FromJson(current.Value().Stringify()));
                     }
                     else if (key == L"timezone")
                     {
                         found++;
-                        result.Timezone(static_cast<int>(current.Value().GetNumber()));
+                        user.Timezone(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"updated_time")
                     {
                         found++;
-                        result.UpdatedTime(current.Value().GetString());
+                        user.UpdatedTime(current.Value().GetString());
                     }
                     else if (key == L"verified")
                     {
                         found++;
-                        result.Verified(current.Value().GetBoolean());
+                        user.Verified(current.Value().GetBoolean());
                     }
                 }
 
                 if (found) {
-                    result._succeeded = true;
+                    result = user;
                 }
             }
         }

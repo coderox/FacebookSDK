@@ -6,9 +6,9 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBUser : public winsdkfb::FBResult
+    struct FBUser
     {
-        static winsdkfb::Graph::FBUser FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

@@ -7,6 +7,22 @@
 using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
+
+TEST(FBAccessTokenDataTests, Simple)
+{
+	// arrange
+	auto instance = make_shared<winsdkfb::FBAccessTokenData>(L"SECRET_TOKEN", DateTime());
+
+	// act
+	auto fbResult = static_pointer_cast<winsdkfb::FBResult>(instance);
+	auto fbAccessTokenData = static_pointer_cast<winsdkfb::FBAccessTokenData>(fbResult);
+
+	// assert
+	EXPECT_STREQ(instance->AccessToken().c_str(), L"SECRET_TOKEN");
+	EXPECT_TRUE(fbResult->Succeeded());
+	EXPECT_STREQ(fbAccessTokenData->AccessToken().c_str(), L"SECRET_TOKEN");
+}
+
 TEST(FBAccessTokenDataTests, CreateInstance)
 {
 	// arrange
@@ -23,13 +39,15 @@ TEST(FBAccessTokenDataTests, CreateInstanceOfFBResult)
 {
 	// arrange
 	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456");
-	winsdkfb::FBResult fbResult = winsdkfb::FBAccessTokenData::FromUri(uri);
-
+	auto instance = make_shared<winsdkfb::FBAccessTokenData>(winsdkfb::FBAccessTokenData::FromUri(uri));
+	
 	// act
-	winsdkfb::FBAccessTokenData& fbAccessTokenData = static_cast<winsdkfb::FBAccessTokenData&>(fbResult);
+	shared_ptr<winsdkfb::FBResult> fbResult = instance;
+	auto fbAccessTokenData = static_pointer_cast<winsdkfb::FBAccessTokenData>(fbResult);
 
 	// assert
-	EXPECT_TRUE(fbAccessTokenData.Succeeded());
+	EXPECT_TRUE(fbAccessTokenData->Succeeded());
+	EXPECT_STREQ(fbAccessTokenData->AccessToken().c_str(), L"ACCESS_TOKEN");
 }
 
 TEST(FBAccessTokenDataTests, CreateInstanceFromUri)

@@ -4,7 +4,7 @@
 
 namespace winsdkfb::Graph
 {
-    struct FBPaging : public winsdkfb::FBResult
+    struct FBPaging
     {
         static winsdkfb::Graph::FBPaging FromJson(
             winrt::hstring const& JsonText
