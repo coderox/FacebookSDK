@@ -6,6 +6,7 @@
 #include "HttpManager.h"
 #include "Utilities.h"
 #include "FBPaginatedArray.h"
+#include "FBSingleValue.h"
 #include "Graph/FBUser.h"
 #include "FBResult.h"
 
@@ -237,7 +238,40 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
 	{
+		auto mockHttpClient = std::make_shared<MockHttpClient>();
+		winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
+		// test no values returned from request
+		//mockHttpClient->ResponseData(L"{\"data\":[{\"from\":\"Micke\"},{\"from\":\"Magnus\"},{\"from\":\"Aron\"}]}");
+		mockHttpClient->ResponseData(L"{\"data\":[]}");
 
+		auto graphPath = L"/12345/apprequests";
+
+		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult {
+			int numberOfMessages = 0;
+			try {
+				auto messages = winrt::Windows::Data::Json::JsonObject::Parse(JsonText).GetNamedArray(L"data");
+				numberOfMessages = messages.Size();
+			}
+			catch (...) {
+				numberOfMessages = 0;
+			}
+			return winsdkfb::FBResult(numberOfMessages);
+		};
+
+		winrt::Windows::Foundation::Collections::PropertySet properties;
+		winrt::hstring data(L"data");
+		properties.Insert(L"fields", winrt::box_value(data));
+
+		auto likes = winsdkfb::FBSingleValue(graphPath, properties, fact);
+		auto result = concurrency::create_task(likes.GetAsync()).get();
+
+		bool succeeded = result.Succeeded();
+		if (succeeded) {
+			auto resultObject = result.Object<int>();
+			if (resultObject > 0) {
+
+			}
+		}
 	}
 
 	void MainPage::OnPostClicked(IInspectable const&, RoutedEventArgs const&)

@@ -42,7 +42,7 @@ namespace winsdkfb
 
 		JsonValue val{ nullptr };
 		FBError err;
-		FBResult item;
+		std::any item;
 
 		if (JsonValue::TryParse(jsonText, val))
 		{
@@ -51,9 +51,9 @@ namespace winsdkfb
 				//TODO: Check for error here first.  User's object serializer may
 				//produce a false positive.
 				err = FBError::FromJson(jsonText);
-				if (err.Code()) {
+				if (err.Code() == 0) {
 					item = _objectFactory(jsonText);
-					if (!item.Succeeded()) {
+					if (!item.has_value()) {
 						auto obj = val.GetObject();
 						for (auto&& current : obj)
 						{
@@ -69,7 +69,7 @@ namespace winsdkfb
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
 								item = _objectFactory(current.Value().GetString());
-								if (!item.Succeeded()) {
+								if (!item.has_value()) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
 							}
@@ -78,10 +78,11 @@ namespace winsdkfb
 				}
 			}
 
-			if (err.Code()) {
+			if (item.has_value()) {
+				result = std::any_cast<FBResult>(item);
+			} else if (err.Code() != 0) {
 				result = FBResult(err);
-			}
-			else {
+			} else {
 				throw hresult_invalid_argument(SDKMessageNoData);
 			}
 		}

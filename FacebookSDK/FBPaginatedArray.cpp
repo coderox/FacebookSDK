@@ -174,10 +174,10 @@ namespace winsdkfb
 
 						_currentDataString = it.Current().Value().as<IStringable>().ToString();
 						_current = VectorFromJsonArray(it.Current().Value().GetArray(), _objectFactory);
-						if (!_current.empty())
-						{
-							foundData = true;
-						}
+						//if (!_current.empty())
+						//{
+						foundData = true;
+						//}
 					}
 				}
 			}
