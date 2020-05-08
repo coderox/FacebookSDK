@@ -32,7 +32,8 @@ namespace winsdkfb::Graph
         hstring const& JsonText
     )
     {
-        FBPermission result;
+        FBResult result;
+        FBPermission permission;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -48,17 +49,17 @@ namespace winsdkfb::Graph
                     if (key == L"permission")
                     {
                         found++;
-                        result.Permission(current.Value().GetString());
+                        permission.Permission(current.Value().GetString());
                     }
                     else if (key == L"status")
                     {
                         found++;
-                        result.Status(current.Value().GetString());
+                        permission.Status(current.Value().GetString());
                     }
                 }
 
                 if (found) {
-                    result._succeeded = true;
+                    result = FBResult(permission);
                 }
             }
         }

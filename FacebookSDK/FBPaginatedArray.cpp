@@ -160,10 +160,10 @@ namespace winsdkfb
 					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") == 0)
 					{
 						_paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify());
-						if (_paging.Succeeded())
-						{
-							foundPaging = true;
-						}
+						//if (_paging.Succeeded())
+						//{
+						//	foundPaging = true;
+						//}
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"data") == 0)
 					{
@@ -192,7 +192,7 @@ namespace winsdkfb
 
 			if (!foundError)
 			{
-				result = FBVectorOfResults(_current);
+				result = FBResult(_current);
 			}
 		}
 

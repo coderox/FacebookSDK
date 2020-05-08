@@ -421,7 +421,7 @@ namespace winsdkfb
 		winsdkfb::FBResult result;
 		if (LoggedIn())
 		{
-			result = AccessTokenData();
+			//result = AccessTokenData();
 		}
 		else
 		{
@@ -547,15 +547,15 @@ namespace winsdkfb
 			//TODO: need a real error code
 			uriString = authResult.ResponseData();
 			uri = Uri(uriString);
-			tokenData = FBAccessTokenData::FromUri(uri);
-			if (!tokenData.Succeeded())
-			{
-				result = FBResult(FBError::FromUri(uri));
-			}
-			else
-			{
-				result = tokenData;
-			}
+			//tokenData = FBAccessTokenData::FromUri(uri);
+			//if (!tokenData.Succeeded())
+			//{
+			//	result = FBResult(FBError::FromUri(uri));
+			//}
+			//else
+			//{
+			//	result = FBResult(tokenData);
+			//}
 			break;
 		case WebAuthenticationStatus::UserCancel:
 			result = FBResult(FBError(0,
@@ -574,7 +574,7 @@ namespace winsdkfb
 
 		if (loginResult.Succeeded())
 		{
-			_AccessTokenData = static_cast<FBAccessTokenData&>(loginResult);
+			//_AccessTokenData = static_cast<FBAccessTokenData&>(loginResult);
 			_loggedIn = true;
 			TrySaveTokenData();
 			result = co_await GetUserInfoAsync(_AccessTokenData);
@@ -592,7 +592,7 @@ namespace winsdkfb
 		winsdkfb::FBResult result;
 		if (loginResult.Succeeded())
 		{
-			_user = static_cast<Graph::FBUser&>(loginResult);
+			//_user = static_cast<Graph::FBUser&>(loginResult);
 			result = co_await GetAppPermissionsAsync();
 		}
 		else
@@ -687,8 +687,8 @@ namespace winsdkfb
 		if (!IsRerequest(parameters)) {
 			FBResult oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult.Succeeded()) {
-				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
-				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
+				auto tokenData = oauthResult.Object<FBAccessTokenData>();
+				if (tokenData && !tokenData->IsExpired()) {
 					loginResult = FBResult(tokenData);
 				}
 			}
@@ -708,8 +708,8 @@ namespace winsdkfb
 		if (!IsRerequest(parameters)) {
 			FBResult oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult.Succeeded()) {
-				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
-				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
+				auto tokenData = oauthResult.Object<FBAccessTokenData>();
+				if (tokenData && !tokenData->IsExpired()) {
 					loginResult = FBResult(tokenData);
 				}
 			}
@@ -738,8 +738,8 @@ namespace winsdkfb
 		if (diffPermissions.Values().size() == 0) {
 			oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult.Succeeded()) {
-				auto tokenData = static_cast<FBAccessTokenData&>(oauthResult);
-				if (tokenData.Succeeded() && !tokenData.IsExpired()) {
+				auto tokenData = oauthResult.Object<FBAccessTokenData>();
+				if (tokenData && !tokenData->IsExpired()) {
 					loginResult = FBResult(tokenData);
 				}
 				else {
@@ -786,7 +786,7 @@ namespace winsdkfb
 		winsdkfb::FBResult result;
 		if (LoggedIn())
 		{
-			co_return AccessTokenData();
+			co_return FBResult(AccessTokenData());
 		}
 		else
 		{

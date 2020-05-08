@@ -43,9 +43,9 @@ namespace winsdkfb::Graph
                     }
                 }
 
-				if(found){
-					result._succeeded;
-				}
+				//if(found){
+				//	result._succeeded;
+				//}
             }
         }
         return result;

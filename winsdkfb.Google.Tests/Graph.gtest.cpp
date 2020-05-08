@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <winrt/base.h>
-
+#include <any>
 #include "Graph/FBUser.h"
 
 #define USER_REQUEST L"{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}"
@@ -13,15 +13,14 @@ TEST(GraphTests, CreateFBUserFromJson)
 	winrt::hstring json(USER_REQUEST);
 
 	// act
-	auto user = winsdkfb::Graph::FBUser::FromJson(json);
+	auto user = std::any_cast<winsdkfb::Graph::FBUser>(winsdkfb::Graph::FBUser::FromJson(json));
 
 	// assert
-	EXPECT_TRUE(user.Succeeded());
 	EXPECT_STREQ(L"Johan", user.FirstName().c_str());
 	EXPECT_STREQ(L"Lindfors", user.LastName().c_str());
 	EXPECT_STREQ(L"Johan Lindfors", user.Name().c_str());
-	EXPECT_TRUE(user.Picture().Succeeded());
-	EXPECT_TRUE(user.Picture().Data().Succeeded());
+	//EXPECT_TRUE(user.Picture().Succeeded());
+	//EXPECT_TRUE(user.Picture().Data().Succeeded());
 	EXPECT_EQ(50, user.Picture().Data().Height());
 	EXPECT_EQ(50, user.Picture().Data().Width());
 }
@@ -35,7 +34,6 @@ TEST(GraphTests, CreateFBProfilePictureFromJson)
 	auto profilePicture = winsdkfb::Graph::FBProfilePicture::FromJson(json);
 
 	// assert
-	EXPECT_TRUE(profilePicture.Succeeded());
 	EXPECT_EQ(100, profilePicture.Height());
 	EXPECT_EQ(100, profilePicture.Width());
 	EXPECT_EQ(false, profilePicture.IsSilhouette());
@@ -51,8 +49,6 @@ TEST(GraphTests, CreateFBProfilePictureDataFromJson)
 	auto profilePicture = winsdkfb::Graph::FBProfilePictureData::FromJson(json);
 
 	// assert
-	EXPECT_TRUE(profilePicture.Succeeded());
-	EXPECT_TRUE(profilePicture.Data().Succeeded());
 	EXPECT_EQ(100, profilePicture.Data().Height());
 	EXPECT_EQ(100, profilePicture.Data().Width());
 	EXPECT_EQ(false, profilePicture.Data().IsSilhouette());

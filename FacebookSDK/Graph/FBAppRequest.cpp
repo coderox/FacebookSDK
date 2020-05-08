@@ -108,7 +108,7 @@ namespace winsdkfb::Graph
                     else if (key == L"from")
                     {
                         found++;
-                        result.From(FBUser::FromJson(current.Value().Stringify()));
+                        result.From(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
                     }
                     else if (key == L"id")
                     {
@@ -123,13 +123,13 @@ namespace winsdkfb::Graph
                     else if (key == L"to")
                     {
                         found++;
-                        result.To(FBUser::FromJson(current.Value().Stringify()));
+                        result.To(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
                     }
                 }
 
-				if(found){
-					result._succeeded = true;
-				}
+				//if(found){
+				//	result._succeeded = true;
+				//}
             }
         }
         return result;

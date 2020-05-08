@@ -219,20 +219,21 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 		auto graphPath = L"/12345/users";
 
-		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::Graph::FBUser
+		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult
 		{
-			return winsdkfb::Graph::FBUser::FromJson(JsonText);
+			return winsdkfb::FBResult(winsdkfb::Graph::FBUser::FromJson(JsonText));
 		};
 
 		auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
 		auto result = concurrency::create_task(likes.FirstAsync()).get();
 
 		bool succeeded = result.Succeeded();
-		//auto users = dynamic_cast<IVectorView<Object^>^>(result->Object);
-		//auto user = dynamic_cast<winsdkfb::Graph::FBUser^>(users->GetAt(0));
-		//auto firstName = user.FirstName;
+		if (succeeded) {
+			auto users = result.Object<std::vector<winsdkfb::FBResult>>();
+			auto user = users->at(0).Object<winsdkfb::Graph::FBUser>();
+			auto firstName = user->FirstName();
+		}
 	}
-
 
 	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
 	{

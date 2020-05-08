@@ -5,30 +5,26 @@ using namespace Windows::Foundation;
 
 namespace winsdkfb
 {
-	FBResult::FBResult(std::any object)
-		: _object(nullptr)
-		, _error(nullptr)
+	FBResult::FBResult() 
 	{
-		_error = std::any_cast<winsdkfb::FBError>(&object);
-		if (!_error) {
-			// Not an error, save as our object
+		_error.reset();
+		_object.reset();
+	}
+
+	FBResult::FBResult(std::any&& object) : FBResult()
+	{
+		try {
+			_error = std::any_cast<winsdkfb::FBError>(object);
+		}
+		catch (...) {
 			_object = object;
 		}
 	}
 
 	FBResult::~FBResult() {
-		if (_error) {
-			delete(_error);
-		}
 		if (_object.has_value()) {
 			_object.reset();
 		}
-	}
-
-	template<typename T>
-	T FBResult::Object()
-	{
-		return std::any_cast<T>(&_object);
 	}
 
 	bool FBResult::Succeeded() {
@@ -36,6 +32,6 @@ namespace winsdkfb
 	}
 
 	winsdkfb::FBError FBResult::ErrorInfo() {
-		return *_error;
+		return std::any_cast<winsdkfb::FBError>(_error);
 	}
 }
