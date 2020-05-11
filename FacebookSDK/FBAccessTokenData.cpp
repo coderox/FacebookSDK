@@ -93,13 +93,13 @@ namespace winsdkfb
 		_declinedPermissions = FBPermissions(declined);
 	}
 
-	FBAccessTokenData FBAccessTokenData::FromUri(Uri const& response)
+	std::any FBAccessTokenData::FromUri(Uri const& response)
 	{
 		bool gotToken = false;
 		bool gotExpiration = false;
 		hstring token;
 		hstring expiration;
-		winsdkfb::FBAccessTokenData data;
+		std::any data;
 
 		WwwFormUrlDecoder decoder = FBAccessTokenData::ParametersFromResponse(response);
 

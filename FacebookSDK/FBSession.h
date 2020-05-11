@@ -64,7 +64,7 @@ namespace winsdkfb
 		void SetApiVersion(int32_t major, int32_t minor);
 		void SetWebViewRedirectUrl(winrt::hstring const& domain, winrt::hstring const& Path);
 
-		static winsdkfb::FBSession ActiveSession();
+		static std::shared_ptr<winsdkfb::FBSession> ActiveSession();
 		static winrt::Windows::Storage::ApplicationDataContainer DataContainer();
 
 	private:
@@ -113,6 +113,7 @@ namespace winsdkfb
 		winsdkfb::FBAccessTokenData _AccessTokenData;
 		winsdkfb::Graph::FBUser _user;
 		winsdkfb::FBResult _asyncResult;
+		std::unique_ptr<winsdkfb::FBDialog> _dialog;
 	};
 }
 

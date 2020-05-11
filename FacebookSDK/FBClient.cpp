@@ -1,6 +1,5 @@
 ﻿#include "FBClient.h"
 #include "FBSession.h"
-//#include "JsonClassFactory.h"
 #include "SDKMessage.h"
 #include "FBMediaObject.h"
 #include "FBMediaStream.h"
@@ -273,9 +272,9 @@ namespace winsdkfb
 		hstring result;
 		hstring response = co_await FBClient::MultipartPostInternalAsync(uri, streams);
 		if (FBClient::IsOAuthErrorResponse(response)) {
-			auto sess = FBSession::ActiveSession();
-			co_await sess.TryRefreshAccessTokenAsync();
-			result = co_await FBClient::MultipartPostInternalAsync(uri, streams);
+			//auto sess = FBSession::ActiveSession();
+			//co_await sess.TryRefreshAccessTokenAsync();
+			//result = co_await FBClient::MultipartPostInternalAsync(uri, streams);
 		}
 		else {
 			result = response;
@@ -299,7 +298,7 @@ namespace winsdkfb
 		hstring const& path,
 		PropertySet parameters
 	) {
-		auto sess = FBSession::ActiveSession();
+		//auto sess = FBSession::ActiveSession();
 		GraphUriBuilder uriBuilder(path);
 
 		if (parameters == nullptr)
@@ -319,17 +318,17 @@ namespace winsdkfb
 			parametersWithoutMediaObjects = PropertySet();
 		}
 
-		if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
-			(sess.AccessTokenData().AccessToken().data() != nullptr) &&
-			(sess.AccessTokenData().AccessToken().size() > 0))
-		{
-			parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess.AccessTokenData().AccessToken()));
-		}
+		//if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
+		//	(sess.AccessTokenData().AccessToken().data() != nullptr) &&
+		//	(sess.AccessTokenData().AccessToken().size() > 0))
+		//{
+		//	parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess.AccessTokenData().AccessToken()));
+		//}
 
-		if (parametersWithoutMediaObjects.HasKey(L"format"))
-		{
-			parametersWithoutMediaObjects.Insert(L"format", box_value(L"json-strings"));
-		}
+		//if (parametersWithoutMediaObjects.HasKey(L"format"))
+		//{
+		//	parametersWithoutMediaObjects.Insert(L"format", box_value(L"json-strings"));
+		//}
 
 		SerializeParameters(parametersWithoutMediaObjects);
 

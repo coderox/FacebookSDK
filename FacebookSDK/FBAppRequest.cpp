@@ -1,12 +1,11 @@
-﻿#include "pch.h"
-#include "FBAppRequest.h"
+﻿#include "FBAppRequest.h"
 
 using namespace winrt;
 using namespace std;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 
-namespace winrt::winsdkfb::implementation
+namespace winsdkfb
 {
 	hstring FBAppRequest::RequestId()
 	{
@@ -20,7 +19,7 @@ namespace winrt::winsdkfb::implementation
 
 	winsdkfb::FBAppRequest FBAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri const& response)
 	{
-		winsdkfb::FBAppRequest info{ nullptr };
+		winsdkfb::FBAppRequest info;
 		hstring requestId;
 		auto recips{ single_threaded_vector<hstring>() };
 
@@ -47,11 +46,11 @@ namespace winrt::winsdkfb::implementation
 
 			if (!requestId.empty() && (recips.Size() > 0))
 			{
-				info = winrt::make<FBAppRequest>(requestId, recips);
+				info = FBAppRequest(requestId, recips);
 			}
 		}
 
-		return info.as<winsdkfb::FBAppRequest>();
+		return info;
 	}
 
 	FBAppRequest::FBAppRequest(

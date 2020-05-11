@@ -9,6 +9,7 @@
 #include "FBSingleValue.h"
 #include "Graph/FBUser.h"
 #include "FBResult.h"
+#include "FBSession.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -38,14 +39,14 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		auto fbResult = std::make_shared<winsdkfb::FBResult>();
 	}
 
-	//winsdkfb::FBPermissions^ BlankPage::BuildPermissions() {
-	//	auto v = ref new Vector<String^>();
-	//	for (auto const& permission : requested_permissions)
-	//	{
-	//		v->Append(ref new String(permission));
-	//	}
-	//	return ref new winsdkfb::FBPermissions(v->GetView());
-	//}
+	winsdkfb::FBPermissions BuildPermissions() {
+		std::vector<hstring>v;
+		for (auto const& permission : requested_permissions)
+		{
+			v.push_back(hstring(permission));
+		}
+		return winsdkfb::FBPermissions(v);
+	}
 
 	//void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 	//{
@@ -201,9 +202,29 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		SetSessionAppIds();
 	}
 
+	winrt::fire_and_forget LoginInternal() {
+		auto session = winsdkfb::FBSession::ActiveSession();
+		if (session->LoggedIn()) {
+			co_await session->LogoutAsync();
+		}
+		else {
+			SetSessionAppIds();
+			auto result = co_await session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView);
+			session = winsdkfb::FBSession::ActiveSession();
+			if (session->LoggedIn()) {
+				auto user = session->User();
+				OutputDebugString(user.FirstName().c_str());
+			} else {
+				if (!result.Succeeded() && result.ErrorInfo().Code() > 0) {
+					OutputDebugString(result.ErrorInfo().Message().c_str());
+				}
+			}
+		}
+	}
+
 	void MainPage::OnLoginClicked(IInspectable const&, RoutedEventArgs const&)
 	{
-
+		//LoginInternal();
 	}
 
 	void MainPage::OnFeedClicked(IInspectable const&, RoutedEventArgs const&)

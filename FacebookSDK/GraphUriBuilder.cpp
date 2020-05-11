@@ -86,10 +86,10 @@ namespace winsdkfb
 		else
 		{
 			auto session = FBSession::ActiveSession();
-			if (session.APIMajorVersion())
+			if (session->APIMajorVersion())
 			{
 				std::wstringstream wstringstream;
-				wstringstream << L"v" << session.APIMajorVersion() << L"." << session.APIMinorVersion();
+				wstringstream << L"v" << session->APIMajorVersion() << L"." << session->APIMinorVersion();
 				_apiVersion = wstringstream.str().c_str();
 			}
 		}

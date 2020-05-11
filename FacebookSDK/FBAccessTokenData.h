@@ -20,7 +20,7 @@ namespace winsdkfb
 		bool IsExpired();
 		void SetPermissions(std::vector<winsdkfb::Graph::FBPermission> const& perms);
 
-		static winsdkfb::FBAccessTokenData FromUri(winrt::Windows::Foundation::Uri const& Response);
+		static std::any FromUri(winrt::Windows::Foundation::Uri const& Response);
 
 		FBAccessTokenData(
 			std::wstring accessToken,

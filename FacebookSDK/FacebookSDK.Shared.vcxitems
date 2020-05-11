@@ -15,7 +15,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAppRequest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBDialog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />

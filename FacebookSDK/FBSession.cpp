@@ -306,9 +306,9 @@ namespace winsdkfb
 		}
 	}
 
-	winsdkfb::FBSession FBSession::ActiveSession()
+	shared_ptr<FBSession> FBSession::ActiveSession()
 	{
-		static winsdkfb::FBSession activeFBSession;
+		static shared_ptr<FBSession> activeFBSession = make_shared<FBSession>();
 		return activeFBSession;
 	}
 
@@ -352,7 +352,7 @@ namespace winsdkfb
 			apiVersion = apiStream.str().c_str();
 		}
 		wstringstream uriStream;
-		uriStream << L"https://www.facebook.com/" << apiVersion.c_str() << L"dialog/oauth?client_id=" << session.FBAppId().c_str();
+		uriStream << L"https://www.facebook.com/" << apiVersion.c_str() << L"dialog/oauth?client_id=" << session->FBAppId().c_str();
 		//hstring uriString(uriStream.str().c_str());
 
 		// Use some reasonable default login parameters
@@ -661,14 +661,13 @@ namespace winsdkfb
 	concurrency::task<winsdkfb::FBResult> FBSession::ShowLoginDialogAsync(PropertySet const Parameters)
 	{
 		FBResult result;
-		//FBDialog dialog;
-		//try {
-		//	result = co_await dialog.ShowLoginDialogAsync(Parameters);
-		//}
-		//catch (hresult_error e) {
+		try {
+			//result = co_await _dialog.ShowLoginDialogAsync(Parameters);
+		}
+		catch (hresult_error e) {
 		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
 		//	result = FBResult(err);
-		//}
+		}
 
 		//if (result.Succeeded())
 		//{
