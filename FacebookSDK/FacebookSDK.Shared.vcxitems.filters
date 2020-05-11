@@ -49,6 +49,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FBSingleValue.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBDialog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FacebookAppRequest.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAppEvents.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />
