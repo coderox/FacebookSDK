@@ -1,10 +1,11 @@
-﻿#include "pch.h"
-#include "FBFeedRequest.h"
+﻿#include "FBFeedRequest.h"
+
+#include "winrt/Windows.Foundation.Collections.h"
 
 using namespace winrt;
 using namespace Windows::Foundation;
 
-namespace winrt::winsdkfb::implementation
+namespace winsdkfb
 {
 	FBFeedRequest::FBFeedRequest(hstring postId)
 		: _postId(postId.c_str())
@@ -16,9 +17,9 @@ namespace winrt::winsdkfb::implementation
 		return _postId.c_str();
 	}
 
-	winsdkfb::FBFeedRequest FBFeedRequest::FromFeedDialogResponse(Windows::Foundation::Uri const& response)
+	winsdkfb::FBFeedRequest FBFeedRequest::FromFeedDialogResponse(Uri const& response)
 	{
-		winsdkfb::FBFeedRequest info = { nullptr };
+		winsdkfb::FBFeedRequest info;
 		WwwFormUrlDecoder parameters = { nullptr };
 
 		if (!response.Query().empty())
@@ -40,7 +41,7 @@ namespace winrt::winsdkfb::implementation
 
 		if (!postId.empty())
 		{
-			info = make<FBFeedRequest>(postId);
+			info = FBFeedRequest(postId);
 		}
 		return info;
 	}
