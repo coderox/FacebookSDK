@@ -1,4 +1,4 @@
-﻿#include "FBAppRequest.h"
+﻿#include "FacebookAppRequest.h"
 
 using namespace winrt;
 using namespace std;
@@ -7,19 +7,19 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb
 {
-	hstring FBAppRequest::RequestId()
+	hstring FacebookAppRequest::RequestId()
 	{
 		return _requestId.c_str();
 	}
 
-	IVectorView<winrt::hstring> FBAppRequest::RecipientIds()
+	IVectorView<winrt::hstring> FacebookAppRequest::RecipientIds()
 	{
 		return _recipients.GetView();
 	}
 
-	winsdkfb::FBAppRequest FBAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri const& response)
+	winsdkfb::FacebookAppRequest FacebookAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri const& response)
 	{
-		winsdkfb::FBAppRequest info;
+		winsdkfb::FacebookAppRequest info;
 		hstring requestId;
 		auto recips{ single_threaded_vector<hstring>() };
 
@@ -46,14 +46,14 @@ namespace winsdkfb
 
 			if (!requestId.empty() && (recips.Size() > 0))
 			{
-				info = FBAppRequest(requestId, recips);
+				info = FacebookAppRequest(requestId, recips);
 			}
 		}
 
 		return info;
 	}
 
-	FBAppRequest::FBAppRequest(
+	FacebookAppRequest::FacebookAppRequest(
 		winrt::hstring requestId,
 		const IVector<winrt::hstring>& recipients
 	)

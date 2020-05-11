@@ -74,7 +74,7 @@ namespace winsdkfb
 
 		//void InitializeComponent();
 
-		//virtual void Connect(
+		//void Connect(
 		//	int connectionId, winrt::Windows::Foundation::IInspectable target
 		//);
 

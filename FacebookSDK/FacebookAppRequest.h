@@ -4,11 +4,11 @@
 
 namespace winsdkfb
 {
-	struct FBAppRequest
+	struct FacebookAppRequest
 	{
-		FBAppRequest() { };
+		FacebookAppRequest() { };
 
-		FBAppRequest(
+		FacebookAppRequest(
 			winrt::hstring requestId,
 			const winrt::Windows::Foundation::Collections::IVector<winrt::hstring> & recipients
 		);
@@ -17,7 +17,7 @@ namespace winsdkfb
 		winrt::hstring RequestId();
 		winrt::Windows::Foundation::Collections::IVectorView<winrt::hstring> RecipientIds();
 
-		static winsdkfb::FBAppRequest FromRequestDialogResponse(winrt::Windows::Foundation::Uri const& response);
+		static winsdkfb::FacebookAppRequest FromRequestDialogResponse(winrt::Windows::Foundation::Uri const& response);
 	private:
 		winrt::Windows::Foundation::Collections::IVector<winrt::hstring> _recipients;
 		std::wstring _requestId;

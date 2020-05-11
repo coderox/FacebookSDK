@@ -13,6 +13,7 @@
 #include "SDKMessage.h"
 
 #include <sstream>
+#include <pplawait.h>
 
 using namespace std;
 using namespace winrt;
@@ -77,6 +78,8 @@ namespace winsdkfb
 		_APIMinorVersion = 6;
 		_webViewRedirectDomain = FACEBOOK_DESKTOP_SERVER_NAME;
 		_webViewRedirectPath = FACEBOOK_LOGIN_SUCCESS_PATH;
+
+		//_dialog = make_unique<FBDialog>();
 	}
 
 	FBSession::~FBSession()
@@ -662,17 +665,17 @@ namespace winsdkfb
 	{
 		FBResult result;
 		try {
-			//result = co_await _dialog.ShowLoginDialogAsync(Parameters);
+			//result = co_await _dialog->ShowLoginDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
-		//	auto err = FBError::FromJson(hstring(ErrorObjectJson));
-		//	result = FBResult(err);
+			auto err = FBError::FromJson(hstring(ErrorObjectJson));
+			result = FBResult(err);
 		}
 
-		//if (result.Succeeded())
-		//{
-		//	AccessTokenData(static_cast<FBAccessTokenData&>(result));
-		//}
+		if (result.Succeeded())
+		{
+			AccessTokenData(std::any_cast<FBAccessTokenData>(result.Object<FBAccessTokenData>()));
+		}
 
 		co_return result;
 	}
