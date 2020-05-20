@@ -298,7 +298,7 @@ namespace winsdkfb
 		hstring const& path,
 		PropertySet parameters
 	) {
-		//auto sess = FBSession::ActiveSession();
+		auto sess = FBSession::ActiveSession();
 		GraphUriBuilder uriBuilder(path);
 
 		if (parameters == nullptr)
@@ -318,17 +318,17 @@ namespace winsdkfb
 			parametersWithoutMediaObjects = PropertySet();
 		}
 
-		//if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
-		//	(sess.AccessTokenData().AccessToken().data() != nullptr) &&
-		//	(sess.AccessTokenData().AccessToken().size() > 0))
-		//{
-		//	parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess.AccessTokenData().AccessToken()));
-		//}
+		if (!parametersWithoutMediaObjects.HasKey(L"access_token") &&
+			(sess->AccessTokenData().AccessToken().data() != nullptr) &&
+			(sess->AccessTokenData().AccessToken().size() > 0))
+		{
+			parametersWithoutMediaObjects.Insert(L"access_token", box_value(sess->AccessTokenData().AccessToken()));
+		}
 
-		//if (parametersWithoutMediaObjects.HasKey(L"format"))
-		//{
-		//	parametersWithoutMediaObjects.Insert(L"format", box_value(L"json-strings"));
-		//}
+		if (parametersWithoutMediaObjects.HasKey(L"format"))
+		{
+			parametersWithoutMediaObjects.Insert(L"format", box_value(L"json-strings"));
+		}
 
 		SerializeParameters(parametersWithoutMediaObjects);
 

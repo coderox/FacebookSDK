@@ -58,6 +58,7 @@ extern const wchar_t* ErrorObjectJson;
 #define DefaultResponse L"token"
 #define AuthTypeKey     L"auth_type"
 #define Rerequest       L"rerequest"
+#define	Reauthorize     L"reauthorize"
 #define RedirectUriKey  L"redirect_uri"
 
 #define SDK_APP_DATA_CONTAINER L"winsdkfb" // TODO: Should we move this?
@@ -78,8 +79,6 @@ namespace winsdkfb
 		_APIMinorVersion = 6;
 		_webViewRedirectDomain = FACEBOOK_DESKTOP_SERVER_NAME;
 		_webViewRedirectPath = FACEBOOK_LOGIN_SUCCESS_PATH;
-
-		//_dialog = make_unique<FBDialog>();
 	}
 
 	FBSession::~FBSession()
@@ -173,7 +172,7 @@ namespace winsdkfb
 		_AppResponse.clear();
 		_loggedIn = false;
 
-		//FBDialog::DeleteCookies();
+		FBDialog::DeleteCookies();
 
 		return TryDeleteTokenDataAsync();
 	}
@@ -241,7 +240,7 @@ namespace winsdkfb
 		if (LoggedIn()) {
 			parameters.Insert(AuthTypeKey, box_value(Rerequest));
 		}
-		winsdkfb::FBResult result;
+		//winsdkfb::FBResult result;
 		switch (behavior)
 		{
 		case SessionLoginBehavior::WebView:
@@ -288,6 +287,25 @@ namespace winsdkfb
 			OutputDebugString(L"LoginAsync was about to return nullptr, created FBResult object to return instead");
 		}
 		else {
+			SaveGrantedPermissions();
+		}
+		co_return finalResult;
+	}
+
+	task<FBResult> FBSession::ReauthorizeAsync(FBPermissions Permissions)
+	{		
+		PropertySet parameters;
+		parameters.Insert(ScopeKey, box_value(Permissions.ToString()));
+
+		if (LoggedIn())
+		{
+			parameters.Insert(AuthTypeKey, box_value(Reauthorize));
+		}
+
+		auto graphResult = co_await TryLoginViaWebViewAsync(parameters);
+		auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(graphResult);
+		auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
+		if (finalResult.Succeeded()) {
 			SaveGrantedPermissions();
 		}
 		co_return finalResult;
@@ -403,7 +421,8 @@ namespace winsdkfb
 		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
 		auto objectFactory = JsonClassFactory([](hstring jsonText) -> FBResult
 		{
-			return Graph::FBUser::FromJson(jsonText);
+			auto user = Graph::FBUser::FromJson(jsonText);
+			return FBResult(std::any_cast<Graph::FBUser>(user));
 		});
 
 		winsdkfb::FBSingleValue value = FBSingleValue(
@@ -443,15 +462,34 @@ namespace winsdkfb
 
 					if (pos != wstring::npos)
 					{
+						std::time_t expirationTime;
+						std::time_t dataAccessExpirationTime;
+						hstring dataAccessExpirationString;
 						hstring accessToken(vals.substr(0, pos).c_str());
-						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
-						DateTime expirationTime;
-
 						hstring msg(L"Access Token: " + accessToken + L"\n");
 						OutputDebugString(msg.c_str());
 
-						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-						winsdkfb::FBAccessTokenData cachedData = FBAccessTokenData(accessToken, expirationTime);
+						size_t nextPos = vals.find(L",", pos + 1);
+						hstring expirationString(vals.substr(pos + 1, nextPos - (pos + 1)).c_str());
+						msg = L"Expiration: " + expirationString + L"\n";
+						OutputDebugString(msg.c_str());
+
+						if (nextPos != wstring::npos)
+						{
+							dataAccessExpirationString = hstring(vals.substr(nextPos + 1, wstring::npos).c_str());
+						}
+						FBAccessTokenData cachedData;
+						if (expirationString != L"0") {
+							expirationTime =  _wtoi64(expirationString.data());
+							if (dataAccessExpirationString != L"0") {
+								dataAccessExpirationTime= _wtoi64(dataAccessExpirationString.data());
+							}
+							cachedData = winsdkfb::FBAccessTokenData(
+								accessToken, 
+								winrt::clock::from_time_t(expirationTime), 
+								winrt::clock::from_time_t(dataAccessExpirationTime)
+							);
+						}
 						result = FBResult(cachedData);
 					}
 				}
@@ -469,15 +507,29 @@ namespace winsdkfb
 		if (LoggedIn())
 		{
 			wchar_t buffer[INT64_STRING_BUFSIZE];
-			DataProtectionProvider provider(L"LOCAL=user");
 			_i64tow_s(
-				WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
+				WindowsTickToUnixSeconds(_AccessTokenData.ExpirationDate().time_since_epoch().count()),
 				buffer, INT64_STRING_BUFSIZE, 10);
 			wstringstream tokenStream;
-			tokenStream << AccessTokenData().AccessToken().c_str() << L"," << hstring(buffer).c_str();
+			
+			if (_AccessTokenData.HasDataAccessExpirationDate()) {
+				wchar_t daBuffer[INT64_STRING_BUFSIZE];
+				_i64tow_s(
+					WindowsTickToUnixSeconds(_AccessTokenData.DataAccessExpirationDate().time_since_epoch().count()),
+					daBuffer, INT64_STRING_BUFSIZE, 10);
+				tokenStream << AccessTokenData().AccessToken().c_str()
+							<< L"," << hstring(buffer).c_str()
+							<< L"," << hstring(daBuffer).c_str();
+			} else {
+				tokenStream << AccessTokenData().AccessToken().c_str() 
+							<< L"," << hstring(buffer).c_str() 
+							<< L",0";
+			}
+
 			hstring tokenData(tokenStream.str().c_str());
 			IBuffer dataBuff = CryptographicBuffer::ConvertStringToBinary(tokenData, BinaryStringEncoding::Utf16LE);
 
+			DataProtectionProvider provider(L"LOCAL=user");
 			auto protectedData = co_await provider.ProtectAsync(dataBuff);
 			StorageFolder folder = ApplicationData::Current().LocalFolder();
 			auto file = co_await folder.CreateFileAsync(L"FBSDKData", CreationCollisionOption::OpenIfExists);
@@ -518,16 +570,21 @@ namespace winsdkfb
 			return Graph::FBPermission::FromJson(JsonText);
 		});
 
-		//FBPaginatedArray permArr(
-		//	permStream.str().c_str(),
-		//	nullptr,
-		//	factory);
+		FBPaginatedArray permArr(
+			permStream.str().c_str(),
+			nullptr,
+			factory);
 
-		//auto result = co_await permArr.FirstAsync();
-		//if (result.Succeeded()) {
-		//	//auto perms = result.Object().as<IVectorView<IInspectable>>();
-		//	//_AccessTokenData.SetPermissions(perms);
-		//}
+		auto result = co_await permArr.FirstAsync();
+		if (result.Succeeded()) {
+			auto perms = result.Object<std::vector<FBResult>>().value();
+			std::vector<Graph::FBPermission> permissions;
+			for (FBResult & perm: perms)
+			{
+				permissions.push_back(perm.Object<Graph::FBPermission>().value());
+			}
+			_AccessTokenData.SetPermissions(permissions);
+		}
 		co_return FBResult(_user);
 	}
 
@@ -550,15 +607,15 @@ namespace winsdkfb
 			//TODO: need a real error code
 			uriString = authResult.ResponseData();
 			uri = Uri(uriString);
-			//tokenData = FBAccessTokenData::FromUri(uri);
-			//if (!tokenData.Succeeded())
-			//{
-			//	result = FBResult(FBError::FromUri(uri));
-			//}
-			//else
-			//{
-			//	result = FBResult(tokenData);
-			//}
+			tokenData = std::any_cast<FBAccessTokenData>(FBAccessTokenData::FromUri(uri));
+			if (tokenData.AccessToken().empty())
+			{
+				result = FBResult(FBError::FromUri(uri));
+			}
+			else
+			{
+				result = FBResult(tokenData);
+			}
 			break;
 		case WebAuthenticationStatus::UserCancel:
 			result = FBResult(FBError(0,
@@ -577,7 +634,8 @@ namespace winsdkfb
 
 		if (loginResult.Succeeded())
 		{
-			//_AccessTokenData = static_cast<FBAccessTokenData&>(loginResult);
+			auto tokenData = loginResult.Object<FBAccessTokenData>();
+			_AccessTokenData = tokenData.value();
 			_loggedIn = true;
 			TrySaveTokenData();
 			result = co_await GetUserInfoAsync(_AccessTokenData);
@@ -595,7 +653,7 @@ namespace winsdkfb
 		winsdkfb::FBResult result;
 		if (loginResult.Succeeded())
 		{
-			//_user = static_cast<Graph::FBUser&>(loginResult);
+			_user = loginResult.Object<Graph::FBUser>().value();
 			result = co_await GetAppPermissionsAsync();
 		}
 		else
@@ -665,7 +723,8 @@ namespace winsdkfb
 	{
 		FBResult result;
 		try {
-			//result = co_await _dialog->ShowLoginDialogAsync(Parameters);
+			auto dialog = winrt::make<FBDialog>().as<FBDialog>();
+			result = co_await dialog->ShowLoginDialogAsync(Parameters);
 		}
 		catch (hresult_error e) {
 			auto err = FBError::FromJson(hstring(ErrorObjectJson));
@@ -674,7 +733,8 @@ namespace winsdkfb
 
 		if (result.Succeeded())
 		{
-			AccessTokenData(std::any_cast<FBAccessTokenData>(result.Object<FBAccessTokenData>()));
+			auto tokenData = result.Object<FBAccessTokenData>();
+			AccessTokenData(tokenData.value());
 		}
 
 		co_return result;
@@ -690,8 +750,8 @@ namespace winsdkfb
 			FBResult oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult.Succeeded()) {
 				auto tokenData = oauthResult.Object<FBAccessTokenData>();
-				if (tokenData && !tokenData->IsExpired()) {
-					loginResult = FBResult(tokenData);
+				if (tokenData.has_value() && !tokenData.value().IsExpired()) {
+					loginResult = FBResult(tokenData.value());
 				}
 			}
 			else {
@@ -711,8 +771,8 @@ namespace winsdkfb
 			FBResult oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult.Succeeded()) {
 				auto tokenData = oauthResult.Object<FBAccessTokenData>();
-				if (tokenData && !tokenData->IsExpired()) {
-					loginResult = FBResult(tokenData);
+				if (tokenData.has_value() && !tokenData.value().IsExpired()) {
+					loginResult = FBResult(tokenData.value());
 				}
 			}
 			else {
@@ -866,7 +926,7 @@ namespace winsdkfb
 			DateTime now = cal.GetDateTime();
 			long long minimumExpiryInTicks = now.time_since_epoch().count() + _90_MINUTES_IN_TICKS;
 			DateTime expiration = winrt::clock::from_time_t(minimumExpiryInTicks);
-			FBAccessTokenData token(response.Token(), expiration);
+			FBAccessTokenData token(response.Token().data(), expiration, expiration);
 			result = FBResult(token);
 
 #ifdef _DEBUG

@@ -9,8 +9,9 @@
 #include <winrt/Windows.Services.Store.h>
 #include <winrt/Windows.System.UserProfile.h>
 #include <winrt/Windows.System.Threading.h>
-#include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#undef GetObject
+#include <winrt/Windows.Data.Json.h>
 
 using namespace winrt;
 using namespace Windows::Foundation;
@@ -112,7 +113,7 @@ namespace winsdkfb
 	{
 		// Try to grab the application id from session.
 		auto session = FBSession::ActiveSession();
-		auto appId = session.FBAppId();
+		auto appId = session->FBAppId();
 
 		if (appId.empty())
 		{
@@ -181,7 +182,7 @@ namespace winsdkfb
 			box_value(AdvertisingManager::AdvertisingId().empty() ? L"0" : L"1")
 		);
 
-		auto response = co_await HttpManager::Instance().PostTaskAsync(path, parameters.GetView());
+		auto response = co_await HttpManager::Instance()->PostTaskAsync(path, parameters.GetView());
 #ifdef _DEBUG
 		hstring msg(L"Custom App Event Response: " + response);
 		//OutputDebugString(msg.c_str());
@@ -200,9 +201,9 @@ namespace winsdkfb
 		);
 
 		try {
-			hstring campaignId = co_await GetCampaignIdAsync(FBAppEvents::UseSimulator());
+			auto campaignId = co_await GetCampaignIdAsync(FBAppEvents::UseSimulator());
 			parameters.Insert(L"windows_attribution_id", box_value(campaignId));
-			hstring postResult = co_await HttpManager::Instance().PostTaskAsync(path, parameters.GetView());
+			hstring postResult = co_await HttpManager::Instance()->PostTaskAsync(path, parameters.GetView());
 			co_return postResult;
 		}
 		catch (hresult_error ex) {

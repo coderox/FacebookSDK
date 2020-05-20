@@ -11,7 +11,7 @@ using namespace Windows::Foundation;
 TEST(FBAccessTokenDataTests, Simple)
 {
 	// arrange
-	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime());
+	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime(), DateTime());
 
 	// act
 	auto fbResult = winsdkfb::FBResult(instance);
@@ -26,7 +26,7 @@ TEST(FBAccessTokenDataTests, Simple)
 TEST(FBAccessTokenDataTests, CreateInstance)
 {
 	// arrange
-	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime());
+	auto instance = winsdkfb::FBAccessTokenData(L"SECRET_TOKEN", DateTime(), DateTime());
 
 	// act
 	auto accessToken = instance.AccessToken();
@@ -38,7 +38,7 @@ TEST(FBAccessTokenDataTests, CreateInstance)
 TEST(FBAccessTokenDataTests, CreateInstanceOfFBResult)
 {
 	// arrange
-	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456");
+	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456&data_access_expiration_time=123456");
 	auto instance = std::any_cast<winsdkfb::FBAccessTokenData>(winsdkfb::FBAccessTokenData::FromUri(uri));
 	
 	// act
@@ -53,7 +53,7 @@ TEST(FBAccessTokenDataTests, CreateInstanceOfFBResult)
 TEST(FBAccessTokenDataTests, CreateInstanceFromUri)
 {
 	// arrange
-	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456");
+	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=123456&data_access_expiration_time=123456");
 
 	// act
 	auto instance = std::any_cast<winsdkfb::FBAccessTokenData>(winsdkfb::FBAccessTokenData::FromUri(uri));
@@ -66,7 +66,7 @@ TEST(FBAccessTokenDataTests, CreateInstanceFromUri)
 TEST(FBAccessTokenDataTests, IsExpiredYesterdayShouldBeTrue)
 {
 	// arrange
-	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=-123456");
+	Uri uri(L"https://www.facebook.com/connect/login_success.html#access_token=ACCESS_TOKEN&expires_in=-123456&data_access_expiration_time=123456");
 
 	// act
 	auto instance = std::any_cast<winsdkfb::FBAccessTokenData>(winsdkfb::FBAccessTokenData::FromUri(uri));

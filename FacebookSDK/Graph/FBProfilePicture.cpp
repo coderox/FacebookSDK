@@ -1,4 +1,4 @@
-#include "FBProfilePicture.h"
+#include "Graph/FBProfilePicture.h"
 
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.Collections.h>

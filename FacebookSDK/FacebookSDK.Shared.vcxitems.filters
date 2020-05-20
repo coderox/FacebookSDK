@@ -47,7 +47,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPaginatedArray.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GraphUriBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBSingleValue.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBFeedRequest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBDialog.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAppEvents.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FacebookAppRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +107,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FBMediaObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBConstants.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAppRequest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FacebookAppRequest.h" />
   </ItemGroup>
   <ItemGroup>

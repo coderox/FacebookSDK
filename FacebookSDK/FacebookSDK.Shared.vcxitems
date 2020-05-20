@@ -14,11 +14,13 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FacebookAppRequest.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAccessTokenData.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBAppEvents.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBDialog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBError.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FBFeedRequest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBMediaStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FBPaginatedArray.cpp" />
@@ -42,9 +44,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FacebookAppRequest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAccessTokenData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBAppEvents.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FacebookAppRequest.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FBAppRequest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBConstants.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FBDialog.h" />

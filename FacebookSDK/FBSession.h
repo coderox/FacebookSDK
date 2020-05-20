@@ -60,6 +60,7 @@ namespace winsdkfb
 		concurrency::task<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions);
 		concurrency::task<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior);
 		concurrency::task<winsdkfb::FBResult> TryRefreshAccessTokenAsync();
+		concurrency::task<winsdkfb::FBResult> ReauthorizeAsync(winsdkfb::FBPermissions Permissions);
 
 		void SetApiVersion(int32_t major, int32_t minor);
 		void SetWebViewRedirectUrl(winrt::hstring const& domain, winrt::hstring const& Path);
@@ -113,7 +114,6 @@ namespace winsdkfb
 		winsdkfb::FBAccessTokenData _AccessTokenData;
 		winsdkfb::Graph::FBUser _user;
 		winsdkfb::FBResult _asyncResult;
-		std::unique_ptr<winsdkfb::FBDialog> _dialog;
 	};
 }
 

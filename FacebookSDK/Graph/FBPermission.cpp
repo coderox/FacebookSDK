@@ -1,4 +1,4 @@
-#include "FBPermission.h"
+#include "Graph/FBPermission.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
