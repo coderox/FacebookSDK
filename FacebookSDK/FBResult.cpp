@@ -7,14 +7,18 @@ namespace winsdkfb
 {
 	FBResult::FBResult() 
 	{
-		_error.reset();
 		_object.reset();
 	}
 
 	FBResult::FBResult(std::any&& object) : FBResult()
 	{
 		try {
-			_error = std::any_cast<winsdkfb::FBError>(object);
+			if (object.type() == typeid(winsdkfb::FBError)) {
+				_error = std::any_cast<winsdkfb::FBError>(object);
+			}
+			else {
+				_object = object;
+			}
 		}
 		catch (...) {
 			_object = object;

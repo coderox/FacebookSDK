@@ -8,6 +8,8 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb
 {
+	std::unique_ptr<HttpManager> HttpManager::_instance;
+
 	HttpManager::HttpManager(shared_ptr<IHttpClient> httpClient)
 	{
 		SetHttpClient(httpClient);
@@ -18,29 +20,35 @@ namespace winsdkfb
 		_httpClient = httpClient;
 	}
 
-	IAsyncOperation<hstring> HttpManager::GetTaskAsync(hstring const path, IMapView<hstring, IInspectable> parameters)
+	IAsyncOperation<hstring> HttpManager::GetTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
 	{
 		return _httpClient->GetTaskAsync(path, parameters);
 	}
 
-	IAsyncOperation<hstring> HttpManager::PostTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
+	IAsyncOperation<hstring> HttpManager::PostTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
 	{
 		return _httpClient->PostTaskAsync(path, parameters);
 	}
 
-	IAsyncOperation<hstring> HttpManager::DeleteTaskAsync(hstring const path, IMapView<hstring, IInspectable> const parameters)
+	IAsyncOperation<hstring> HttpManager::DeleteTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
 	{
 		return _httpClient->DeleteTaskAsync(path, parameters);
 	}
 
-	hstring HttpManager::ParametersToQueryString(IMapView<hstring, IInspectable> const parameters)
+	hstring HttpManager::ParametersToQueryString(unordered_map<hstring, hstring> const parameters)
 	{
 		return _httpClient->ParametersToQueryString(parameters);
 	}
 
-	std::shared_ptr<HttpManager> HttpManager::Instance()
+	HttpManager* HttpManager::Instance()
 	{
-		static std::shared_ptr<HttpManager> _instance = std::make_shared<HttpManager>(std::make_shared<FBClient>());
-		return _instance;
+		if (_instance == nullptr) {
+			_instance.reset(new HttpManager(std::make_shared<FBClient>()));
+		}
+		return _instance.get();
+	}
+
+	void HttpManager::TearDown() {
+		_instance.reset();
 	}
 }

@@ -18,24 +18,53 @@ namespace winsdkfb
 {
 	FBAccessTokenData::FBAccessTokenData(
 		wstring accessToken,
-		wstring expiration)
+		wstring expiration,
+		wstring dataAccessExpiration)
 		: _accessToken(accessToken)
+		, _hasDataAccessExpirationDate(false)
 	{
 		if (!expiration.empty())
 		{
 			CalculateExpirationDateTime(expiration);
 		}
+
+		if (!dataAccessExpiration.empty())
+		{
+			CalculateDataAccessExpirationDateTime(dataAccessExpiration);
+		}
+
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
 	}
 
-	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, DateTime const& expiration)
+	FBAccessTokenData::FBAccessTokenData(
+		hstring const& accessToken,
+		DateTime const& expiration,
+		DateTime const& dataAccessExpiration)
 		: _accessToken(accessToken.c_str())
 		, _expirationDate(expiration)
-		, _grantedPermissions()
-		, _declinedPermissions()
+		, _dataAccessExpirationDate(dataAccessExpiration)
 	{
+		_hasDataAccessExpirationDate = _dataAccessExpirationDate.time_since_epoch() > TimeSpan::zero();
+#ifdef _DEBUG
+		DebugPrintExpirationTime();
+#endif
+	}
+
+	FBAccessTokenData::FBAccessTokenData(
+		hstring const& accessToken,
+		DateTime const& expiration,
+		DateTime const& dataAccessExpiration,
+		FBPermissions& grantedPermissions,
+		FBPermissions& declinedPermissions)
+		: _accessToken(accessToken.c_str())
+		, _expirationDate(expiration)
+		, _dataAccessExpirationDate(dataAccessExpiration)
+		, _grantedPermissions(grantedPermissions)
+		, _declinedPermissions(declinedPermissions)
+	{
+		_hasDataAccessExpirationDate = _dataAccessExpirationDate.time_since_epoch() > TimeSpan::zero();
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
@@ -49,6 +78,11 @@ namespace winsdkfb
 	DateTime FBAccessTokenData::ExpirationDate()
 	{
 		return _expirationDate;
+	}
+
+	DateTime FBAccessTokenData::DataAccessExpirationDate()
+	{
+		return _dataAccessExpirationDate;
 	}
 
 	FBPermissions FBAccessTokenData::GrantedPermissions()
@@ -68,6 +102,20 @@ namespace winsdkfb
 		cal.SetToNow();
 		expired = (cal.CompareDateTime(_expirationDate) >= 0);
 		return expired;
+	}
+
+	bool FBAccessTokenData::IsDataAccessExpired()
+	{
+		if (_hasDataAccessExpirationDate) {
+			bool expired = true;
+			Calendar cal;
+			cal.SetToNow();
+			expired = (cal.CompareDateTime(_dataAccessExpirationDate) >= 0);
+			return expired;
+		}
+		else {
+			return false;
+		}
 	}
 
 	void FBAccessTokenData::SetPermissions(std::vector<Graph::FBPermission> const& perms)
@@ -97,8 +145,10 @@ namespace winsdkfb
 	{
 		bool gotToken = false;
 		bool gotExpiration = false;
+		bool gotDataAccessExpiration = false;
 		hstring token;
 		hstring expiration;
+		hstring dataAccessExpiration;
 		std::any data;
 
 		WwwFormUrlDecoder decoder = FBAccessTokenData::ParametersFromResponse(response);
@@ -117,11 +167,16 @@ namespace winsdkfb
 				expiration = entry.Value();
 				gotExpiration = true;
 			}
+			else if (entry.Name() == L"data_access_expiration_time")
+			{
+				dataAccessExpiration = entry.Value();
+				gotDataAccessExpiration = true;
+			}
 		}
 
-		if (gotToken && gotExpiration)
+		if (gotToken && gotExpiration && gotDataAccessExpiration)
 		{
-			data = FBAccessTokenData(token.c_str(), expiration.c_str());
+			data = FBAccessTokenData(token.c_str(), expiration.c_str(), dataAccessExpiration.c_str());
 		}
 
 		return data;
@@ -135,6 +190,20 @@ namespace winsdkfb
 		cal.SetToNow();
 		cal.AddSeconds(numSecs);
 		_expirationDate = cal.GetDateTime();
+	}
+
+	void FBAccessTokenData::CalculateDataAccessExpirationDateTime(
+		wstring dataAccessExpiration
+	)
+	{
+		Calendar cal;
+		int numSecs = _wtoi(dataAccessExpiration.c_str());
+		if (numSecs != 0) {
+			cal.SetToNow();
+			cal.AddSeconds(numSecs);
+			_dataAccessExpirationDate = cal.GetDateTime();
+			_hasDataAccessExpirationDate = true;
+		}
 	}
 
 	WwwFormUrlDecoder FBAccessTokenData::ParametersFromResponse(Uri const& response)

@@ -1,4 +1,4 @@
-#include "FBProfilePicture.h"
+#include "Graph/FBProfilePicture.h"
 
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.Collections.h>
@@ -47,11 +47,12 @@ namespace winsdkfb::Graph
         _width = value;
     }
 
-    FBProfilePicture FBProfilePicture::FromJson(
+    any FBProfilePicture::FromJson(
         hstring const& JsonText
     )
     {
-        FBProfilePicture result;
+        any result;
+        FBProfilePicture profilePicture;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -66,28 +67,28 @@ namespace winsdkfb::Graph
                     if (key == L"height")
                     {
                         found++;
-                        result.Height(static_cast<int>(current.Value().GetNumber()));
+                        profilePicture.Height(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"is_silhouette")
                     {
                         found++;
-                        result.IsSilhouette(current.Value().GetBoolean());
+                        profilePicture.IsSilhouette(current.Value().GetBoolean());
                     }
                     else if (key == L"url")
                     {
                         found++;
-                        result.Url(current.Value().GetString());
+                        profilePicture.Url(current.Value().GetString());
                     }
                     else if (key == L"width")
                     {
                         found++;
-                        result.Width(static_cast<int>(current.Value().GetNumber()));
+                        profilePicture.Width(static_cast<int>(current.Value().GetNumber()));
                     }
                 }
 
-                //if (found) {
-                //    result._succeeded = true;
-                //}
+                if (found) {
+                    result = profilePicture;
+                }
             }
         }
         return result;

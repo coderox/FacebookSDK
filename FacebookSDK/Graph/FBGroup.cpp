@@ -1,8 +1,9 @@
-#include "FBGroup.h"
+#include "Graph/FBGroup.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -73,11 +74,12 @@ namespace winsdkfb::Graph
         _privacy = value;
     }
 
-    FBGroup FBGroup::FromJson(
+    any FBGroup::FromJson(
         hstring const& JsonText 
         )
     {
-        FBGroup result;
+        any result;
+        FBGroup group;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -92,43 +94,43 @@ namespace winsdkfb::Graph
                     if  (key == L"id")
                     {
                         found++;
-                        result.Id(current.Value().GetString());
+                        group.Id(current.Value().GetString());
                     }
                     else if (key == L"description")
                     {
                         found++;
-                        result.Description(current.Value().GetString());
+                        group.Description(current.Value().GetString());
                     }
                     else if (key == L"email")
                     {
                         found++;
-                        result.Email(current.Value().GetString());
+                        group.Email(current.Value().GetString());
                     }
                     else if (key == L"icon")
                     {
                         found++;
-                        result.Icon(current.Value().GetString());
+                        group.Icon(current.Value().GetString());
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        result.Link(current.Value().GetString());
+                        group.Link(current.Value().GetString());
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        result.Name(current.Value().GetString());
+                        group.Name(current.Value().GetString());
                     }
                     else if (key == L"privacy")
                     {
                         found++;
-                        result.Privacy(current.Value().GetString());
+                        group.Privacy(current.Value().GetString());
                     }
                 }
 
-				//if(found){
-				//	result._succeeded = true;
-				//}
+				if(found){
+					result = group;
+				}
             }
         }
         return result;

@@ -1,4 +1,4 @@
-#include "FBObject.h"
+#include "Graph/FBObject.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
@@ -20,11 +20,12 @@ namespace winsdkfb::Graph
         _id = value;
     }
 
-    FBObject FBObject::FromJson(
+    any FBObject::FromJson(
         hstring const& JsonText 
         )
     {
-        FBObject result;
+        any result;
+        FBObject object;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -39,13 +40,13 @@ namespace winsdkfb::Graph
                     if  (key == L"id")
                     {
                         found++;
-                        result.Id(current.Value().GetString());
+                        object.Id(current.Value().GetString());
                     }
                 }
 
-				//if(found){
-				//	result._succeeded;
-				//}
+				if(found){
+					result = object;
+				}
             }
         }
         return result;

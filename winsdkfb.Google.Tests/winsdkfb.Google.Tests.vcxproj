@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{811c7efe-036d-459f-9300-2ba63dba84b3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -40,7 +40,6 @@
     <ClCompile Include="DateTime.gtest.cpp" />
     <ClCompile Include="FBAccessTokenData.gtest.cpp" />
     <ClCompile Include="FBError.gtest.cpp" />
-    <ClCompile Include="FBMediaObject.gtest.cpp" />
     <ClCompile Include="FBPermissions.gtest.cpp" />
     <ClCompile Include="FBResult.gtest.cpp" />
     <ClCompile Include="Graph.gtest.cpp" />

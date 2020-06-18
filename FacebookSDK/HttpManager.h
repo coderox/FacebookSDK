@@ -10,15 +10,16 @@ namespace winsdkfb
 		HttpManager(std::shared_ptr<winsdkfb::IHttpClient> httpClient);
 
 		void SetHttpClient(std::shared_ptr<winsdkfb::IHttpClient> httpClient);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
-		winrt::hstring ParametersToQueryString(winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		winrt::hstring ParametersToQueryString(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
 
-		static std::shared_ptr<winsdkfb::HttpManager> Instance();
+		static HttpManager* Instance();
+		static void TearDown();
 
 	private:
-		static std::shared_ptr<HttpManager> _instance;
+		static std::unique_ptr<HttpManager> _instance;
 		std::shared_ptr<winsdkfb::IHttpClient> _httpClient;
 	};
 }

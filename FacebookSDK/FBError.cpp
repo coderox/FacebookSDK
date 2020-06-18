@@ -3,6 +3,7 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -21,14 +22,14 @@ namespace winsdkfb
 		;
 	}
 
-	hstring FBError::Message()
+	wstring FBError::Message()
 	{
-		return  _message.c_str();
+		return  _message;
 	}
 
-	hstring FBError::Type()
+	wstring FBError::Type()
 	{
-		return  _type.c_str();
+		return  _type;
 	}
 
 	int32_t FBError::Code()
@@ -41,14 +42,14 @@ namespace winsdkfb
 		return _subcode;
 	}
 
-	hstring FBError::ErrorUserTitle()
+	wstring FBError::ErrorUserTitle()
 	{
-		return  _errorUserTitle.c_str();
+		return  _errorUserTitle;
 	}
 
-	hstring FBError::ErrorUserMessage()
+	wstring FBError::ErrorUserMessage()
 	{
-		return  _errorUserMessage.c_str();
+		return  _errorUserMessage;
 	}
 
 	FBError FBError::FromUri(Uri const& ResponseUri)
@@ -160,14 +161,19 @@ namespace winsdkfb
 					result._errorUserMessage = current.Value().GetString();
 				}
 			}
+
+			if (found == 0) {
+				result = FBError(0, L"", L"");
+			}
 		}
+
 		return result;
 	}
 
-	FBError::FBError(int32_t Code, hstring const& Type, hstring const& Message)
-		: _message(Message)
-		, _type(Type)
-		, _code(Code)
+	FBError::FBError(int32_t code, wstring type, wstring message)
+		: _message(message)
+		, _type(type)
+		, _code(code)
 		, _subcode(0)
 		, _errorUserTitle()
 		, _errorUserMessage()

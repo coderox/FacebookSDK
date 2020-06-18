@@ -1,4 +1,4 @@
-#include "FBPaging.h"
+#include "Graph/FBPaging.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
@@ -38,11 +38,12 @@ namespace winsdkfb::Graph
         _previous = value;
     }
 
-    FBPaging FBPaging::FromJson(
+    any FBPaging::FromJson(
         hstring const& JsonText 
         )
     {
-        FBPaging result;
+        any result;
+        FBPaging paging;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -56,24 +57,27 @@ namespace winsdkfb::Graph
                     winrt::hstring key = current.Key();
                     if  (key == L"cursors")
                     {
-                        found++;
-                        result.Cursors(FBCursors::FromJson(current.Value().Stringify()));
+                        auto cursors = FBCursors::FromJson(current.Value().Stringify());
+                        if (cursors.has_value()) {
+                            found++;
+                            paging.Cursors(any_cast<FBCursors>(cursors));
+                        }
                     }
                     else if (key == L"next")
                     {
                         found++;
-                        result.Next(current.Value().GetString());
+                        paging.Next(current.Value().GetString());
                     }
                     else if (key == L"previous")
                     {
                         found++;
-                        result.Previous(current.Value().GetString());
+                        paging.Previous(current.Value().GetString());
                     }
                 }
 
-				//if(found){
-				//	result._succeeded = true;
-				//}
+				if(found){
+					result = paging;
+				}
             }
         }
         return result;

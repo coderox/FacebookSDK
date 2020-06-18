@@ -15,7 +15,7 @@ namespace winsdkfb
 	struct FBPaginatedArray
 	{
 		FBPaginatedArray() = delete;
-		FBPaginatedArray(winrt::hstring const& Request, winrt::Windows::Foundation::Collections::PropertySet const& Parameters, winsdkfb::JsonClassFactory const& ObjectFactory);
+		FBPaginatedArray(winrt::hstring const& Request, std::unordered_map<winrt::hstring, winrt::hstring> parameters, winsdkfb::JsonClassFactory const& ObjectFactory);
 
 		concurrency::task<winsdkfb::FBResult> FirstAsync();
 		concurrency::task<winsdkfb::FBResult> NextAsync();
@@ -46,7 +46,7 @@ namespace winsdkfb
 		winrt::hstring _request;
 		std::vector<winsdkfb::FBResult> _current;
 		winsdkfb::Graph::FBPaging _paging;
-		winrt::Windows::Foundation::Collections::PropertySet _parameters = nullptr;
+		std::unordered_map<winrt::hstring, winrt::hstring> _parameters;
 		winsdkfb::JsonClassFactory _objectFactory;
 	};
 }

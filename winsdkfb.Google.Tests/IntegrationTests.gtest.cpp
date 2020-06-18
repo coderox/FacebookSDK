@@ -9,6 +9,7 @@
 #include "FBSingleValue.h"
 #include "Graph/FBUser.h"
 #include "FBPaginatedArray.h"
+#include <map>
 
 TEST(IntegrationTests, MessagePolling) {
 	// arrange
@@ -21,9 +22,9 @@ TEST(IntegrationTests, MessagePolling) {
 	auto graphPath = L"/12345/apprequests";
 
 	// Properties
-	winrt::Windows::Foundation::Collections::PropertySet properties;
+	std::unordered_map<winrt::hstring, winrt::hstring> properties;
 	winrt::hstring data(L"data");
-	properties.Insert(L"fields", winrt::box_value(data));
+	properties[L"fields"] = data;
 
 	// Conversion
 	winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult {
@@ -62,7 +63,7 @@ TEST(IntegrationTests, FBPaginatedArray) {
 	};
 
 	// act
-	auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
+	auto likes = winsdkfb::FBPaginatedArray(graphPath, {}, fact);
 	auto result = concurrency::create_task(likes.FirstAsync()).get();
 	auto users = result.Object<std::vector<winsdkfb::FBResult>>();
 	auto user = users->at(0).Object<winsdkfb::Graph::FBUser>();

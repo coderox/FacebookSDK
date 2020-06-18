@@ -8,9 +8,10 @@ namespace winsdkfb
 	{
 	public:
 		FBResult();
+		//FBResult(const FBResult& obj) = delete;
 		FBResult(std::any&& object);
 		~FBResult();
-		
+
 		template<typename To> std::optional<To> Object() 
 		{
 			try
@@ -29,6 +30,6 @@ namespace winsdkfb
 	
 	private:
 		std::any _object{ nullptr };
-		std::any _error{ nullptr };
+		FBError _error{ nullptr };
 	};
 }

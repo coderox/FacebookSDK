@@ -31,9 +31,10 @@ TEST(GraphTests, CreateFBProfilePictureFromJson)
 	winrt::hstring json(USER_PROFILE_PICTURE_REQUEST);
 
 	// act
-	auto profilePicture = winsdkfb::Graph::FBProfilePicture::FromJson(json);
+	auto profilePicture = std::any_cast<winsdkfb::Graph::FBProfilePicture>(winsdkfb::Graph::FBProfilePicture::FromJson(json));
 
 	// assert
+	
 	EXPECT_EQ(100, profilePicture.Height());
 	EXPECT_EQ(100, profilePicture.Width());
 	EXPECT_EQ(false, profilePicture.IsSilhouette());
@@ -46,7 +47,7 @@ TEST(GraphTests, CreateFBProfilePictureDataFromJson)
 	winrt::hstring json(USER_PROFILE_PICTURE_DATA_REQUEST);
 
 	// act
-	auto profilePicture = winsdkfb::Graph::FBProfilePictureData::FromJson(json);
+	auto profilePicture = std::any_cast<winsdkfb::Graph::FBProfilePictureData>(winsdkfb::Graph::FBProfilePictureData::FromJson(json));
 
 	// assert
 	EXPECT_EQ(100, profilePicture.Data().Height());

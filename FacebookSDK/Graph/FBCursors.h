@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBCursors 
     {
-        static winsdkfb::Graph::FBCursors FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

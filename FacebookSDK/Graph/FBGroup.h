@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBGroup
     {
-        winsdkfb::Graph::FBGroup FromJson(
+        std::any FromJson(
             winrt::hstring const& JsonText
         );
 

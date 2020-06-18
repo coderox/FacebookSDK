@@ -6,29 +6,29 @@ struct MockHttpClient : public winsdkfb::IHttpClient {
 public:
 
 	winrt::hstring ResponseData() {
-		return responseData; 
+		return responseData;
 	}
-	void ResponseData(winrt::hstring value) { 
-		responseData = value; 
+	void ResponseData(winrt::hstring value) {
+		responseData = value;
 	}
-	
+
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(
-		winrt::hstring const path, 
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters
+		winrt::hstring const path,
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(
 		winrt::hstring const path,
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(
 		winrt::hstring const path,
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::hstring ParametersToQueryString(
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> const parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 private:

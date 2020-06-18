@@ -3,6 +3,7 @@
 #include "HttpManager.h"
 #include "SDKMessage.h"
 
+#include <map>
 #include <winrt/Windows.ApplicationModel.Resources.h>
 #include <winrt/Windows.Foundation.Metadata.h>
 #include <winrt/Windows.ApplicationModel.Store.h>
@@ -13,6 +14,7 @@
 #undef GetObject
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel::Resources;
@@ -173,16 +175,14 @@ namespace winsdkfb
 	IAsyncAction FBAppEvents::LogActivateEvent(hstring appId)
 	{
 		hstring path(appId + FACEBOOK_ACTIVITIES_PATH);
-		PropertySet parameters;
-		parameters.Insert(L"event", box_value(FACEBOOK_CUSTOM_APP_EVENTS));
-		parameters.Insert(L"custom_events", box_value(FBAppEvents::GetActivateAppJson()));
-		parameters.Insert(L"advertiser_id", box_value(AdvertisingManager::AdvertisingId()));
-		parameters.Insert(
-			L"advertiser_tracking_enabled",
-			box_value(AdvertisingManager::AdvertisingId().empty() ? L"0" : L"1")
-		);
+		unordered_map<hstring, hstring> parameters;
+		parameters[L"event"] = FACEBOOK_CUSTOM_APP_EVENTS;
+		parameters[L"custom_events"] = FBAppEvents::GetActivateAppJson();
+		parameters[L"advertiser_id"] = AdvertisingManager::AdvertisingId();
+		parameters[L"advertiser_tracking_enabled"] = 
+			AdvertisingManager::AdvertisingId().empty() ? L"0" : L"1";
 
-		auto response = co_await HttpManager::Instance()->PostTaskAsync(path, parameters.GetView());
+		auto response = co_await HttpManager::Instance()->PostTaskAsync(path, parameters);
 #ifdef _DEBUG
 		hstring msg(L"Custom App Event Response: " + response);
 		//OutputDebugString(msg.c_str());
@@ -192,18 +192,16 @@ namespace winsdkfb
 	IAsyncOperation<hstring> FBAppEvents::LogInstallEvent(hstring appId)
 	{
 		hstring path(appId + FACEBOOK_ACTIVITIES_PATH);
-		PropertySet parameters;
-		parameters.Insert(L"event", box_value(FACEBOOK_MOBILE_APP_INSTALL));
-		parameters.Insert(L"advertiser_id", box_value(AdvertisingManager::AdvertisingId()));
-		parameters.Insert(
-			L"advertiser_tracking_enabled",
-			box_value(AdvertisingManager::AdvertisingId().empty() ? L"0" : L"1")
-		);
+		unordered_map<hstring, hstring> parameters;
+		parameters[L"event"] = FACEBOOK_MOBILE_APP_INSTALL;
+		parameters[L"advertiser_id"] = AdvertisingManager::AdvertisingId();
+		parameters[L"advertiser_tracking_enabled"] = 
+			AdvertisingManager::AdvertisingId().empty() ? L"0" : L"1";
 
 		try {
 			auto campaignId = co_await GetCampaignIdAsync(FBAppEvents::UseSimulator());
-			parameters.Insert(L"windows_attribution_id", box_value(campaignId));
-			hstring postResult = co_await HttpManager::Instance()->PostTaskAsync(path, parameters.GetView());
+			parameters[L"windows_attribution_id"] = campaignId;
+			auto postResult = co_await HttpManager::Instance()->PostTaskAsync(path, parameters);
 			co_return postResult;
 		}
 		catch (hresult_error ex) {

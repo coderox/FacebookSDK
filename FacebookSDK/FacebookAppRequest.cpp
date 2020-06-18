@@ -14,10 +14,14 @@ namespace winsdkfb
 
 	IVectorView<winrt::hstring> FacebookAppRequest::RecipientIds()
 	{
-		return _recipients.GetView();
+		if (_recipients == nullptr) {
+			return winrt::single_threaded_vector<hstring>().GetView();	
+		} else {
+			return _recipients.GetView();
+		}
 	}
 
-	winsdkfb::FacebookAppRequest FacebookAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri const& response)
+	winsdkfb::FacebookAppRequest FacebookAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri response)
 	{
 		winsdkfb::FacebookAppRequest info;
 		hstring requestId;

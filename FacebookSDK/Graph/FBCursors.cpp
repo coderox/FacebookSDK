@@ -1,4 +1,4 @@
-#include "FBCursors.h"
+#include "Graph/FBCursors.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
@@ -29,11 +29,12 @@ namespace winsdkfb::Graph
         _before = value;
     }
 
-    FBCursors FBCursors::FromJson(
+    any FBCursors::FromJson(
         hstring const& JsonText 
         )
     {
-        FBCursors result;
+        any result;
+        FBCursors cursors;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -48,18 +49,18 @@ namespace winsdkfb::Graph
                     if  (key == L"after")
                     {
                         found++;
-                        result.After(current.Value().GetString());
+                        cursors.After(current.Value().GetString());
                     }
                     else if (key == L"before")
                     {
                         found++;
-                        result.Before(current.Value().GetString());
+                        cursors.Before(current.Value().GetString());
                     }
                 }
 
-				//if(found){
-    //                result._succeeded = true;
-				//}
+				if(found){
+                    result = cursors;
+				}
             }
         }
         return result;

@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBPermission
     {
-        static winsdkfb::FBResult FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

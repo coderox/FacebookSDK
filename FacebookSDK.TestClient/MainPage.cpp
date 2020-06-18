@@ -10,6 +10,7 @@
 #include "Graph/FBUser.h"
 #include "FBResult.h"
 #include "FBSession.h"
+#include <map>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -246,7 +247,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 			return winsdkfb::FBResult(winsdkfb::Graph::FBUser::FromJson(JsonText));
 		};
 
-		auto likes = winsdkfb::FBPaginatedArray(graphPath, nullptr, fact);
+		auto likes = winsdkfb::FBPaginatedArray(graphPath, {}, fact);
 		auto result = concurrency::create_task(likes.FirstAsync()).get();
 
 		bool succeeded = result.Succeeded();
@@ -279,9 +280,9 @@ namespace winrt::FacebookSDK_TestClient::implementation
 			return winsdkfb::FBResult(numberOfMessages);
 		};
 
-		winrt::Windows::Foundation::Collections::PropertySet properties;
+		std::unordered_map<hstring, hstring> properties;
 		winrt::hstring data(L"data");
-		properties.Insert(L"fields", winrt::box_value(data));
+		properties[L"fields"] = data;
 
 		auto likes = winsdkfb::FBSingleValue(graphPath, properties, fact);
 		auto result = concurrency::create_task(likes.GetAsync()).get();

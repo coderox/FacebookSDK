@@ -18,15 +18,13 @@ using namespace Windows::Web::Http::Filters;
 
 namespace winsdkfb
 {
-	FBPaginatedArray::FBPaginatedArray(hstring const& request, PropertySet const& parameters, winsdkfb::JsonClassFactory const& objectFactory)
+	FBPaginatedArray::FBPaginatedArray(hstring const& request, unordered_map<hstring, hstring> parameters, winsdkfb::JsonClassFactory const& objectFactory)
 		: _currentDataString(L"")
 		, _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
 	{
-		if (_parameters == nullptr) {
-			_parameters = PropertySet();
-		}
+
 	}
 
 	task<winsdkfb::FBResult> FBPaginatedArray::FirstAsync()
@@ -159,11 +157,11 @@ namespace winsdkfb
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") == 0)
 					{
-						_paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify());
-						//if (_paging.Succeeded())
-						//{
-						//	foundPaging = true;
-						//}
+						auto paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify());
+						if (paging.has_value()) {
+							_paging = any_cast<Graph::FBPaging>(paging);
+							foundPaging = true;
+						}
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"data") == 0)
 					{
@@ -200,7 +198,7 @@ namespace winsdkfb
 	}
 
 	task<winsdkfb::FBResult> FBPaginatedArray::GetPageAsync(hstring path) {
-		hstring responseString = co_await HttpManager::Instance()->GetTaskAsync(path, _parameters.GetView());
+		hstring responseString = co_await HttpManager::Instance()->GetTaskAsync(path, _parameters);
 		if (responseString.empty())
 		{
 			co_return FBResult(FBError(0, L"HTTP request failed", L"unable to receive response"));

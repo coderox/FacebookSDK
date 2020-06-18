@@ -16,7 +16,7 @@ namespace winsdkfb
 	struct FBSingleValue : public FBResult
 	{
 	public:
-		FBSingleValue(winrt::hstring const& request, winrt::Windows::Foundation::Collections::PropertySet const& parameters, winsdkfb::JsonClassFactory objectFactory);
+		FBSingleValue(winrt::hstring const& request, std::unordered_map<winrt::hstring, winrt::hstring> parameters, winsdkfb::JsonClassFactory objectFactory);
 
 		concurrency::task<winsdkfb::FBResult> GetAsync();
 		concurrency::task<winsdkfb::FBResult> PostAsync();
@@ -44,7 +44,7 @@ namespace winsdkfb
 
 		winsdkfb::FBResult _result;
 		std::wstring _request;
-		winrt::Windows::Foundation::Collections::PropertySet _parameters;
+		std::unordered_map<winrt::hstring, winrt::hstring> _parameters;
 		winsdkfb::JsonClassFactory _objectFactory{ nullptr };
 	};
 }

@@ -1,8 +1,9 @@
-#include "FBPageCategory.h"
+#include "Graph/FBPageCategory.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -28,11 +29,12 @@ namespace winsdkfb::Graph
         _name = value;
     }
 
-    FBPageCategory FBPageCategory::FromJson(
+    any FBPageCategory::FromJson(
         hstring const& JsonText 
         )
     {
-        FBPageCategory result;
+        any result;
+        FBPageCategory pageCategory;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -47,18 +49,18 @@ namespace winsdkfb::Graph
                     if  (key == L"id")
                     {
                         found++;
-                        result.Id(current.Value().GetString());
+                        pageCategory.Id(current.Value().GetString());
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        result.Name(current.Value().GetString());
+                        pageCategory.Name(current.Value().GetString());
                     }
                 }
 
-				//if(found){
-				//	result._succeeded = true;
-				//}
+				if(found){
+					result = pageCategory;
+				}
             }
         }
         return result;

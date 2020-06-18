@@ -2,6 +2,7 @@
 #include <string>
 #include <ctime>
 #include <functional>
+#include <map>
 #include <winrt/Windows.Foundation.Collections.h>
 #undef X64
 #include <winrt/Windows.Security.Authentication.Web.Core.h>
@@ -14,7 +15,7 @@ unsigned WindowsTickToUnixSeconds(long long windowsTicks);
 winrt::hstring WebTokenRequestStatusToString(winrt::Windows::Security::Authentication::Web::Core::WebTokenRequestStatus status);
 
 namespace winsdkfb {
-	typedef std::function<winrt::Windows::Foundation::Uri(winrt::Windows::Foundation::Collections::PropertySet)> DialogUriBuilder;
+typedef std::function<winrt::Windows::Foundation::Uri(std::unordered_map<winrt::hstring, winrt::hstring>)> DialogUriBuilder;
 
 	typedef std::function<winsdkfb::FBResult(winrt::hstring)> JsonClassFactory;
 }

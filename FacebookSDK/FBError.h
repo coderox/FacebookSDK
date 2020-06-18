@@ -19,25 +19,26 @@ namespace winsdkfb
 	struct FBError
 	{
 	public:
-		static FBError FromUri(winrt::Windows::Foundation::Uri const& ResponseUri);
-		static FBError FromJson(winrt::hstring const& JsonText);
+		static FBError FromUri(winrt::Windows::Foundation::Uri const& responseUri);
+		static FBError FromJson(winrt::hstring const& jsonText);
 
 		FBError();
-		FBError(int32_t Code, winrt::hstring const& Type, winrt::hstring const& Message);
+		FBError(int32_t code, std::wstring type, std::wstring message);
+		FBError(std::nullptr_t) noexcept {}
 
-		winrt::hstring Message();
-		winrt::hstring Type();
+		std::wstring Message();
+		std::wstring Type();
 		int32_t Code();
 		int32_t Subcode();
-		winrt::hstring ErrorUserTitle();
-		winrt::hstring ErrorUserMessage();
+		std::wstring ErrorUserTitle();
+		std::wstring ErrorUserMessage();
 
 	private:
 
 		std::wstring _message;
 		std::wstring _type;
-		int32_t _code;
-		int32_t _subcode;
+		int32_t _code = 0;
+		int32_t _subcode = 0;
 		std::wstring _errorUserTitle;
 		std::wstring _errorUserMessage;
 	};

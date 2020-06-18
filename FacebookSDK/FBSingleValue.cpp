@@ -13,7 +13,7 @@ using namespace Windows::Data::Json;
 
 namespace winsdkfb
 {
-	FBSingleValue::FBSingleValue(hstring const& request, PropertySet const& parameters, winsdkfb::JsonClassFactory objectFactory)
+	FBSingleValue::FBSingleValue(hstring const& request, unordered_map<hstring, hstring> parameters, winsdkfb::JsonClassFactory objectFactory)
 		: _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
@@ -92,23 +92,17 @@ namespace winsdkfb
 
 	task<FBResult> FBSingleValue::MakeHttpRequest(HttpMethod httpMethod)
 	{
-		if (_parameters == nullptr) {
-			_parameters = PropertySet();
-		}
-
-		//auto fields = _parameters.Lookup(L"fields");
-
 		hstring responseString;
 		switch (httpMethod)
 		{
 		case HttpMethod::Get:
-			responseString = co_await HttpManager::Instance()->GetTaskAsync(_request.c_str(), _parameters.GetView());
+			responseString = co_await HttpManager::Instance()->GetTaskAsync(_request.c_str(), _parameters);
 			break;
 		case HttpMethod::Post:
-			responseString = co_await HttpManager::Instance()->PostTaskAsync(_request.c_str(), _parameters.GetView());
+			responseString = co_await HttpManager::Instance()->PostTaskAsync(_request.c_str(), _parameters);
 			break;
 		case HttpMethod::Delete:
-			responseString = co_await HttpManager::Instance()->DeleteTaskAsync(_request.c_str(), _parameters.GetView());
+			responseString = co_await HttpManager::Instance()->DeleteTaskAsync(_request.c_str(), _parameters);
 			break;
 		default:
 			//OutputDebugString(L"FBSingleValue::MakeHttpRequest recieved unknown HttpMethod value\n");

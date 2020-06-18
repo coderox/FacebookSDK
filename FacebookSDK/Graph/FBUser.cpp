@@ -1,8 +1,9 @@
-#include "FBUser.h"
+#include "Graph/FBUser.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -127,11 +128,11 @@ namespace winsdkfb::Graph
         _verified = value;
     }
 
-    std::any FBUser::FromJson(
+    any FBUser::FromJson(
         hstring const& JsonText
     )
     {
-        std::any result;
+        any result;
         FBUser user;
         int found = 0;
         JsonValue val{ nullptr };
@@ -181,8 +182,11 @@ namespace winsdkfb::Graph
                     }
                     else if (key == L"location")
                     {
-                        found++;
-                        user.Location(FBPage::FromJson(current.Value().Stringify()));
+                        auto page = FBPage::FromJson(current.Value().Stringify());
+                        if (page.has_value()) {
+                            found++;
+                            user.Location(any_cast<winsdkfb::Graph::FBPage>(page));
+                        }
                     }
                     else if (key == L"name")
                     {
@@ -191,8 +195,11 @@ namespace winsdkfb::Graph
                     }
                     else if (key == L"picture")
                     {
-                        found++;
-                        user.Picture(FBProfilePictureData::FromJson(current.Value().Stringify()));
+                        auto profilePictureData = FBProfilePictureData::FromJson(current.Value().Stringify());
+                        if (profilePictureData.has_value()) {
+                            found++;
+                            user.Picture(any_cast<FBProfilePictureData>(profilePictureData));
+                        }
                     }
                     else if (key == L"timezone")
                     {

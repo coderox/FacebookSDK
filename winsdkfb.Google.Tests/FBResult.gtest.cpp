@@ -37,5 +37,7 @@ TEST(FBResultTests, TestCreateInstanceWithErrorShouldHaveError)
 
 	// assert
 	EXPECT_FALSE(fbResult.Succeeded());
+	EXPECT_EQ(error.Code(), 0);
+	EXPECT_EQ(error.Message(), L"message");
 	//EXPECT_EQ(fbResult.ErrorInfo().Type(), L"type");
 }

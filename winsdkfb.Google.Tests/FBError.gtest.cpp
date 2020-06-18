@@ -7,8 +7,8 @@
 TEST(FBErrorTests, CreateInstance)
 {
 	// arrange
-	winrt::hstring type(L"type");
-	winrt::hstring message(L"message");
+	std::wstring type(L"type");
+	std::wstring message(L"message");
 
 	// act
 	auto fbError = winsdkfb::FBError(0, type, message);

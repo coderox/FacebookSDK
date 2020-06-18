@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBPageCategory
     {
-        static winsdkfb::Graph::FBPageCategory FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBProfilePictureData
     {
-        static winsdkfb::Graph::FBProfilePictureData FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

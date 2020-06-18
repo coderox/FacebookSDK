@@ -1,8 +1,9 @@
-#include "FBPermission.h"
+#include "Graph/FBPermission.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -28,11 +29,11 @@ namespace winsdkfb::Graph
         _status = value;
     }
 
-    FBResult FBPermission::FromJson(
+    any FBPermission::FromJson(
         hstring const& JsonText
     )
     {
-        FBResult result;
+        any result;
         FBPermission permission;
         int found = 0;
         JsonValue val{ nullptr };
@@ -59,7 +60,7 @@ namespace winsdkfb::Graph
                 }
 
                 if (found) {
-                    result = FBResult(permission);
+                    result = permission;
                 }
             }
         }

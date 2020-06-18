@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBPaging
     {
-        static winsdkfb::Graph::FBPaging FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

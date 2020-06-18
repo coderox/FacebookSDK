@@ -14,21 +14,21 @@ public:
 	
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(
 		winrt::hstring path, 
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(
 		winrt::hstring path,
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(
 		winrt::hstring path,
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 	virtual winrt::hstring ParametersToQueryString(
-		winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> parameters
+		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
 	);
 
 private:

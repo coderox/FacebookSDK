@@ -6,7 +6,7 @@ namespace winsdkfb::Graph
 {
     struct FBObject
     {
-        static FBObject FromJson(
+        static std::any FromJson(
             winrt::hstring const& JsonText
         );
 

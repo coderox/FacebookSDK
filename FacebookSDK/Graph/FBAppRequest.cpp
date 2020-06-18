@@ -1,4 +1,4 @@
-#include "FBAppRequest.h"
+#include "Graph/FBAppRequest.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
@@ -74,11 +74,12 @@ namespace winsdkfb::Graph
         _to = value;
     }
 
-    winsdkfb::Graph::FBAppRequest FBAppRequest::FromJson(
+    any FBAppRequest::FromJson(
         hstring const& JsonText 
         )
     {
-        FBAppRequest result;
+        any result;
+        FBAppRequest request;
         int found = 0;
         JsonValue val{ nullptr };
 
@@ -93,43 +94,43 @@ namespace winsdkfb::Graph
                     if  (key == L"action_type")
                     {
                         found++;
-                        result.ActionType(current.Value().GetString());
+                        request.ActionType(current.Value().GetString());
                     }
                     else if (key == L"created_time")
                     {
                         found++;
-                        result.CreatedTime(current.Value().GetString());
+                        request.CreatedTime(current.Value().GetString());
                     }
                     else if (key == L"data")
                     {
                         found++;
-                        result.Data(current.Value().GetString());
+                        request.Data(current.Value().GetString());
                     }
                     else if (key == L"from")
                     {
                         found++;
-                        result.From(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
+                        request.From(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
                     }
                     else if (key == L"id")
                     {
                         found++;
-                        result.Id(current.Value().GetString());
+                        request.Id(current.Value().GetString());
                     }
                     else if (key == L"message")
                     {
                         found++;
-                        result.Message(current.Value().GetString());
+                        request.Message(current.Value().GetString());
                     }
                     else if (key == L"to")
                     {
                         found++;
-                        result.To(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
+                        request.To(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
                     }
                 }
 
-				//if(found){
-				//	result._succeeded = true;
-				//}
+				if(found) {
+					result = request;
+				}
             }
         }
         return result;
