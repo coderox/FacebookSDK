@@ -25,20 +25,12 @@ namespace winrt::FacebookSDK_TestClient::implementation
 	}
 
 	const wchar_t* requested_permissions[] = {
-		L"public_profile",
-		L"user_friends",
-		L"user_likes",
-		L"user_location",
-		L"publish_pages",
-		L"manage_pages",
-		L"user_posts"
+		L"public_profile"
 	};
 
 	void SetSessionAppIds() {
-		//auto session = winsdkfb::FBSession::ActiveSession();
-		//session->FBAppId("719494811465102");
-
-		auto fbResult = std::make_shared<winsdkfb::FBResult>();
+		auto session = winsdkfb::FBSession::ActiveSession();
+		session->FBAppId(L"719494811465102");
 	}
 
 	winsdkfb::FBPermissions BuildPermissions() {
@@ -226,7 +218,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 	void MainPage::OnLoginClicked(IInspectable const&, RoutedEventArgs const&)
 	{
-		//LoginInternal();
+		LoginInternal();
 	}
 
 	void MainPage::OnFeedClicked(IInspectable const&, RoutedEventArgs const&)
@@ -234,29 +226,22 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 	}
 
+	winrt::fire_and_forget OnRequestsClickedInternal() {
+		auto session = winsdkfb::FBSession::ActiveSession();
+
+		if (session->LoggedIn()) {
+			std::unordered_map<wstring, wstring> params;
+			params[L"title"] = L"I love Brussels Sprouts!";
+			params[L"message"] = L"Om Nom Nom!";
+
+			auto dialogResult = co_await session->ShowRequestsDialogAsync(params);
+			OutputDebugString(L"Showed dialog");
+		}
+	}
+
 	void MainPage::OnRequestsClicked(IInspectable const&, RoutedEventArgs const&)
 	{
-		auto mockHttpClient = std::make_shared<MockHttpClient>();
-		winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
-		// test no values returned from request
-		mockHttpClient->ResponseData(L"{\"data\":[{\"first_name\":\"Johan\",\"last_name\":\"Lindfors\",\"name\":\"Johan Lindfors\",\"id\":\"10156062009459646\",\"picture\":{\"data\":{\"height\":50,\"is_silhouette\":false,\"url\":\"https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=10156062009459646&height=50&width=50&ext=1550996804&hash=AeTlVQ4Q_fIUqP_n\",\"width\":50}}}]}");
-
-		auto graphPath = L"/12345/users";
-
-		winsdkfb::JsonClassFactory fact = [](wstring JsonText) -> winsdkfb::FBResult
-		{
-			return winsdkfb::FBResult(winsdkfb::Graph::FBUser::FromJson(JsonText));
-		};
-
-		auto likes = winsdkfb::FBPaginatedArray(graphPath, {}, fact);
-		auto result = concurrency::create_task(likes.FirstAsync()).get();
-
-		bool succeeded = result.Succeeded();
-		if (succeeded) {
-			auto users = result.Object<std::vector<winsdkfb::FBResult>>();
-			auto user = users->at(0).Object<winsdkfb::Graph::FBUser>();
-			auto firstName = user->FirstName();
-		}
+		OnRequestsClickedInternal();
 	}
 
 	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
