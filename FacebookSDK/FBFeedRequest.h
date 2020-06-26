@@ -7,9 +7,9 @@ namespace winsdkfb
 	struct FBFeedRequest
 	{
 		FBFeedRequest() = default;
-		FBFeedRequest(winrt::hstring postId);
+		FBFeedRequest(std::wstring postId);
 
-		winrt::hstring PostId();
+		std::wstring PostId() const;
 
 		static winsdkfb::FBFeedRequest FromFeedDialogResponse(winrt::Windows::Foundation::Uri const& response);
 

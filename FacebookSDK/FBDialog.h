@@ -2,11 +2,9 @@
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
-#include <winrt/Windows.UI.Xaml.Markup.h>
 #include <Windows.h>
 #include "Utilities.h"
 #include <pplawait.h>
-#include <map>
 
 namespace winsdkfb
 {
@@ -18,14 +16,14 @@ namespace winsdkfb
 		~FBDialog() { }
 
 		void InitDialog();
-		void UninitDialog();
+		void UnInitDialog() const;
 
-		concurrency::task<winsdkfb::FBResult> ShowLoginDialogAsync(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		concurrency::task<winsdkfb::FBResult> ShowFeedDialogAsync(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		concurrency::task<winsdkfb::FBResult> ShowRequestsDialogAsync(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		concurrency::task<winsdkfb::FBResult> ShowSendDialogAsync(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowLoginDialogAsync(std::unordered_map<std::wstring, std::wstring> const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowFeedDialogAsync(std::unordered_map<std::wstring, std::wstring> const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowRequestsDialogAsync(std::unordered_map<std::wstring, std::wstring> const parameters);
+		concurrency::task<winsdkfb::FBResult> ShowSendDialogAsync(std::unordered_map<std::wstring, std::wstring> const parameters);
 
-		static winrt::hstring GetFBServerUrl();
+		static std::wstring GetFBServerUrl();
 		static void DeleteCookies();
 
 		void CloseDialogButton_OnClick(
@@ -39,29 +37,29 @@ namespace winsdkfb
 			winsdkfb::DialogUriBuilder const& uriBuilder,
 			winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, winrt::Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs> const& EventHandlerStarting,
 			winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, winrt::Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs > const& EventHandlerCompleted,
-			std::unordered_map<winrt::hstring, winrt::hstring> parameters
+			std::unordered_map<std::wstring, std::wstring> parameters
 		);
 
-		winrt::hstring GetRedirectUriString(
-			winrt::hstring DialogName
+		static std::wstring GetRedirectUriString(
+			std::wstring DialogName
 		);
 
 		static bool IsMobilePlatform();
 
-		winrt::Windows::Foundation::Uri BuildLoginDialogUrl(
-			std::unordered_map<winrt::hstring, winrt::hstring> const Parameters
+		static winrt::Windows::Foundation::Uri BuildLoginDialogUrl(
+			std::unordered_map<std::wstring, std::wstring> const Parameters
 		);
 
-		winrt::Windows::Foundation::Uri BuildFeedDialogUrl(
-			std::unordered_map<winrt::hstring, winrt::hstring> const Parameters
+		static winrt::Windows::Foundation::Uri BuildFeedDialogUrl(
+			std::unordered_map<std::wstring, std::wstring> const Parameters
 		);
 
-		winrt::Windows::Foundation::Uri BuildRequestsDialogUrl(
-			std::unordered_map<winrt::hstring, winrt::hstring> const Parameters
+		static winrt::Windows::Foundation::Uri BuildRequestsDialogUrl(
+			std::unordered_map<std::wstring, std::wstring> const Parameters
 		);
 
-		winrt::Windows::Foundation::Uri BuildSendDialogUrl(
-			std::unordered_map<winrt::hstring, winrt::hstring> const Parameters
+		static winrt::Windows::Foundation::Uri BuildSendDialogUrl(
+			std::unordered_map<std::wstring, std::wstring> const Parameters
 		);
 
 		void dialogWebView_LoginNavStarting(
@@ -89,22 +87,22 @@ namespace winsdkfb
 			winrt::Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs const& e
 		);
 
-		bool IsLoginSuccessRedirect(
+		static bool IsLoginSuccessRedirect(
 			winrt::Windows::Foundation::Uri const&  Response
 		);
 
-		bool IsLogoutRedirect(
+		static bool IsLogoutRedirect(
 			winrt::Windows::Foundation::Uri const&  Response
 		);
 
-		bool IsDialogCloseRedirect(
+		static bool IsDialogCloseRedirect(
 			winrt::Windows::Foundation::Uri const&  Response
 		);
 
 		void OnSizeChanged(
 			winrt::Windows::UI::Core::CoreWindow const& sender,
 			winrt::Windows::UI::Core::WindowSizeChangedEventArgs const& args
-		);
+		) const;
 
 		void SetDialogResponse(winsdkfb::FBResult dialogResponse);
 

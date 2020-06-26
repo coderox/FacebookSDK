@@ -5,32 +5,32 @@
 struct MockHttpClient : public winsdkfb::IHttpClient {
 public:
 
-	winrt::hstring ResponseData() {
+	std::wstring ResponseData() {
 		return responseData;
 	}
-	void ResponseData(winrt::hstring value) {
+	void ResponseData(std::wstring value) {
 		responseData = value;
 	}
 
-	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(
-		winrt::hstring const path,
-		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
-	);
+	concurrency::task<std::wstring> GetTaskAsync(
+		std::wstring path,
+		std::unordered_map<std::wstring, std::wstring> const parameters
+	) override;
 
-	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(
-		winrt::hstring const path,
-		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
-	);
+	concurrency::task<std::wstring> PostTaskAsync(
+		std::wstring path,
+		std::unordered_map<std::wstring, std::wstring> const parameters
+	) override;
 
-	virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(
-		winrt::hstring const path,
-		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
-	);
+	concurrency::task<std::wstring> DeleteTaskAsync(
+		std::wstring path,
+		std::unordered_map<std::wstring, std::wstring> const parameters
+	) override;
 
-	virtual winrt::hstring ParametersToQueryString(
-		std::unordered_map<winrt::hstring, winrt::hstring> const parameters
-	);
+	virtual std::wstring ParametersToQueryString(
+		std::unordered_map<std::wstring, std::wstring> const parameters
+	) override;
 
 private:
-	winrt::hstring responseData;
+	std::wstring responseData;
 };

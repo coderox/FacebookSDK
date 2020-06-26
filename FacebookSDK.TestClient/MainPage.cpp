@@ -12,6 +12,7 @@
 #include "FBSession.h"
 #include <map>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 using namespace Windows::Foundation;
@@ -41,10 +42,10 @@ namespace winrt::FacebookSDK_TestClient::implementation
 	}
 
 	winsdkfb::FBPermissions BuildPermissions() {
-		std::vector<hstring>v;
+		std::vector<wstring>v;
 		for (auto const& permission : requested_permissions)
 		{
-			v.push_back(hstring(permission));
+			v.push_back(wstring(permission));
 		}
 		return winsdkfb::FBPermissions(v);
 	}
@@ -198,7 +199,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 	//	}
 	//}
 
-	void MainPage::OnLoaded(IInspectable const&, RoutedEventArgs const&)
+	void MainPage::OnLoaded(winrt::Windows::Foundation::IInspectable const&, RoutedEventArgs const&)
 	{
 		SetSessionAppIds();
 	}
@@ -242,7 +243,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 		auto graphPath = L"/12345/users";
 
-		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult
+		winsdkfb::JsonClassFactory fact = [](wstring JsonText) -> winsdkfb::FBResult
 		{
 			return winsdkfb::FBResult(winsdkfb::Graph::FBUser::FromJson(JsonText));
 		};
@@ -268,7 +269,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 
 		auto graphPath = L"/12345/apprequests";
 
-		winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult {
+		winsdkfb::JsonClassFactory fact = [](wstring JsonText) -> winsdkfb::FBResult {
 			int numberOfMessages = 0;
 			try {
 				auto messages = winrt::Windows::Data::Json::JsonObject::Parse(JsonText).GetNamedArray(L"data");
@@ -280,8 +281,8 @@ namespace winrt::FacebookSDK_TestClient::implementation
 			return winsdkfb::FBResult(numberOfMessages);
 		};
 
-		std::unordered_map<hstring, hstring> properties;
-		winrt::hstring data(L"data");
+		std::unordered_map<wstring, wstring> properties;
+		wstring data(L"data");
 		properties[L"fields"] = data;
 
 		auto likes = winsdkfb::FBSingleValue(graphPath, properties, fact);

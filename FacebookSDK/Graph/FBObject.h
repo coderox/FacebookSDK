@@ -7,14 +7,14 @@ namespace winsdkfb::Graph
     struct FBObject
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
     private:
 
-        winrt::hstring _id;
+        std::wstring _id;
     };
 }

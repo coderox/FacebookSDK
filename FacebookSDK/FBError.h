@@ -12,26 +12,26 @@ namespace winsdkfb
 	};
 
 	enum class ErrorSubCode {
-		ErrorSubcodeAppNotAuthorized = 458,
-		ErrorSubcodeSessionInvalidated = 466
+		ErrorSubCodeAppNotAuthorized = 458,
+		ErrorSubCodeSessionInvalidated = 466
 	};
 
 	struct FBError
 	{
 	public:
 		static FBError FromUri(winrt::Windows::Foundation::Uri const& responseUri);
-		static FBError FromJson(winrt::hstring const& jsonText);
+		static FBError FromJson(std::wstring const& jsonText);
 
-		FBError();
+		FBError() = default;
 		FBError(int32_t code, std::wstring type, std::wstring message);
 		FBError(std::nullptr_t) noexcept {}
 
-		std::wstring Message();
-		std::wstring Type();
-		int32_t Code();
-		int32_t Subcode();
-		std::wstring ErrorUserTitle();
-		std::wstring ErrorUserMessage();
+		std::wstring Message() const;
+		std::wstring Type() const;
+		int32_t Code() const;
+		int32_t SubCode() const;
+		std::wstring ErrorUserTitle() const;
+		std::wstring ErrorUserMessage() const;
 
 	private:
 

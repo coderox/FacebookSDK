@@ -7,15 +7,15 @@ namespace winsdkfb
 	struct GraphUriBuilder
 	{
 		GraphUriBuilder() = delete;
-		GraphUriBuilder(winrt::hstring const& path);
+		GraphUriBuilder(std::wstring const& path);
 
 		winrt::Windows::Foundation::Uri MakeUri();
-		void AddQueryParam(winrt::hstring const& query, winrt::hstring const& param);
+		void AddQueryParam(std::wstring const& query, std::wstring const& param) const;
 
 	private:
 		void BuildApiVersionString();
 		void FixPathDelimiters();
-		void DecodeQueryParams(winrt::Windows::Foundation::Uri const& uri);
+		void DecodeQueryParams(winrt::Windows::Foundation::Uri const& uri) const;
 
 		std::wstring _host;
 		std::wstring _path;

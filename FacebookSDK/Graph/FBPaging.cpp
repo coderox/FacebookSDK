@@ -11,8 +11,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    FBCursors FBPaging::Cursors()
-    {
+    FBCursors FBPaging::Cursors() const {
         return _cursors;
     }
     void FBPaging::Cursors(FBCursors value)
@@ -20,26 +19,24 @@ namespace winsdkfb::Graph
         _cursors = value;
     }
 
-    hstring FBPaging::Next()
-    {
+    wstring FBPaging::Next() const {
         return _next;
     }
-    void FBPaging::Next(hstring const& value)
+	void FBPaging::Next(wstring const& value)
     {
         _next = value;
     }
 
-    hstring FBPaging::Previous()
-    {
+    wstring FBPaging::Previous() const {
         return _previous;
     }
-    void FBPaging::Previous(hstring const& value)
+	void FBPaging::Previous(wstring const& value)
     {
         _previous = value;
     }
 
     any FBPaging::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
@@ -47,31 +44,31 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if  (key == L"cursors")
                     {
-                        auto cursors = FBCursors::FromJson(current.Value().Stringify());
+                        auto cursors = FBCursors::FromJson(current.Value().Stringify().c_str());
                         if (cursors.has_value()) {
                             found++;
-                            paging.Cursors(any_cast<FBCursors>(cursors));
+                            paging._cursors = any_cast<FBCursors>(cursors);
                         }
                     }
                     else if (key == L"next")
                     {
                         found++;
-                        paging.Next(current.Value().GetString());
+                        paging._next = current.Value().GetString();
                     }
                     else if (key == L"previous")
                     {
                         found++;
-                        paging.Previous(current.Value().GetString());
+                        paging._previous = current.Value().GetString();
                     }
                 }
 

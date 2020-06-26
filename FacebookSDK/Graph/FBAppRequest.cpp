@@ -11,34 +11,34 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBAppRequest::ActionType()
+    wstring FBAppRequest::ActionType() const
     {
         return _action_type;
     }
-    void FBAppRequest::ActionType(hstring const& value)
+	void FBAppRequest::ActionType(wstring const& value)
     {
         _action_type = value;
     }
 
-    hstring FBAppRequest::CreatedTime()
+    wstring FBAppRequest::CreatedTime() const
     {
         return _created_time;
     }
-    void FBAppRequest::CreatedTime(hstring const& value)
+	void FBAppRequest::CreatedTime(wstring const& value)
     {
         _created_time = value;
     }
 
-    hstring FBAppRequest::Data()
+    wstring FBAppRequest::Data() const
     {
         return _data;
     }
-    void FBAppRequest::Data(hstring const& value)
+	void FBAppRequest::Data(wstring const& value)
     {
         _data = value;
     }
 
-    winsdkfb::Graph::FBUser FBAppRequest::From()
+    winsdkfb::Graph::FBUser FBAppRequest::From() const
     {
         return _from;
     }
@@ -47,25 +47,25 @@ namespace winsdkfb::Graph
         _from = value;
     }
 
-    hstring FBAppRequest::Id()
+    wstring FBAppRequest::Id() const
     {
         return _id;
     }
-    void FBAppRequest::Id(hstring const& value)
+	void FBAppRequest::Id(wstring const& value)
     {
         _id = value;
     }
 
-    hstring FBAppRequest::Message()
+    wstring FBAppRequest::Message() const
     {
         return _message;
     }
-    void FBAppRequest::Message(hstring const& value)
+	void FBAppRequest::Message(wstring const& value)
     {
         _message = value;
     }
 
-    winsdkfb::Graph::FBUser FBAppRequest::To()
+    winsdkfb::Graph::FBUser FBAppRequest::To() const
     {
         return _to;
     }
@@ -75,7 +75,7 @@ namespace winsdkfb::Graph
     }
 
     any FBAppRequest::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
@@ -83,48 +83,48 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if  (key == L"action_type")
                     {
                         found++;
-                        request.ActionType(current.Value().GetString());
+                        request._action_type = current.Value().GetString();
                     }
                     else if (key == L"created_time")
                     {
                         found++;
-                        request.CreatedTime(current.Value().GetString());
+                        request._created_time = current.Value().GetString();
                     }
                     else if (key == L"data")
                     {
                         found++;
-                        request.Data(current.Value().GetString());
+                        request._data = current.Value().GetString();
                     }
                     else if (key == L"from")
                     {
                         found++;
-                        request.From(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
+                        request._from = std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify().c_str()));
                     }
                     else if (key == L"id")
                     {
                         found++;
-                        request.Id(current.Value().GetString());
+                        request._id = current.Value().GetString();
                     }
                     else if (key == L"message")
                     {
                         found++;
-                        request.Message(current.Value().GetString());
+                        request._message = current.Value().GetString();
                     }
                     else if (key == L"to")
                     {
                         found++;
-                        request.To(std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify())));
+                        request._to = std::any_cast<FBUser>(FBUser::FromJson(current.Value().Stringify().c_str()));
                     }
                 }
 

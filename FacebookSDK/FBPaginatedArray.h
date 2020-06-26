@@ -4,7 +4,6 @@
 #include "FBResult.h"
 #include "Utilities.h"
 
-#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Data.Json.h>
 
 #include <pplawait.h>
@@ -15,20 +14,20 @@ namespace winsdkfb
 	struct FBPaginatedArray
 	{
 		FBPaginatedArray() = delete;
-		FBPaginatedArray(winrt::hstring const& Request, std::unordered_map<winrt::hstring, winrt::hstring> parameters, winsdkfb::JsonClassFactory const& ObjectFactory);
+		FBPaginatedArray(std::wstring const& Request, std::unordered_map<std::wstring, std::wstring> parameters, winsdkfb::JsonClassFactory const& ObjectFactory);
 
 		concurrency::task<winsdkfb::FBResult> FirstAsync();
 		concurrency::task<winsdkfb::FBResult> NextAsync();
 		concurrency::task<winsdkfb::FBResult> PreviousAsync();
-		std::vector<winsdkfb::FBResult> Current();
-		winrt::hstring CurrentDataString();
-		bool HasCurrent();
-		bool HasNext();
-		bool HasPrevious();
-		std::vector<winsdkfb::FBResult> VectorFromWebResponse(winrt::hstring const& Response, winsdkfb::JsonClassFactory const& classFactory);
+		std::vector<winsdkfb::FBResult> Current() const;
+		std::wstring CurrentDataString() const;
+		bool HasCurrent() const;
+		bool HasNext() const;
+		bool HasPrevious() const;
+		static std::vector<winsdkfb::FBResult> VectorFromWebResponse(std::wstring const& Response, winsdkfb::JsonClassFactory const& classFactory);
 
 	private:
-		std::vector<winsdkfb::FBResult>
+		static std::vector<winsdkfb::FBResult>
 			VectorFromJsonArray(
 				winrt::Windows::Data::Json::JsonArray values,
 				winsdkfb::JsonClassFactory classFactory
@@ -39,14 +38,14 @@ namespace winsdkfb
 		);
 
 		concurrency::task<winsdkfb::FBResult> GetPageAsync(
-			winrt::hstring path
+			std::wstring path
 		);
 
-		winrt::hstring _currentDataString;
-		winrt::hstring _request;
+		std::wstring _currentDataString;
+		std::wstring _request;
 		std::vector<winsdkfb::FBResult> _current;
 		winsdkfb::Graph::FBPaging _paging;
-		std::unordered_map<winrt::hstring, winrt::hstring> _parameters;
+		std::unordered_map<std::wstring, std::wstring> _parameters;
 		winsdkfb::JsonClassFactory _objectFactory;
 	};
 }

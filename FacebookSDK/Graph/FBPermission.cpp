@@ -11,26 +11,24 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBPermission::Permission()
-    {
+    wstring FBPermission::Permission() const {
         return _permission;
     }
-    void FBPermission::Permission(hstring const& value)
+	void FBPermission::Permission(wstring const& value)
     {
         _permission = value;
     }
 
-    hstring FBPermission::Status()
-    {
+    wstring FBPermission::Status() const {
         return _status;
     }
-    void FBPermission::Status(hstring const& value)
+	void FBPermission::Status(wstring const& value)
     {
         _status = value;
     }
 
     any FBPermission::FromJson(
-        hstring const& JsonText
+		wstring const& jsonText
     )
     {
         any result;
@@ -38,7 +36,7 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
@@ -46,16 +44,16 @@ namespace winsdkfb::Graph
                 
                 for (auto const& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if (key == L"permission")
                     {
                         found++;
-                        permission.Permission(current.Value().GetString());
+                        permission._permission = current.Value().GetString();
                     }
                     else if (key == L"status")
                     {
                         found++;
-                        permission.Status(current.Value().GetString());
+                        permission._status = current.Value().GetString();
                     }
                 }
 

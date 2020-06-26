@@ -11,67 +11,50 @@ using namespace Windows::Data::Json;
 
 namespace winsdkfb
 {
-	FBError::FBError()
-		: _message()
-		, _type()
-		, _code(0)
-		, _subcode(0)
-		, _errorUserTitle()
-		, _errorUserMessage()
-	{
-		;
-	}
-
-	wstring FBError::Message()
-	{
+	wstring FBError::Message() const {
 		return  _message;
 	}
 
-	wstring FBError::Type()
-	{
+	wstring FBError::Type() const {
 		return  _type;
 	}
 
-	int32_t FBError::Code()
-	{
+	int32_t FBError::Code() const {
 		return _code;
 	}
 
-	int32_t FBError::Subcode()
-	{
+	int32_t FBError::SubCode() const {
 		return _subcode;
 	}
 
-	wstring FBError::ErrorUserTitle()
-	{
+	wstring FBError::ErrorUserTitle() const	{
 		return  _errorUserTitle;
 	}
 
-	wstring FBError::ErrorUserMessage()
-	{
+	wstring FBError::ErrorUserMessage() const {
 		return  _errorUserMessage;
 	}
 
-	FBError FBError::FromUri(Uri const& ResponseUri)
+	FBError FBError::FromUri(Uri const& responseUri)
 	{
 		FBError result;
-		bool foundCode = false;
-		bool foundDescription = false;
-		bool foundMessage = false;
-		bool foundReason = false;
-		int code = 0;
+		auto foundCode = false;
+		auto foundDescription = false;
+		auto foundMessage = false;
+		auto foundReason = false;
+		auto code = 0;
 		hstring reason;
 		hstring description;
 		hstring message;
-		hstring query = ResponseUri.Query();
+		const auto query = responseUri.Query();
 
 		if (!query.empty())
 		{
-			auto decoder = WwwFormUrlDecoder(ResponseUri.Query());
+			const auto decoder = WwwFormUrlDecoder(query);
 
 			for (unsigned int i = 0; i < decoder.Size(); i++)
 			{
-				IWwwFormUrlDecoderEntry entry = decoder.GetAt(i);
+				auto entry = decoder.GetAt(i);
 				if (entry.Name() == L"error_code")
 				{
 					foundCode = true;
@@ -112,23 +95,23 @@ namespace winsdkfb
 		return result;
 	}
 
-	FBError FBError::FromJson(hstring const& JsonText)
+	FBError FBError::FromJson(wstring const& jsonText)
 	{
 		FBError result;
 		JsonValue val{ nullptr };
 
-		if (JsonValue::TryParse(JsonText, val))
+		if (JsonValue::TryParse(jsonText, val))
 		{
-			JsonObject obj = val.GetObject();
+			auto obj = val.GetObject();
 			if (obj.HasKey(L"error")) {
 				obj = obj.GetNamedObject(L"error");
 			}
 
-			int found = 0;
+			auto found = 0;
 
 			for (auto&& current : obj)
 			{
-				winrt::hstring key = current.Key();
+				auto key = current.Key();
 
 				if (key == L"message")
 				{
@@ -174,10 +157,7 @@ namespace winsdkfb
 		: _message(message)
 		, _type(type)
 		, _code(code)
-		, _subcode(0)
-		, _errorUserTitle()
-		, _errorUserMessage()
 	{
-		;
+		
 	}
 }

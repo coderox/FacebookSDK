@@ -9,62 +9,61 @@ namespace winsdkfb::Graph
     struct FBUser
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
-        winrt::hstring FirstName();
-        void FirstName(winrt::hstring const& value);
+        std::wstring FirstName() const;
+        void FirstName(std::wstring const& value);
 
-        winrt::hstring Gender();
-        void Gender(winrt::hstring const& value);
+        std::wstring Gender() const;
+        void Gender(std::wstring const& value);
 
-        winrt::hstring LastName();
-        void LastName(winrt::hstring const& value);
+        std::wstring LastName() const;
+        void LastName(std::wstring const& value);
 
-        winrt::hstring Email();
-        void Email(winrt::hstring const& value);
+        std::wstring Email() const;
+        void Email(std::wstring const& value);
 
-        winrt::hstring Link();
-        void Link(winrt::hstring const& value);
+        std::wstring Link() const;
+        void Link(std::wstring const& value);
 
-        winrt::hstring Locale();
-        void Locale(winrt::hstring const& value);
+        std::wstring Locale() const;
+        void Locale(std::wstring const& value);
 
-        winsdkfb::Graph::FBPage Location();
-        void Location(winsdkfb::Graph::FBPage value);
+        FBPage Location() const;
+        void Location(FBPage value);
 
-        winrt::hstring Name();
-        void Name(winrt::hstring const& value);
+        std::wstring Name() const;
+        void Name(std::wstring const& value);
 
-        winsdkfb::Graph::FBProfilePictureData Picture();
-        void Picture(winsdkfb::Graph::FBProfilePictureData value);
+        FBProfilePictureData Picture() const;
+        void Picture(FBProfilePictureData value);
 
-        int Timezone();
+        int Timezone() const;
         void Timezone(int const& value);
 
-        winrt::hstring UpdatedTime();
-        void UpdatedTime(winrt::hstring const& value);
+        std::wstring UpdatedTime() const;
+        void UpdatedTime(std::wstring const& value);
 
-        bool Verified();
+        bool Verified() const;
         void Verified(bool const& value);
 
     private:
-
-        winrt::hstring _id;
-        winrt::hstring _first_name;
-        winrt::hstring _gender;
-        winrt::hstring _last_name;
-        winrt::hstring _email;
-        winrt::hstring _link;
-        winrt::hstring _locale;
-        winsdkfb::Graph::FBPage _location;
-        winrt::hstring _name;
-        winsdkfb::Graph::FBProfilePictureData _picture;
-        int __timezone;
-        winrt::hstring _updated_time;
-        bool _verified;
+    	std::wstring _id;
+        std::wstring _first_name;
+        std::wstring _gender;
+        std::wstring _last_name;
+        std::wstring _email;
+        std::wstring _link;
+        std::wstring _locale;
+        FBPage _location;
+        std::wstring _name;
+        FBProfilePictureData _picture;
+        int __timezone = 0;
+        std::wstring _updated_time;
+        bool _verified = false;
     };
 }

@@ -8,19 +8,14 @@
 
 namespace winsdkfb
 {
-	//struct JsonClassFactory
-	//{
-	//	//winrt::Windows::Foundation::IInspectable operator()(winrt::hstring const& d);
-	//};
-
 	struct FBSingleValue : public FBResult
 	{
 	public:
-		FBSingleValue(winrt::hstring const& request, std::unordered_map<winrt::hstring, winrt::hstring> parameters, winsdkfb::JsonClassFactory objectFactory);
+		FBSingleValue(std::wstring const& request, std::unordered_map<std::wstring, std::wstring> parameters, winsdkfb::JsonClassFactory objectFactory);
 
-		concurrency::task<winsdkfb::FBResult> GetAsync();
-		concurrency::task<winsdkfb::FBResult> PostAsync();
-		concurrency::task<winsdkfb::FBResult> DeleteAsync();
+		concurrency::task<winsdkfb::FBResult> GetAsync() const;
+		concurrency::task<winsdkfb::FBResult> PostAsync() const;
+		concurrency::task<winsdkfb::FBResult> DeleteAsync() const;
 
 	private:
 		/**
@@ -31,20 +26,20 @@ namespace winsdkfb
 		 * @return FBResult that contains a new object created by
 		 * ObjectFactory. On failure, the FBResult will instead contain an
 		 * FBError object.
-		 * @exception InvalidArgumentException if ObjectyFactory is unable
-		 * to instantiate an object or if the JsonText is unparsable.
+		 * @exception InvalidArgumentException if ObjectFactory is unable
+		 * to instantiate an object or if the JsonText can't be parsed.
 		 */
 		winsdkfb::FBResult ConsumeSingleValue(
-			winrt::hstring JsonText
-		);
+			std::wstring JsonText
+		) const;
 
 		concurrency::task<winsdkfb::FBResult> MakeHttpRequest(
 			winsdkfb::HttpMethod httpMethod
-		);
+		) const;
 
 		winsdkfb::FBResult _result;
 		std::wstring _request;
-		std::unordered_map<winrt::hstring, winrt::hstring> _parameters;
+		std::unordered_map<std::wstring, std::wstring> _parameters;
 		winsdkfb::JsonClassFactory _objectFactory{ nullptr };
 	};
 }

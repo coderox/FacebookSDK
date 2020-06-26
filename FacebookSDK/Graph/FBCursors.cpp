@@ -11,26 +11,24 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBCursors::After()
-    {
+    wstring FBCursors::After() const {
         return _after;
     }
-    void FBCursors::After(hstring const& value)
+	void FBCursors::After(wstring const& value)
     {
         _after = value;
     }
 
-    hstring FBCursors::Before()
-    {
+    wstring FBCursors::Before() const {
         return _before;
     }
-    void FBCursors::Before(hstring const& value)
+	void FBCursors::Before(wstring const& value)
     {
         _before = value;
     }
 
     any FBCursors::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
@@ -38,23 +36,23 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if  (key == L"after")
                     {
                         found++;
-                        cursors.After(current.Value().GetString());
+						cursors.After(current.Value().GetString().c_str());
                     }
                     else if (key == L"before")
                     {
                         found++;
-                        cursors.Before(current.Value().GetString());
+						cursors.Before(current.Value().GetString().c_str());
                     }
                 }
 

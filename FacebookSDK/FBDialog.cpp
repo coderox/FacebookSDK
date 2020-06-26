@@ -11,11 +11,12 @@
 #include <sstream>
 #include <string>
 
-#include "winrt/Windows.Web.Http.Filters.h"
-#include "winrt/Windows.ApplicationModel.Core.h"
-#include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
-#include "winrt/Windows.UI.Core.h"
-#include "winrt/Windows.UI.Xaml.Media.h"
+#include <winrt/Windows.Web.Http.Filters.h>
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.UI.Xaml.Media.h>
+#include <winrt/Windows.UI.Xaml.Markup.h>
 
 using namespace std;
 using namespace winrt;
@@ -34,6 +35,7 @@ using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
+using namespace Windows::UI::Xaml::Markup;
 
 #define FACEBOOK_LOGOUT_PATH  L"/logout.php"
 #define FACEBOOK_DIALOG_CLOSE_PATH   L"/dialog/close"
@@ -68,7 +70,7 @@ void DebugPrintLine(
 	hstring const& msg
 )
 {
-	hstring output(msg + L"\n");
+	hstring const output(msg + L"\n");
 	OutputDebugString(output.c_str());
 }
 #else
@@ -90,7 +92,6 @@ namespace winsdkfb
 		contentLoaded = true;
 
 		SolidColorBrush backgroundBrush(Color({ 0x7f, 0x00, 0x00, 0x00 }));
-		//backgroundBrush.Opacity(0.6);
 		Grid layoutRoot;
 		layoutRoot.Background(backgroundBrush);
 
@@ -98,13 +99,12 @@ namespace winsdkfb
 
 		closeDialogButton.HorizontalAlignment(HorizontalAlignment::Right);
 		closeDialogButton.VerticalAlignment(VerticalAlignment::Top);
-		//closeDialogButton.Background(SolidColorBrush(Colors::Transparent()));
 		closeDialogButton.Width(30);
 		closeDialogButton.Height(30);
 		closeDialogButton.Margin(Thickness{ 0,0,0,5 });
 
 		closeDialogButton.Click({ get_strong(), &FBDialog::CloseDialogButton_OnClick });
-		auto styleText = L"<Style xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' TargetType='Button'> \
+		const auto styleText = L"<Style xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' TargetType='Button'> \
 			<Setter Property='Background' Value='Transparent'/> \
 			<Setter Property='Template'> \
 			<Setter.Value> \
@@ -113,8 +113,7 @@ namespace winsdkfb
 			<Rectangle Fill='#FFF4F4F5' Opacity='0'/> \
 			<Path Data='M2.55469,0.445312 L24,21.8672 L45.4453,0.445312 L47.5547,2.55469 L26.1328,24 L47.5547,45.4453 L45.4453,47.5547 L24,26.1328 L2.55469,47.5547 L0.445312,45.4453 L21.8672,24 L0.445312,2.55469 z' Fill='{ThemeResource ButtonForegroundThemeBrush}' Margin='0' RenderTransformOrigin='0.5,0.5' Stretch='Fill' UseLayoutRounding='False' /> \
 			</Grid></ControlTemplate></Setter.Value></Setter></Style>";
-		auto style = Windows::UI::Xaml::Markup::XamlReader::Load(styleText)
-			.as<winrt::Windows::UI::Xaml::Style>();
+		auto style = XamlReader::Load(styleText).as<winrt::Windows::UI::Xaml::Style>();
 		closeDialogButton.Style(style);
 
 		Grid grid;
@@ -152,8 +151,7 @@ namespace winsdkfb
 		popup.Child(*this);
 	}
 
-	void FBDialog::UninitDialog()
-	{
+	void FBDialog::UnInitDialog() const {
 		dialogWebBrowser.Stop();
 		dialogWebBrowser.NavigationStarting(navigatingStartingEventHandlerRegistrationToken);
 		dialogWebBrowser.NavigationCompleted(navigatingCompletedEventHandlerRegistrationToken);
@@ -169,71 +167,71 @@ namespace winsdkfb
 		popup.Child(nullptr);
 	}
 
-	concurrency::task<winsdkfb::FBResult> FBDialog::ShowLoginDialogAsync(unordered_map<hstring, hstring> const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowLoginDialogAsync(unordered_map<wstring, wstring> const parameters)
 	{
-		auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
+		const auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
 			this, &FBDialog::dialogWebView_LoginNavStarting);
-		auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
+		const auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
 			this, &FBDialog::dialogWebView_NavCompleted);
-		
-		winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<hstring, hstring> parameters) -> Windows::Foundation::Uri {
+
+		const winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<wstring, wstring> parameters) -> Windows::Foundation::Uri {
 			return this->BuildLoginDialogUrl(parameters);
 		};
 
 		return ShowDialog(uriBuilder, handlerStarting, handlerCompleted, parameters);
 	}
 
-	concurrency::task<winsdkfb::FBResult> FBDialog::ShowFeedDialogAsync(unordered_map<hstring, hstring> const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowFeedDialogAsync(unordered_map<wstring, wstring> const parameters)
 	{
-		auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
+		const auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
 			this, &FBDialog::dialogWebView_FeedNavStarting);
-		auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
+		const auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
 			this, &FBDialog::dialogWebView_NavCompleted);
 
-		winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<hstring, hstring> parameters) -> Windows::Foundation::Uri {
+		const winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<wstring, wstring> parameters) -> Windows::Foundation::Uri {
 			return this->BuildFeedDialogUrl(parameters);
 		};
 
 		return ShowDialog(uriBuilder, handlerStarting, handlerCompleted, parameters);
 	}
 
-	concurrency::task<winsdkfb::FBResult> FBDialog::ShowRequestsDialogAsync(unordered_map<hstring, hstring> const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowRequestsDialogAsync(unordered_map<wstring, wstring> const parameters)
 	{
-		auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
+		const auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
 			this, &FBDialog::dialogWebView_RequestNavStarting);
-		auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
+		const auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
 			this, &FBDialog::dialogWebView_NavCompleted);
 
-		winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<hstring, hstring> parameters) -> Windows::Foundation::Uri {
+		const winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<wstring, wstring> parameters) -> Windows::Foundation::Uri {
 			return this->BuildRequestsDialogUrl(parameters);
 		};
 
 		return ShowDialog(uriBuilder, handlerStarting, handlerCompleted, parameters);
 	}
 
-	concurrency::task<winsdkfb::FBResult> FBDialog::ShowSendDialogAsync(unordered_map<hstring, hstring> const parameters)
+	concurrency::task<winsdkfb::FBResult> FBDialog::ShowSendDialogAsync(unordered_map<wstring, wstring> const parameters)
 	{
-		auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
+		const auto handlerStarting = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs>(
 			this, &FBDialog::dialogWebView_SendNavStarting);
-		auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
+		const auto handlerCompleted = TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs>(
 			this, &FBDialog::dialogWebView_NavCompleted);
 
-		winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<hstring, hstring> parameters) -> Windows::Foundation::Uri {
+		const winsdkfb::DialogUriBuilder uriBuilder = [this](unordered_map<wstring, wstring> parameters) -> Windows::Foundation::Uri {
 			return this->BuildSendDialogUrl(parameters);
 		};
 
 		return ShowDialog(uriBuilder, handlerStarting, handlerCompleted, parameters);
 	}
 
-	hstring FBDialog::GetFBServerUrl()
+	wstring FBDialog::GetFBServerUrl()
 	{
 		return FBDialog::IsMobilePlatform() ? FACEBOOK_MOBILE_SERVER_NAME : FACEBOOK_DESKTOP_SERVER_NAME;
 	}
 
 	void FBDialog::DeleteCookies()
 	{
-		HttpBaseProtocolFilter filter;
-		HttpCookieManager cookieManager(filter.CookieManager());
+		const HttpBaseProtocolFilter filter;
+		const HttpCookieManager cookieManager(filter.CookieManager());
 		HttpCookieCollection cookiesJar(cookieManager.GetCookies(Uri(FBDialog::GetFBServerUrl())));
 		for (auto const& cookie : cookiesJar)
 		{
@@ -245,9 +243,9 @@ namespace winsdkfb
 		DialogUriBuilder const& uriBuilder,
 		TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationStartingEventArgs> const& eventHandlerStarting,
 		TypedEventHandler<winrt::Windows::UI::Xaml::Controls::WebView, WebViewNavigationCompletedEventArgs > const& eventHandlerCompleted,
-		unordered_map<hstring, hstring> const parameters
+		unordered_map<wstring, wstring> const parameters
 	) {
-		Uri dialogUrl = uriBuilder(parameters);
+		const auto dialogUrl = uriBuilder(parameters);
 
 		navigatingStartingEventHandlerRegistrationToken = dialogWebBrowser.NavigationStarting(eventHandlerStarting);
 		navigatingCompletedEventHandlerRegistrationToken = dialogWebBrowser.NavigationCompleted(eventHandlerCompleted);
@@ -261,13 +259,13 @@ namespace winsdkfb
 		co_return _dialogResponse;
 	}
 
-	winrt::hstring FBDialog::GetRedirectUriString(
-		winrt::hstring DialogName
+	std::wstring FBDialog::GetRedirectUriString(
+		std::wstring DialogName
 	) {
-		auto session = FBSession::ActiveSession();
+		const auto session = FBSession::ActiveSession();
 		std::wstringstream resultStream;
 		resultStream << session->WebViewRedirectDomain().c_str() << session->WebViewRedirectPath().c_str();
-		hstring result(Uri::EscapeComponent(resultStream.str().c_str()));
+		wstring result(Uri::EscapeComponent(resultStream.str().c_str()));
 		OutputDebugString(result.c_str());
 		return result;
 	}
@@ -281,7 +279,7 @@ namespace winsdkfb
 	}
 
 	Windows::Foundation::Uri FBDialog::BuildLoginDialogUrl(
-		unordered_map<hstring, hstring> const parameters
+		unordered_map<wstring, wstring> const parameters
 	) {
 		auto session = FBSession::ActiveSession();
 		std::wstringstream uriString;
@@ -303,8 +301,8 @@ namespace winsdkfb
 
 		for (auto const& parameter : parameters)
 		{
-			hstring key = parameter.first;
-			hstring value = parameter.second;
+			auto key = parameter.first;
+			auto value = parameter.second;
 			if (!value.empty()) {
 				if (compare_ordinal(key.c_str(), ScopeKey) == 0) {
 					scope = value;
@@ -329,9 +327,9 @@ namespace winsdkfb
 	}
 
 	Windows::Foundation::Uri FBDialog::BuildFeedDialogUrl(
-		unordered_map<hstring, hstring> const parameters
+		unordered_map<wstring, wstring> const parameters
 	) {
-		auto session = FBSession::ActiveSession();
+		const auto session = FBSession::ActiveSession();
 		std::wstringstream apiVersion;
 		if (session->APIMajorVersion())
 		{
@@ -346,7 +344,7 @@ namespace winsdkfb
 			L"&display=popup" <<
 			L"&app_id=" << session->FBAppId().c_str();
 
-		hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
+		const hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
 		if (queryString.size() > 0)
 		{
 			dialogUriString << "&" << queryString.c_str();
@@ -356,9 +354,9 @@ namespace winsdkfb
 	}
 
 	Windows::Foundation::Uri FBDialog::BuildRequestsDialogUrl(
-		unordered_map<hstring, hstring> const parameters
+		unordered_map<wstring, wstring> const parameters
 	) {
-		auto session = FBSession::ActiveSession();
+		const auto session = FBSession::ActiveSession();
 		std::wstringstream apiVersion;
 		if (session->APIMajorVersion())
 		{
@@ -373,7 +371,7 @@ namespace winsdkfb
 			L"&display=popup" <<
 			L"&app_id=" << session->FBAppId().c_str();
 
-		hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
+		const hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
 		if (queryString.size() > 0)
 		{
 			dialogUriString << "&" << queryString.c_str();
@@ -383,9 +381,9 @@ namespace winsdkfb
 	}
 
 	Windows::Foundation::Uri FBDialog::BuildSendDialogUrl(
-		unordered_map<hstring, hstring> const parameters
+		unordered_map<wstring, wstring> const parameters
 	) {
-		auto session = FBSession::ActiveSession();
+		const auto session = FBSession::ActiveSession();
 		std::wstringstream apiVersion;
 		if (session->APIMajorVersion())
 		{
@@ -400,7 +398,7 @@ namespace winsdkfb
 			L"&display=popup" <<
 			L"&app_id=" << session->FBAppId().c_str();
 
-		hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
+		const hstring queryString(HttpManager::Instance()->ParametersToQueryString(parameters));
 		if (queryString.size() > 0)
 		{
 			dialogUriString << "&" << queryString.c_str();
@@ -413,12 +411,12 @@ namespace winsdkfb
 		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
-		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
-		DebugPrintLine(hstring(L"Path is ") + e.Uri().Path());
+		DebugPrintLine(wstring(L"Navigating to ") + e.Uri().DisplayUri());
+		DebugPrintLine(wstring(L"Path is ") + e.Uri().Path());
 
 		if (IsLoginSuccessRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
 			auto tokenData = FBAccessTokenData::FromUri(e.Uri());
 			if (tokenData.has_value())
@@ -427,15 +425,15 @@ namespace winsdkfb
 			}
 			else
 			{
-				auto err = FBError::FromJson(hstring(ErrorObjectJson));
+				auto err = FBError::FromJson(wstring(ErrorObjectJson));
 				SetDialogResponse(FBResult(err));
 			}
 		}
 		else if (IsDialogCloseRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
+			auto err = FBError::FromJson(wstring(ErrorObjectJson));
 			SetDialogResponse(FBResult(err));
 		}
 	}
@@ -444,39 +442,39 @@ namespace winsdkfb
 		Windows::UI::Xaml::Controls::WebView const& /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
-		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
-		DebugPrintLine(hstring(L"Path is ") + e.Uri().Path());
+		DebugPrintLine(wstring(L"Navigating to ") + e.Uri().DisplayUri());
+		DebugPrintLine(wstring(L"Path is ") + e.Uri().Path());
 
 		if (IsLoginSuccessRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			DebugPrintLine(hstring(L"Feed response is ") + e.Uri().DisplayUri());
+			DebugPrintLine(wstring(L"Feed response is ") + e.Uri().DisplayUri());
 
 			try {
 				auto request = FBFeedRequest::FromFeedDialogResponse(e.Uri());
 				SetDialogResponse(FBResult(request));
 			} catch(...) {
-				auto err = FBError::FromJson(hstring(ErrorObjectJson));
+				auto err = FBError::FromJson(wstring(ErrorObjectJson));
 				SetDialogResponse(FBResult(err));
 			}
 		}
 		else if (IsLogoutRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
 			DebugPrintLine(hstring(L"Feed response is ") + e.Uri().DisplayUri());
 			auto session = FBSession::ActiveSession();
 			session->LogoutAsync();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJsonLogout));
+			auto err = FBError::FromJson(wstring(ErrorObjectJsonLogout));
 			SetDialogResponse(FBResult(err));
 		}
 		else if (IsDialogCloseRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
+			auto err = FBError::FromJson(wstring(ErrorObjectJson));
 			SetDialogResponse(FBResult(err));
 		}
 	}
@@ -485,40 +483,40 @@ namespace winsdkfb
 		Windows::UI::Xaml::Controls::WebView const /*sender*/,
 		Windows::UI::Xaml::Controls::WebViewNavigationStartingEventArgs const& e
 	) {
-		DebugPrintLine(hstring(L"Navigating to ") + e.Uri().DisplayUri());
-		DebugPrintLine(hstring(L"Path is ") + e.Uri().Path());
+		DebugPrintLine(wstring(L"Navigating to ") + e.Uri().DisplayUri());
+		DebugPrintLine(wstring(L"Path is ") + e.Uri().Path());
 
 		if (IsLoginSuccessRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			DebugPrintLine(hstring(L"Request response is ") + e.Uri().DisplayUri());
+			DebugPrintLine(wstring(L"Request response is ") + e.Uri().DisplayUri());
 
 			try {
 				auto request = FacebookAppRequest::FromRequestDialogResponse(e.Uri());
 				SetDialogResponse(FBResult(request));
 			}
 			catch (...) {
-				auto err = FBError::FromJson(hstring(ErrorObjectJson));
+				auto err = FBError::FromJson(wstring(ErrorObjectJson));
 				SetDialogResponse(FBResult(err));
 			}
 		}
 		else if (IsLogoutRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
 			DebugPrintLine(hstring(L"Request response is ") + e.Uri().DisplayUri());
 			auto session = FBSession::ActiveSession();
 			session->LogoutAsync();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJsonLogout));
+			auto err = FBError::FromJson(wstring(ErrorObjectJsonLogout));
 			SetDialogResponse(FBResult(err));
 		}
 		else if (IsDialogCloseRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
+			auto err = FBError::FromJson(wstring(ErrorObjectJson));
 			SetDialogResponse(FBResult(err));
 		}
 	}
@@ -534,27 +532,27 @@ namespace winsdkfb
 		{
 			dialogWebBrowser.Stop();
 
-			UninitDialog();
+			UnInitDialog();
 
 			DebugPrintLine(hstring(L"Request response is ") + e.Uri().DisplayUri());
 			SetDialogResponse(FBResult(FBSendRequest()));
 		}
 		else if (IsLogoutRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
 			DebugPrintLine(hstring(L"Request response is ") + e.Uri().DisplayUri());
 			auto session = FBSession::ActiveSession();
 			session->LogoutAsync();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJsonLogout));
+			auto err = FBError::FromJson(wstring(ErrorObjectJsonLogout));
 			SetDialogResponse(FBResult(err));
 		}
 		else if (IsDialogCloseRedirect(e.Uri()))
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJson));
+			auto err = FBError::FromJson(wstring(ErrorObjectJson));
 			SetDialogResponse(FBResult(err));
 		}
 	}
@@ -565,9 +563,9 @@ namespace winsdkfb
 	) {
 		if (!e.IsSuccess())
 		{
-			UninitDialog();
+			UnInitDialog();
 
-			auto err = FBError::FromJson(hstring(ErrorObjectJsonNoInternet));
+			auto err = FBError::FromJson(wstring(ErrorObjectJsonNoInternet));
 			SetDialogResponse(FBResult(err));
 		}
 	}
@@ -576,16 +574,16 @@ namespace winsdkfb
 		Windows::Foundation::IInspectable const& /*sender*/,
 		Windows::UI::Xaml::RoutedEventArgs const& /*e*/
 	) {
-		UninitDialog();
+		UnInitDialog();
 
-		auto err = FBError::FromJson(hstring(ErrorObjectJson));
+		auto err = FBError::FromJson(wstring(ErrorObjectJson));
 		SetDialogResponse(FBResult(err));
 	}
 
 	bool FBDialog::IsLoginSuccessRedirect(
 		Windows::Foundation::Uri const&  response
 	) {
-		auto session = FBSession::ActiveSession();
+		const auto session = FBSession::ActiveSession();
 		return (compare_ordinal(response.Path().c_str(), session->WebViewRedirectPath().c_str()) == 0);
 	}
 
@@ -604,7 +602,7 @@ namespace winsdkfb
 	void FBDialog::OnSizeChanged(
 		Windows::UI::Core::CoreWindow const& sender,
 		Windows::UI::Core::WindowSizeChangedEventArgs const& /*args*/
-	) {
+	) const {
 		Height(sender.Bounds().Height);
 		Width(sender.Bounds().Width);
 	}

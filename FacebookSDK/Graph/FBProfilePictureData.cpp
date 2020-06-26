@@ -11,8 +11,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    FBProfilePicture FBProfilePictureData::Data()
-    {
+    FBProfilePicture FBProfilePictureData::Data() const {
         return _data;
     }
     void FBProfilePictureData::Data(FBProfilePicture value)
@@ -21,7 +20,7 @@ namespace winsdkfb::Graph
     }
 
     any FBProfilePictureData::FromJson(
-        hstring const& JsonText
+		wstring const& jsonText
     )
     {
         any result;
@@ -29,20 +28,20 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+					std::wstring key = current.Key().c_str();
                     if (key == L"data")
                     {
-                        auto profilePicture = FBProfilePicture::FromJson(current.Value().Stringify());
+                        auto profilePicture = FBProfilePicture::FromJson(current.Value().Stringify().c_str());
                         if (profilePicture.has_value()) {
                             found++;
-                            profilePictureData.Data(any_cast<FBProfilePicture>(profilePicture));
+                            profilePictureData._data = any_cast<FBProfilePicture>(profilePicture);
                         }
                     }
                 }

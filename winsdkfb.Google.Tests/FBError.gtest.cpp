@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "FBError.h"
-
 #include <winrt/Windows.Foundation.h>
 
 TEST(FBErrorTests, CreateInstance)
@@ -21,7 +20,7 @@ TEST(FBErrorTests, CreateInstance)
 TEST(FBErrorTests, CreationFromJson)
 {
 	// arrange
-	winrt::hstring json(L"{\"message\":\"message\", \"type\":\"type\"}");
+	std::wstring json(L"{\"message\":\"message\", \"type\":\"type\"}");
 
 	// act
 	auto fbError = winsdkfb::FBError::FromJson(json);
@@ -34,7 +33,7 @@ TEST(FBErrorTests, CreationFromJson)
 TEST(FBErrorTests, AnotherCreationFromJson)
 {
 	// arrange
-	winrt::hstring json(L"{\"error\": {\"message\": \"Message describing the error\", \"type\": \"OAuthException\", \"code\": 190, \"error_subcode\": 460, \"error_user_title\": \"A title\", \"error_user_msg\": \"A message\"}}");
+	std::wstring json(L"{\"error\": {\"message\": \"Message describing the error\", \"type\": \"OAuthException\", \"code\": 190, \"error_subcode\": 460, \"error_user_title\": \"A title\", \"error_user_msg\": \"A message\"}}");
 
 	// act
 	auto fbError = winsdkfb::FBError::FromJson(json);
@@ -43,7 +42,7 @@ TEST(FBErrorTests, AnotherCreationFromJson)
 	EXPECT_EQ(L"Message describing the error", fbError.Message());
 	EXPECT_EQ(L"OAuthException", fbError.Type());
 	EXPECT_EQ(190, fbError.Code());
-	EXPECT_EQ(460, fbError.Subcode());
+	EXPECT_EQ(460, fbError.SubCode());
 	EXPECT_EQ(L"A title", fbError.ErrorUserTitle());
 	EXPECT_EQ(L"A message", fbError.ErrorUserMessage());
 }
@@ -51,7 +50,7 @@ TEST(FBErrorTests, AnotherCreationFromJson)
 TEST(FBErrorTests, AppropriateFBErrorJsonMessage)
 {
 	// arrange
-	winrt::hstring json(L"{ \
+	std::wstring json(L"{ \
 				\"message\": \"Error validating access token: User USER_ID has not authorized application APP_ID.\", \
 				\"type\" : \"OAuthException\", \
 				\"code\" : 190, \
@@ -64,7 +63,7 @@ TEST(FBErrorTests, AppropriateFBErrorJsonMessage)
 	// assert
 	EXPECT_EQ(L"OAuthException", fbError.Type());
 	EXPECT_EQ(190, fbError.Code());
-	EXPECT_EQ(458, fbError.Subcode());
+	EXPECT_EQ(458, fbError.SubCode());
 }
 
 TEST(FBErrorTests, CreationFromUri)

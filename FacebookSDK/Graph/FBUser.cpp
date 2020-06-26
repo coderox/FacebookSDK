@@ -11,71 +11,63 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBUser::Id()
-    {
+    wstring FBUser::Id() const {
         return _id;
     }
-    void FBUser::Id(hstring const& value)
+	void FBUser::Id(wstring const& value)
     {
         _id = value;
     }
 
-    hstring FBUser::FirstName()
-    {
+    wstring FBUser::FirstName() const {
         return _first_name;
     }
-    void FBUser::FirstName(hstring const& value)
+	void FBUser::FirstName(wstring const& value)
     {
         _first_name = value;
     }
 
-    hstring FBUser::Gender()
-    {
+    wstring FBUser::Gender() const {
         return _gender;
     }
-    void FBUser::Gender(hstring const& value)
+	void FBUser::Gender(wstring const& value)
     {
         _gender = value;
     }
 
-    hstring FBUser::LastName()
-    {
+    wstring FBUser::LastName() const {
         return _last_name;
     }
-    void FBUser::LastName(hstring const& value)
+	void FBUser::LastName(wstring const& value)
     {
         _last_name = value;
     }
 
-    hstring FBUser::Email()
-    {
+    wstring FBUser::Email() const {
         return _email;
     }
-    void FBUser::Email(hstring const& value)
+	void FBUser::Email(wstring const& value)
     {
         _email = value;
     }
 
-    hstring FBUser::Link()
-    {
+    wstring FBUser::Link() const {
         return _link;
     }
-    void FBUser::Link(hstring const& value)
+	void FBUser::Link(wstring const& value)
     {
         _link = value;
     }
 
-    hstring FBUser::Locale()
-    {
+    wstring FBUser::Locale() const {
         return _locale;
     }
-    void FBUser::Locale(hstring const& value)
+	void FBUser::Locale(wstring const& value)
     {
         _locale = value;
     }
 
-    FBPage FBUser::Location()
-    {
+    FBPage FBUser::Location() const {
         return _location;
     }
     void FBUser::Location(FBPage value)
@@ -83,17 +75,15 @@ namespace winsdkfb::Graph
         _location = value;
     }
 
-    hstring FBUser::Name()
-    {
+    wstring FBUser::Name() const {
         return _name;
     }
-    void FBUser::Name(hstring const& value)
+	void FBUser::Name(wstring const& value)
     {
         _name = value;
     }
 
-    winsdkfb::Graph::FBProfilePictureData FBUser::Picture()
-    {
+    winsdkfb::Graph::FBProfilePictureData FBUser::Picture() const {
         return _picture;
     }
     void FBUser::Picture(FBProfilePictureData value)
@@ -101,8 +91,7 @@ namespace winsdkfb::Graph
         _picture = value;
     }
 
-    int FBUser::Timezone()
-    {
+    int FBUser::Timezone() const {
         return __timezone;
     }
     void FBUser::Timezone(int const& value)
@@ -110,17 +99,15 @@ namespace winsdkfb::Graph
         __timezone = value;
     }
 
-    hstring FBUser::UpdatedTime()
-    {
+    wstring FBUser::UpdatedTime() const {
         return _updated_time;
     }
-    void FBUser::UpdatedTime(hstring const& value)
+	void FBUser::UpdatedTime(wstring const& value)
     {
         _updated_time = value;
     }
 
-    bool FBUser::Verified()
-    {
+    bool FBUser::Verified() const {
         return _verified;
     }
     void FBUser::Verified(bool const& value)
@@ -129,7 +116,7 @@ namespace winsdkfb::Graph
     }
 
     any FBUser::FromJson(
-        hstring const& JsonText
+		wstring const& jsonText
     )
     {
         any result;
@@ -137,84 +124,84 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if (key == L"id")
                     {
                         found++;
-                        user.Id(current.Value().GetString());
+                        user._id = current.Value().GetString();
                     }
                     else if (key == L"first_name")
                     {
                         found++;
-                        user.FirstName(current.Value().GetString());
+                        user._first_name = current.Value().GetString();
                     }
                     else if (key == L"gender")
                     {
                         found++;
-                        user.Gender(current.Value().GetString());
+                        user._gender = current.Value().GetString();
                     }
                     else if (key == L"last_name")
                     {
                         found++;
-                        user.LastName(current.Value().GetString());
+                        user._last_name = current.Value().GetString();
                     }
                     else if (key == L"email")
                     {
                         found++;
-                        user.Email(current.Value().GetString());
+                        user._email = current.Value().GetString();
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        user.Link(current.Value().GetString());
+                        user._link = current.Value().GetString();
                     }
                     else if (key == L"locale")
                     {
                         found++;
-                        user.Locale(current.Value().GetString());
+                        user._locale = current.Value().GetString();
                     }
                     else if (key == L"location")
                     {
-                        auto page = FBPage::FromJson(current.Value().Stringify());
+                        auto page = FBPage::FromJson(current.Value().Stringify().c_str());
                         if (page.has_value()) {
                             found++;
-                            user.Location(any_cast<winsdkfb::Graph::FBPage>(page));
+                            user._location = any_cast<winsdkfb::Graph::FBPage>(page);
                         }
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        user.Name(current.Value().GetString());
+                        user._name = current.Value().GetString();
                     }
                     else if (key == L"picture")
                     {
-                        auto profilePictureData = FBProfilePictureData::FromJson(current.Value().Stringify());
+                        auto profilePictureData = FBProfilePictureData::FromJson(current.Value().Stringify().c_str());
                         if (profilePictureData.has_value()) {
                             found++;
-                            user.Picture(any_cast<FBProfilePictureData>(profilePictureData));
+                            user._picture = any_cast<FBProfilePictureData>(profilePictureData);
                         }
                     }
                     else if (key == L"timezone")
                     {
                         found++;
-                        user.Timezone(static_cast<int>(current.Value().GetNumber()));
+                        user.__timezone = static_cast<int>(current.Value().GetNumber());
                     }
                     else if (key == L"updated_time")
                     {
                         found++;
-                        user.UpdatedTime(current.Value().GetString());
+                        user._updated_time = current.Value().GetString();
                     }
                     else if (key == L"verified")
                     {
                         found++;
-                        user.Verified(current.Value().GetBoolean());
+                        user._verified = current.Value().GetBoolean();
                     }
                 }
 

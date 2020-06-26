@@ -16,7 +16,7 @@ TEST(FBPermissionsTests, CreateInstance)
 TEST(FBPermissionsTests, CreateInstanceFromString)
 {
 	// arrange
-	winrt::hstring requested_permissions =
+	std::wstring requested_permissions =
 		L"public_profile, user_friends,user_likes,user_location,publish_pages,manage_pages,user_posts";
 
 	// act
@@ -29,7 +29,7 @@ TEST(FBPermissionsTests, CreateInstanceFromString)
 TEST(FBPermissionsTests, CreateInstanceWithVector)
 {
 	// arrange
-	std::vector<winrt::hstring> requested_permissions = {
+	std::vector<std::wstring> requested_permissions = {
 		L"public_profile",
 		L"user_friends",
 		L"user_likes",
@@ -49,7 +49,7 @@ TEST(FBPermissionsTests, CreateInstanceWithVector)
 TEST(FBPermissionsTests, Difference)
 {
 	// arrange
-	std::vector<winrt::hstring> requested_permissions = {
+	std::vector<std::wstring> requested_permissions = {
 		L"public_profile",
 		L"user_friends",
 		L"user_likes",
@@ -59,7 +59,7 @@ TEST(FBPermissionsTests, Difference)
 		L"user_posts"
 	};
 
-	std::vector<winrt::hstring> declined_permissions = {
+	std::vector<std::wstring> declined_permissions = {
 		L"user_friends",
 		L"publish_pages",
 		L"user_posts"
@@ -77,7 +77,7 @@ TEST(FBPermissionsTests, Difference)
 TEST(FBPermissionsTests, ToString)
 {
 	// arrange
-	std::vector<winrt::hstring> requested_permissions = {
+	std::vector<std::wstring> requested_permissions = {
 		L"public_profile",
 		L"user_friends",
 		L"user_posts"

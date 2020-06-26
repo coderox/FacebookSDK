@@ -6,39 +6,41 @@ namespace winsdkfb::Graph
 {
     struct FBPage 
     {
+		FBPage() = default;
+    	
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
-        winrt::hstring Category();
-        void Category(winrt::hstring const& value);
+        std::wstring Category() const;
+        void Category(std::wstring const& value);
 
-        int Checkins();
-        void Checkins(int const& value);
+        int CheckIns() const;
+        void CheckIns(int const& value);
 
-        winrt::hstring Description();
-        void Description(winrt::hstring const& value);
+        std::wstring Description() const;
+        void Description(std::wstring const& value);
 
-        int Likes();
+        int Likes() const;
         void Likes(int const& value);
 
-        winrt::hstring Link();
-        void Link(winrt::hstring const& value);
+        std::wstring Link() const;
+        void Link(std::wstring const& value);
 
-        winrt::hstring Name();
-        void Name(winrt::hstring const& value);
+        std::wstring Name() const;
+        void Name(std::wstring const& value);
 
     private:
 
-        winrt::hstring _id;
-        winrt::hstring _category;
-        int _checkins;
-        winrt::hstring _description;
-        int _likes;
-        winrt::hstring _link;
-        winrt::hstring _name;
+        std::wstring _id;
+        std::wstring _category;
+        int _checkins = 0;
+        std::wstring _description;
+        int _likes = 0;
+        std::wstring _link;
+        std::wstring _name;
     };
 }

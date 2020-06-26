@@ -2,18 +2,18 @@
 
 #include "winrt/Windows.Foundation.Collections.h"
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
 
 namespace winsdkfb
 {
-	FBFeedRequest::FBFeedRequest(hstring postId)
-		: _postId(postId.c_str())
+	FBFeedRequest::FBFeedRequest(wstring postId)
+		: _postId(postId)
 	{
 	}
 
-	hstring FBFeedRequest::PostId()
-	{
+	wstring FBFeedRequest::PostId() const {
 		return _postId.c_str();
 	}
 
@@ -27,7 +27,7 @@ namespace winsdkfb
 			parameters = WwwFormUrlDecoder(response.Query());
 		}
 
-		hstring postId;
+		wstring postId;
 
 		for (unsigned int i = 0; parameters && i < parameters.Size(); i++)
 		{

@@ -7,26 +7,26 @@ namespace winsdkfb::Graph
     struct FBProfilePicture
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        int Height();
+        int Height() const;
         void Height(int const& value);
 
-        bool IsSilhouette();
+        bool IsSilhouette() const;
         void IsSilhouette(bool const& value);
 
-        winrt::hstring Url();
-        void Url(winrt::hstring const& value);
+        std::wstring Url() const;
+        void Url(std::wstring const& value);
 
-        int Width();
+        int Width() const;
         void Width(int const& value);
 
     private:
 
-        int _height;
-        bool _is_silhouette;
-        winrt::hstring _url;
-        int _width;
+        int _height = 0;
+        bool _is_silhouette = false;
+        std::wstring _url;
+        int _width = 0;
     };
 }

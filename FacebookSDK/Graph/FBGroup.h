@@ -6,39 +6,39 @@ namespace winsdkfb::Graph
 {
     struct FBGroup
     {
-        std::any FromJson(
-            winrt::hstring const& JsonText
+	    static std::any FromJson(
+            std::wstring const& jsonText
         );
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
-        winrt::hstring Description();
-        void Description(winrt::hstring const& value);
+        std::wstring Description() const;
+        void Description(std::wstring const& value);
 
-        winrt::hstring Email();
-        void Email(winrt::hstring const& value);
+        std::wstring Email() const;
+        void Email(std::wstring const& value);
 
-        winrt::hstring Icon();
-        void Icon(winrt::hstring const& value);
+        std::wstring Icon() const;
+        void Icon(std::wstring const& value);
 
-        winrt::hstring Link();
-        void Link(winrt::hstring const& value);
+        std::wstring Link() const;
+        void Link(std::wstring const& value);
 
-        winrt::hstring Name();
-        void Name(winrt::hstring const& value);
+        std::wstring Name() const;
+        void Name(std::wstring const& value);
 
-        winrt::hstring Privacy();
-        void Privacy(winrt::hstring const& value);
+        std::wstring Privacy() const;
+        void Privacy(std::wstring const& value);
 
     private:
 
-        winrt::hstring _id;
-        winrt::hstring _description;
-        winrt::hstring _email;
-        winrt::hstring _icon;
-        winrt::hstring _link;
-        winrt::hstring _name;
-        winrt::hstring _privacy;
+        std::wstring _id;
+        std::wstring _description;
+        std::wstring _email;
+        std::wstring _icon;
+        std::wstring _link;
+        std::wstring _name;
+        std::wstring _privacy;
     };
 }

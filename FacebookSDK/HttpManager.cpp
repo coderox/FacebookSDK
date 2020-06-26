@@ -20,23 +20,19 @@ namespace winsdkfb
 		_httpClient = httpClient;
 	}
 
-	IAsyncOperation<hstring> HttpManager::GetTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
-	{
+	concurrency::task<wstring> HttpManager::GetTaskAsync(wstring const path, unordered_map<wstring, wstring> const parameters) const {
 		return _httpClient->GetTaskAsync(path, parameters);
 	}
 
-	IAsyncOperation<hstring> HttpManager::PostTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
-	{
+	concurrency::task<wstring> HttpManager::PostTaskAsync(wstring const path, unordered_map<wstring, wstring> const parameters) const {
 		return _httpClient->PostTaskAsync(path, parameters);
 	}
 
-	IAsyncOperation<hstring> HttpManager::DeleteTaskAsync(hstring const path, unordered_map<hstring, hstring> const parameters)
-	{
+	concurrency::task<wstring> HttpManager::DeleteTaskAsync(wstring const path, unordered_map<wstring, wstring> const parameters) const {
 		return _httpClient->DeleteTaskAsync(path, parameters);
 	}
 
-	hstring HttpManager::ParametersToQueryString(unordered_map<hstring, hstring> const parameters)
-	{
+	wstring HttpManager::ParametersToQueryString(unordered_map<wstring, wstring> const parameters) const {
 		return _httpClient->ParametersToQueryString(parameters);
 	}
 

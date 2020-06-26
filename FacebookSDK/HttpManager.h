@@ -10,10 +10,10 @@ namespace winsdkfb
 		HttpManager(std::shared_ptr<winsdkfb::IHttpClient> httpClient);
 
 		void SetHttpClient(std::shared_ptr<winsdkfb::IHttpClient> httpClient);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		winrt::hstring ParametersToQueryString(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		concurrency::task<std::wstring> GetTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) const;
+		concurrency::task<std::wstring> PostTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) const;
+		concurrency::task<std::wstring> DeleteTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) const;
+		std::wstring ParametersToQueryString(std::unordered_map<std::wstring, std::wstring> const parameters) const;
 
 		static HttpManager* Instance();
 		static void TearDown();

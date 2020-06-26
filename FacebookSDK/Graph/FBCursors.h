@@ -7,18 +7,18 @@ namespace winsdkfb::Graph
     struct FBCursors 
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring After();
-        void After(winrt::hstring const& value);
+        std::wstring After() const;
+        void After(std::wstring const& value);
 
-        winrt::hstring Before();
-        void Before(winrt::hstring const& value);
+        std::wstring Before() const;
+        void Before(std::wstring const& value);
 
     private:
 
-        winrt::hstring _after;
-        winrt::hstring _before;
+        std::wstring _after;
+        std::wstring _before;
     };
 }

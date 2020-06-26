@@ -13,55 +13,55 @@ namespace winsdkfb
 		FBAccessTokenData() = default;
 		
 		FBAccessTokenData(
-			winrt::hstring const& accessToken, 
+			std::wstring const& accessToken, 
 			winrt::Windows::Foundation::DateTime const& expiration,
 			winrt::Windows::Foundation::DateTime const& dataAccessExpiration
 		);
 
 		FBAccessTokenData(
-			winrt::hstring const& accessToken,
+			std::wstring const& accessToken,
 			winrt::Windows::Foundation::DateTime const& expiration,
 			winrt::Windows::Foundation::DateTime const& dataAccessExpiration,
 			winsdkfb::FBPermissions& grantedPermissions,
 			winsdkfb::FBPermissions& declinedPermissions
 		);
 
-		winrt::hstring AccessToken();
-		winrt::Windows::Foundation::DateTime ExpirationDate();
-		winrt::Windows::Foundation::DateTime DataAccessExpirationDate();
-		winsdkfb::FBPermissions GrantedPermissions();
-		winsdkfb::FBPermissions DeclinedPermissions();
-		bool IsExpired();
-		bool IsDataAccessExpired();
+		std::wstring AccessToken() const;
+		winrt::Windows::Foundation::DateTime ExpirationDate() const;
+		winrt::Windows::Foundation::DateTime DataAccessExpirationDate() const;
+		winsdkfb::FBPermissions GrantedPermissions() const;
+		winsdkfb::FBPermissions DeclinedPermissions() const;
+		bool IsExpired() const;
+		bool IsDataAccessExpired() const;
 		/**
-		 * Since older tokens didn't have Data Access Expiration, we need to expose that
+		 * Since older tokens don't have Data Access Expiration, we need to expose that
 		 * @return true if the token has a data access expiration date, false otherwise.
 		 */
 		bool HasDataAccessExpirationDate(
-		) {
+		) const {
 			return _hasDataAccessExpirationDate;
 		}
 		void SetPermissions(std::vector<winsdkfb::Graph::FBPermission> const& perms);
 
-		static std::any FromUri(winrt::Windows::Foundation::Uri const& Response);
+		static std::any FromUri(winrt::Windows::Foundation::Uri const& response);
 		
 		FBAccessTokenData(
-			std::wstring AccessToken,
-			std::wstring Expiration,
-			std::wstring DataAccessExpiration
+			std::wstring accessToken,
+			std::wstring expiration,
+			std::wstring dataAccessExpiration
 		);
 		/**
 		 * Converts expiration string to DateTime object that indicates when
 		 * the access token will expire. This value may be accessed via
 		 * ExpirationDate.
-		 * @param Expiration The date to convert.
+		 * @param expiration The date to convert.
 		 */
 		void CalculateExpirationDateTime(
-			std::wstring expiration
+			std::wstring const& expiration
 		);
 
 		void CalculateDataAccessExpirationDateTime(
-			std::wstring expiration
+			std::wstring const& expiration
 		);
 
 		static winrt::Windows::Foundation::WwwFormUrlDecoder
@@ -71,7 +71,7 @@ namespace winsdkfb
 
 #ifdef _DEBUG
 		void DebugPrintExpirationTime(
-		);
+		) const;
 #endif
 
 		std::wstring _accessToken;

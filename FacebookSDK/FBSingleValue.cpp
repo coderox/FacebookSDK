@@ -2,6 +2,10 @@
 #include "SDKMessage.h"
 #include "HttpManager.h"
 
+//#if _DEBUG
+//#include <Windows.h>
+//#endif
+
 #include <winrt/Windows.Data.Json.h>
 
 using namespace std;
@@ -13,7 +17,7 @@ using namespace Windows::Data::Json;
 
 namespace winsdkfb
 {
-	FBSingleValue::FBSingleValue(hstring const& request, unordered_map<hstring, hstring> parameters, winsdkfb::JsonClassFactory objectFactory)
+	FBSingleValue::FBSingleValue(wstring const& request, unordered_map<wstring, wstring> parameters, winsdkfb::JsonClassFactory objectFactory)
 		: _request(request)
 		, _parameters(parameters)
 		, _objectFactory(objectFactory)
@@ -21,23 +25,19 @@ namespace winsdkfb
 
 	}
 
-	task<FBResult> FBSingleValue::GetAsync()
-	{
+	task<FBResult> FBSingleValue::GetAsync() const {
 		return MakeHttpRequest(winsdkfb::HttpMethod::Get);
 	}
 
-	task<FBResult> FBSingleValue::PostAsync()
-	{
+	task<FBResult> FBSingleValue::PostAsync() const {
 		return MakeHttpRequest(winsdkfb::HttpMethod::Post);
 	}
 
-	task<FBResult> FBSingleValue::DeleteAsync()
-	{
+	task<FBResult> FBSingleValue::DeleteAsync() const {
 		return MakeHttpRequest(winsdkfb::HttpMethod::Delete);
 	}
 
-	FBResult FBSingleValue::ConsumeSingleValue(hstring jsonText)
-	{
+	FBResult FBSingleValue::ConsumeSingleValue(wstring jsonText) const {
 		FBResult result;
 
 		JsonValue val{ nullptr };
@@ -60,7 +60,7 @@ namespace winsdkfb
 							auto key = current.Key();
 							if (key == L"error")
 							{
-								err = FBError::FromJson(current.Value().GetString());
+								err = FBError::FromJson(current.Value().GetString().c_str());
 								break;
 							}
 							else if (key == L"data")
@@ -68,7 +68,7 @@ namespace winsdkfb
 								if (current.Value().ValueType() != JsonValueType::Object) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
-								item = _objectFactory(current.Value().GetString());
+								item = _objectFactory(current.Value().GetString().c_str());
 								if (!item.has_value()) {
 									throw hresult_invalid_argument(SDKMessageBadObject);
 								}
@@ -90,22 +90,23 @@ namespace winsdkfb
 		return result;
 	}
 
-	task<FBResult> FBSingleValue::MakeHttpRequest(HttpMethod httpMethod)
-	{
+	task<FBResult> FBSingleValue::MakeHttpRequest(HttpMethod httpMethod) const {
 		hstring responseString;
 		switch (httpMethod)
 		{
 		case HttpMethod::Get:
-			responseString = co_await HttpManager::Instance()->GetTaskAsync(_request.c_str(), _parameters);
+			responseString = co_await HttpManager::Instance()->GetTaskAsync(_request, _parameters);
 			break;
 		case HttpMethod::Post:
-			responseString = co_await HttpManager::Instance()->PostTaskAsync(_request.c_str(), _parameters);
+			responseString = co_await HttpManager::Instance()->PostTaskAsync(_request, _parameters);
 			break;
 		case HttpMethod::Delete:
-			responseString = co_await HttpManager::Instance()->DeleteTaskAsync(_request.c_str(), _parameters);
+			responseString = co_await HttpManager::Instance()->DeleteTaskAsync(_request, _parameters);
 			break;
 		default:
-			//OutputDebugString(L"FBSingleValue::MakeHttpRequest recieved unknown HttpMethod value\n");
+#if _DEBUG
+			//OutputDebugString(L"FBSingleValue::MakeHttpRequest received unknown HttpMethod value\n");
+#endif
 			responseString = L"";
 			break;
 		}
@@ -115,7 +116,7 @@ namespace winsdkfb
 			co_return FBResult(error);
 		}
 		else {
-			co_return(ConsumeSingleValue(responseString));
+			co_return(ConsumeSingleValue(responseString.c_str()));
 		}
 	}
 }

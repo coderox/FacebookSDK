@@ -7,38 +7,38 @@ namespace winsdkfb::Graph
     struct FBAppRequest
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring ActionType();
-        void ActionType(winrt::hstring const& value);
+        std::wstring ActionType() const;
+        void ActionType(std::wstring const& value);
 
-        winrt::hstring CreatedTime();
-        void CreatedTime(winrt::hstring const& value);
+        std::wstring CreatedTime() const;
+        void CreatedTime(std::wstring const& value);
 
-        winrt::hstring Data();
-        void Data(winrt::hstring const& value);
+        std::wstring Data() const;
+        void Data(std::wstring const& value);
 
-        winsdkfb::Graph::FBUser From();
+        winsdkfb::Graph::FBUser From() const;
         void From(winsdkfb::Graph::FBUser value);
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
-        winrt::hstring Message();
-        void Message(winrt::hstring const& value);
+        std::wstring Message() const;
+        void Message(std::wstring const& value);
 
-        winsdkfb::Graph::FBUser To();
+        winsdkfb::Graph::FBUser To() const;
         void To(winsdkfb::Graph::FBUser value);
 
     private:
 
-        winrt::hstring _action_type;
-        winrt::hstring _created_time;
-        winrt::hstring _data;
+        std::wstring _action_type;
+        std::wstring _created_time;
+        std::wstring _data;
         winsdkfb::Graph::FBUser _from;
-        winrt::hstring _id;
-        winrt::hstring _message;
+        std::wstring _id;
+        std::wstring _message;
         winsdkfb::Graph::FBUser _to;
     };
 }

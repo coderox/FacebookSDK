@@ -31,7 +31,7 @@ namespace winsdkfb
 		}
 	}
 
-	bool FBResult::Succeeded() {
+	bool FBResult::Succeeded() const {
 		return _object.has_value();
 	}
 

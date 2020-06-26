@@ -25,7 +25,7 @@ namespace winsdkfb
 
 		}
 
-		bool Succeeded();
+		bool Succeeded() const;
 		winsdkfb::FBError ErrorInfo();
 	
 	private:

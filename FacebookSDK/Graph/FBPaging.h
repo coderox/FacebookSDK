@@ -7,22 +7,22 @@ namespace winsdkfb::Graph
     struct FBPaging
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winsdkfb::Graph::FBCursors Cursors();
+        winsdkfb::Graph::FBCursors Cursors() const;
         void Cursors(winsdkfb::Graph::FBCursors value);
 
-        winrt::hstring Next();
-        void Next(winrt::hstring const& value);
+        std::wstring Next() const;
+        void Next(std::wstring const& value);
 
-        winrt::hstring Previous();
-        void Previous(winrt::hstring const& value);
+        std::wstring Previous() const;
+        void Previous(std::wstring const& value);
 
     private:
 
         winsdkfb::Graph::FBCursors _cursors;
-        winrt::hstring _next;
-        winrt::hstring _previous;
+        std::wstring _next;
+        std::wstring _previous;
     };
 }

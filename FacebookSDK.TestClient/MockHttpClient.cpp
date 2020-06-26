@@ -4,27 +4,27 @@
 
 using namespace std;
 using namespace winrt;
-using namespace Windows::Foundation;
+using namespace concurrency;
 
-IAsyncOperation<hstring> MockHttpClient::GetTaskAsync(hstring path, unordered_map<hstring, hstring> const parameters)
+task<wstring> MockHttpClient::GetTaskAsync(wstring path, unordered_map<wstring, wstring> const parameters)
 {
 	co_return ResponseData();
 }
 
-IAsyncOperation<hstring> MockHttpClient::PostTaskAsync(
-	hstring path, unordered_map<hstring, hstring> const parameters
+task<wstring> MockHttpClient::PostTaskAsync(
+	wstring path, unordered_map<wstring, wstring> const parameters
 ) {
 	throw hresult_error(0, L"Not implemented yet");
 }
 
-IAsyncOperation<hstring> MockHttpClient::DeleteTaskAsync(
-	hstring path, unordered_map<hstring, hstring> const parameters
+task<wstring> MockHttpClient::DeleteTaskAsync(
+	wstring path, unordered_map<wstring, wstring> const parameters
 ) {
 	throw hresult_error(0, L"Not implemented yet");
 }
 
-hstring MockHttpClient::ParametersToQueryString(
-	unordered_map<hstring, hstring> const parameters
+wstring MockHttpClient::ParametersToQueryString(
+	unordered_map<wstring, wstring> const parameters
 ) {
 	throw hresult_error(0, L"Not implemented yet");
 }

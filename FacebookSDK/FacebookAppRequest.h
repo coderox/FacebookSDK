@@ -1,25 +1,25 @@
 ﻿#pragma once
-
+#include <vector>
 #include <winrt/Windows.Foundation.Collections.h>
 
 namespace winsdkfb
 {
 	struct FacebookAppRequest
 	{
-		FacebookAppRequest() { };
+		FacebookAppRequest() = default;
 
 		FacebookAppRequest(
-			winrt::hstring requestId,
-			const winrt::Windows::Foundation::Collections::IVector<winrt::hstring> & recipients
+			std::wstring const& requestId,
+			std::vector<std::wstring> recipients
 		);
 
 	public:
-		winrt::hstring RequestId();
-		winrt::Windows::Foundation::Collections::IVectorView<winrt::hstring> RecipientIds();
+		std::wstring RequestId() const;
+		std::vector<std::wstring> RecipientIds() const;
 
-		static winsdkfb::FacebookAppRequest FromRequestDialogResponse(winrt::Windows::Foundation::Uri response);
+		static winsdkfb::FacebookAppRequest FromRequestDialogResponse(winrt::Windows::Foundation::Uri const& response);
 	private:
-		winrt::Windows::Foundation::Collections::IVector<winrt::hstring> _recipients;
+		std::vector<std::wstring> _recipients;
 		std::wstring _requestId;
 	};
 }

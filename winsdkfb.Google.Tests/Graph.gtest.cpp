@@ -10,7 +10,7 @@
 TEST(GraphTests, CreateFBUserFromJson)
 {
 	// arrange
-	winrt::hstring json(USER_REQUEST);
+	std::wstring json(USER_REQUEST);
 
 	// act
 	auto user = std::any_cast<winsdkfb::Graph::FBUser>(winsdkfb::Graph::FBUser::FromJson(json));
@@ -28,7 +28,7 @@ TEST(GraphTests, CreateFBUserFromJson)
 TEST(GraphTests, CreateFBProfilePictureFromJson)
 {
 	// arrange
-	winrt::hstring json(USER_PROFILE_PICTURE_REQUEST);
+	std::wstring json(USER_PROFILE_PICTURE_REQUEST);
 
 	// act
 	auto profilePicture = std::any_cast<winsdkfb::Graph::FBProfilePicture>(winsdkfb::Graph::FBProfilePicture::FromJson(json));
@@ -44,7 +44,7 @@ TEST(GraphTests, CreateFBProfilePictureFromJson)
 TEST(GraphTests, CreateFBProfilePictureDataFromJson)
 {
 	// arrange
-	winrt::hstring json(USER_PROFILE_PICTURE_DATA_REQUEST);
+	std::wstring json(USER_PROFILE_PICTURE_DATA_REQUEST);
 
 	// act
 	auto profilePicture = std::any_cast<winsdkfb::Graph::FBProfilePictureData>(winsdkfb::Graph::FBProfilePictureData::FromJson(json));

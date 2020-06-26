@@ -11,8 +11,7 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    int FBProfilePicture::Height()
-    {
+    int FBProfilePicture::Height() const {
         return _height;
     }
     void FBProfilePicture::Height(int const& value)
@@ -20,8 +19,7 @@ namespace winsdkfb::Graph
         _height = value;
     }
 
-    bool FBProfilePicture::IsSilhouette()
-    {
+    bool FBProfilePicture::IsSilhouette() const {
         return _is_silhouette;
     }
     void FBProfilePicture::IsSilhouette(bool const& value)
@@ -29,17 +27,15 @@ namespace winsdkfb::Graph
         _is_silhouette = value;
     }
 
-    hstring FBProfilePicture::Url()
-    {
+    wstring FBProfilePicture::Url() const {
         return _url;
     }
-    void FBProfilePicture::Url(hstring const& value)
+	void FBProfilePicture::Url(wstring const& value)
     {
         _url = value;
     }
 
-    int FBProfilePicture::Width()
-    {
+    int FBProfilePicture::Width() const {
         return _width;
     }
     void FBProfilePicture::Width(int const& value)
@@ -48,7 +44,7 @@ namespace winsdkfb::Graph
     }
 
     any FBProfilePicture::FromJson(
-        hstring const& JsonText
+		wstring const& jsonText
     )
     {
         any result;
@@ -56,33 +52,33 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if (key == L"height")
                     {
                         found++;
-                        profilePicture.Height(static_cast<int>(current.Value().GetNumber()));
+                        profilePicture._height = static_cast<int>(current.Value().GetNumber());
                     }
                     else if (key == L"is_silhouette")
                     {
                         found++;
-                        profilePicture.IsSilhouette(current.Value().GetBoolean());
+                        profilePicture._is_silhouette = current.Value().GetBoolean();
                     }
                     else if (key == L"url")
                     {
                         found++;
-                        profilePicture.Url(current.Value().GetString());
+                        profilePicture._url = current.Value().GetString();
                     }
                     else if (key == L"width")
                     {
                         found++;
-                        profilePicture.Width(static_cast<int>(current.Value().GetNumber()));
+                        profilePicture._width = static_cast<int>(current.Value().GetNumber());
                     }
                 }
 

@@ -7,35 +7,29 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb
 {
-	hstring FacebookAppRequest::RequestId()
-	{
+	wstring FacebookAppRequest::RequestId() const {
 		return _requestId.c_str();
 	}
 
-	IVectorView<winrt::hstring> FacebookAppRequest::RecipientIds()
-	{
-		if (_recipients == nullptr) {
-			return winrt::single_threaded_vector<hstring>().GetView();	
-		} else {
-			return _recipients.GetView();
-		}
+	vector<wstring> FacebookAppRequest::RecipientIds() const {
+		return _recipients;
 	}
 
-	winsdkfb::FacebookAppRequest FacebookAppRequest::FromRequestDialogResponse(Windows::Foundation::Uri response)
+	FacebookAppRequest FacebookAppRequest::FromRequestDialogResponse(Uri const& response)
 	{
-		winsdkfb::FacebookAppRequest info;
-		hstring requestId;
-		auto recips{ single_threaded_vector<hstring>() };
+		FacebookAppRequest info;
+		wstring requestId;
+		vector<wstring> recipients;
 
 		if (!response.Query().empty())
 		{
-			WwwFormUrlDecoder parameters(response.Query());
+			const WwwFormUrlDecoder parameters(response.Query());
 
-			hstring postId;
+			wstring postId;
 
 			for (unsigned int i = 0; i < parameters.Size(); i++)
 			{
-				IWwwFormUrlDecoderEntry entry = parameters.GetAt(i);
+				auto entry = parameters.GetAt(i);
 				wstring name(entry.Name().c_str());
 
 				if (name == L"request")
@@ -44,13 +38,13 @@ namespace winsdkfb
 				}
 				else if (name.find(L"to[") == 0)
 				{
-					recips.Append(entry.Value());
+					recipients.push_back(entry.Value().c_str());
 				}
 			}
 
-			if (!requestId.empty() && (recips.Size() > 0))
+			if (!requestId.empty())
 			{
-				info = FacebookAppRequest(requestId, recips);
+				info = FacebookAppRequest(requestId, recipients);
 			}
 		}
 
@@ -58,9 +52,8 @@ namespace winsdkfb
 	}
 
 	FacebookAppRequest::FacebookAppRequest(
-		winrt::hstring requestId,
-		const IVector<winrt::hstring>& recipients
-	)
+		wstring const& requestId,
+		vector<wstring> recipients)
 		: _recipients(recipients)
 		, _requestId(requestId)
 	{

@@ -18,7 +18,7 @@ using namespace Windows::Web::Http::Filters;
 
 namespace winsdkfb
 {
-	FBPaginatedArray::FBPaginatedArray(hstring const& request, unordered_map<hstring, hstring> parameters, winsdkfb::JsonClassFactory const& objectFactory)
+	FBPaginatedArray::FBPaginatedArray(wstring const& request, unordered_map<wstring, wstring> parameters, winsdkfb::JsonClassFactory const& objectFactory)
 		: _currentDataString(L"")
 		, _request(request)
 		, _parameters(parameters)
@@ -52,8 +52,7 @@ namespace winsdkfb
 		co_return co_await GetPageAsync(_paging.Previous().c_str());
 	}
 
-	vector<FBResult> FBPaginatedArray::Current()
-	{
+	vector<FBResult> FBPaginatedArray::Current() const {
 		if (!HasCurrent())
 		{
 			throw hresult_invalid_argument(SDKMessageBadCall);
@@ -62,8 +61,7 @@ namespace winsdkfb
 		return _current;
 	}
 
-	hstring FBPaginatedArray::CurrentDataString()
-	{
+	wstring FBPaginatedArray::CurrentDataString() const {
 		if (!HasCurrent())
 		{
 			throw hresult_invalid_argument(SDKMessageBadCall);
@@ -72,33 +70,31 @@ namespace winsdkfb
 		return _currentDataString.c_str();
 	}
 
-	bool FBPaginatedArray::HasCurrent()
-	{
+	bool FBPaginatedArray::HasCurrent() const {
 		return !_current.empty();
 	}
 
-	bool FBPaginatedArray::HasNext()
-	{
+	bool FBPaginatedArray::HasNext() const {
 		return(!_paging.Next().empty());
 	}
 
-	bool FBPaginatedArray::HasPrevious()
-	{
+	bool FBPaginatedArray::HasPrevious() const {
 		return(!_paging.Previous().empty());
 	}
 
-	vector<FBResult> FBPaginatedArray::VectorFromWebResponse(hstring const& Response, winsdkfb::JsonClassFactory const& classFactory)
+	vector<FBResult> FBPaginatedArray::VectorFromWebResponse(wstring const& Response, winsdkfb::JsonClassFactory const& classFactory)
 	{
 		vector<FBResult> result;
 		JsonObject rootObject = nullptr;
 
 		if (JsonObject::TryParse(Response, rootObject))
 		{
-			IIterator<IKeyValuePair<hstring, IJsonValue>> it = nullptr;
-			for (it = rootObject.First(); it.HasCurrent(); it.MoveNext())
+			for (const auto it = rootObject.First(); 
+			     it.HasCurrent(); 
+			     it.MoveNext())
 			{
-				hstring key = it.Current().Key();
-				JsonValueType t = it.Current().Value().ValueType();
+				auto key = it.Current().Key();
+				const auto t = it.Current().Value().ValueType();
 
 				if ((compare_ordinal(key.c_str(), L"data") == 0) &&
 					(t == JsonValueType::Array))
@@ -119,7 +115,7 @@ namespace winsdkfb
 
 		for (auto const& current : values)
 		{
-			auto jsonText = current.Stringify();
+			const auto jsonText = current.Stringify().c_str();
 			auto item = classFactory(jsonText);
 			if (!item.Succeeded()) {
 				throw hresult_invalid_argument(SDKMessageBadObject);
@@ -135,7 +131,6 @@ namespace winsdkfb
 	) {
 		winsdkfb::FBResult result;
 		JsonValue value{ nullptr };
-		bool foundPaging = false;
 		bool foundData = false;
 		bool foundError = false;
 
@@ -150,17 +145,16 @@ namespace winsdkfb
 				{
 					if (compare_ordinal(it.Current().Key().c_str(), L"error") == 0)
 					{
-						auto err = FBError::FromJson(it.Current().Value().Stringify());
+						auto err = FBError::FromJson(it.Current().Value().Stringify().c_str());
 						result = FBResult(err);
 						foundError = true;
 						break;
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"paging") == 0)
 					{
-						auto paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify());
+						auto paging = Graph::FBPaging::FromJson(it.Current().Value().Stringify().c_str());
 						if (paging.has_value()) {
 							_paging = any_cast<Graph::FBPaging>(paging);
-							foundPaging = true;
 						}
 					}
 					else if (compare_ordinal(it.Current().Key().c_str(), L"data") == 0)
@@ -172,10 +166,7 @@ namespace winsdkfb
 
 						_currentDataString = it.Current().Value().as<IStringable>().ToString();
 						_current = VectorFromJsonArray(it.Current().Value().GetArray(), _objectFactory);
-						//if (!_current.empty())
-						//{
 						foundData = true;
-						//}
 					}
 				}
 			}
@@ -197,8 +188,8 @@ namespace winsdkfb
 		return result;
 	}
 
-	task<winsdkfb::FBResult> FBPaginatedArray::GetPageAsync(hstring path) {
-		hstring responseString = co_await HttpManager::Instance()->GetTaskAsync(path, _parameters);
+	task<winsdkfb::FBResult> FBPaginatedArray::GetPageAsync(wstring path) {
+		const wstring responseString = co_await HttpManager::Instance()->GetTaskAsync(path, _parameters);
 		if (responseString.empty())
 		{
 			co_return FBResult(FBError(0, L"HTTP request failed", L"unable to receive response"));

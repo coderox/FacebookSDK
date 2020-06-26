@@ -2,60 +2,61 @@
 #include <sstream>
 #include "Utilities.h"
 
-using namespace winrt;
 using namespace std;
+using namespace winrt;
 using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb
 {
-	FBPermissions::FBPermissions(vector<hstring> permissions)
+	FBPermissions::FBPermissions(std::vector<wstring> permissions)
 		: _values(permissions)
 	{
 	}
 
-	vector<hstring> FBPermissions::Values() const
+	std::vector<wstring> FBPermissions::Values() const
 	{
 		return _values;
 	}
 
-	hstring FBPermissions::ToString() const
+	wstring FBPermissions::ToString() const
 	{
-		hstring permissions;
+		wstring permissions;
 		if (!_values.empty())
 		{
-			std::wstringstream wstringstream;
+			wstringstream permissionsStream;
 			for (unsigned int i = 0; i < _values.size(); i++)
 			{
 				if (i)
 				{
-					wstringstream << L",";
+					permissionsStream << L",";
 				}
-				wstringstream << _values.at(i).c_str();
+				permissionsStream << _values[i].c_str();
 			}
-			permissions = wstringstream.str().c_str();
+			permissions = permissionsStream.str().c_str();
 		}
 
 		return permissions;
 	}
 
-	FBPermissions FBPermissions::FromString(hstring const& permissions)
+	FBPermissions FBPermissions::FromString(wstring const& permissions)
 	{
-		return FBPermissions(ParsePermissionsFromString(permissions));
+		const auto parsedPermissions = ParsePermissionsFromString(permissions);
+		return FBPermissions(parsedPermissions);
 	}
 
 	FBPermissions FBPermissions::Difference(const FBPermissions& Minuend, const FBPermissions& Subtrahend)
 	{
-		vector<hstring> remainingPermissions;
+		std::vector<wstring> remainingPermissions;
 		// stick each permissions into vector manually since copy constructor won't work with IVectorView
-		for (hstring const& perm : Minuend.Values())
+		for (wstring const& perm : Minuend.Values())
 		{
 			remainingPermissions.push_back(perm);
 		}
-		for (hstring const& otherPerm : Subtrahend.Values())
+		for (wstring const& otherPerm : Subtrahend.Values())
 		{
 			for (unsigned int i = 0; i < remainingPermissions.size(); ++i)
 			{
-				hstring perm = remainingPermissions.at(i);
+				wstring perm = remainingPermissions.at(i);
 				if (compare_ordinal(perm.c_str(), otherPerm.c_str()) == 0)
 				{
 					remainingPermissions.erase(remainingPermissions.begin() + i);
@@ -66,11 +67,11 @@ namespace winsdkfb
 		return FBPermissions(remainingPermissions);
 	}
 
-	vector<hstring> FBPermissions::ParsePermissionsFromString(hstring const& permissions) {
-		const int bufferSize = 64;
-		wstring wstringPermissions = permissions.c_str();
-		wstringstream wss{ wstringPermissions };
-		vector<hstring> parsedPermissions;
+	std::vector<wstring> FBPermissions::ParsePermissionsFromString(const std::wstring& permissions) {
+		const auto bufferSize = 64;
+		const std::wstring wPermissions = permissions.c_str();
+		std::wstringstream wss{ wPermissions };
+		std::vector<wstring> parsedPermissions;
 		wchar_t temp[bufferSize];
 		while (true)
 		{
@@ -79,7 +80,7 @@ namespace winsdkfb
 				break;
 			}
 			wss.getline(temp, bufferSize, L',');
-			parsedPermissions.push_back(hstring(temp));
+			parsedPermissions.emplace_back(wstring(temp));
 		}
 		return parsedPermissions;
 	}

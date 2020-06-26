@@ -11,44 +11,39 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBPage::Id()
-    {
+    wstring FBPage::Id() const {
         return _id;
     }
-    void FBPage::Id(hstring const& value)
+	void FBPage::Id(wstring const& value)
     {
         _id = value;
     }
 
-    hstring FBPage::Category()
-    {
+    wstring FBPage::Category() const {
         return _category;
     }
-    void FBPage::Category(hstring const& value)
+	void FBPage::Category(wstring const& value)
     {
         _category = value;
     }
 
-    int FBPage::Checkins()
-    {
+    int FBPage::CheckIns() const {
         return _checkins;
     }
-    void FBPage::Checkins(int const& value)
+	void FBPage::CheckIns(int const& value)
     {
         _checkins = value;
     }
 
-    hstring FBPage::Description()
-    {
+    wstring FBPage::Description() const {
         return _description;
     }
-    void FBPage::Description(hstring const& value)
+	void FBPage::Description(wstring const& value)
     {
         _description = value;
     }
 
-    int FBPage::Likes()
-    {
+    int FBPage::Likes() const {
         return _likes;
     }
     void FBPage::Likes(int const& value)
@@ -56,75 +51,73 @@ namespace winsdkfb::Graph
         _likes = value;
     }
 
-    hstring FBPage::Link()
-    {
+    wstring FBPage::Link() const {
         return _link;
     }
-    void FBPage::Link(hstring const& value)
+    void FBPage::Link(wstring const& value)
     {
         _link = value;
     }
 
-    hstring FBPage::Name()
-    {
+    wstring FBPage::Name() const {
         return _name;
     }
-    void FBPage::Name(hstring const& value)
+	void FBPage::Name(wstring const& value)
     {
         _name = value;
     }
 
     any FBPage::FromJson(
-        hstring const& JsonText
+		wstring const& jsonText
     )
     {
         any result;
         FBPage page;
-        int found = 0;
+        auto found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
-                JsonObject obj = val.GetObject();
+	            auto obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+	                auto key = current.Key();
                     if (key == L"id")
                     {
                         found++;
-                        page.Id(current.Value().GetString());
+                        page._id = current.Value().GetString();
                     }
                     else if (key == L"category")
                     {
                         found++;
-                        page.Category(current.Value().GetString());
+                        page._category = current.Value().GetString();
                     }
                     else if (key == L"checkins")
                     {
                         found++;
-                        page.Checkins(static_cast<int>(current.Value().GetNumber()));
+						page.CheckIns(static_cast<int>(current.Value().GetNumber()));
                     }
                     else if (key == L"description")
                     {
                         found++;
-                        page.Description(current.Value().GetString());
+                        page._description = current.Value().GetString();
                     }
                     else if (key == L"likes")
                     {
                         found++;
-                        page.Likes(static_cast<int>(current.Value().GetNumber()));
+                        page._likes = static_cast<int>(current.Value().GetNumber());
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        page.Link(current.Value().GetString());
+                        page._link = current.Value().GetString();
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        page.Name(current.Value().GetString());
+                        page._name = current.Value().GetString();
                     }
                 }
 

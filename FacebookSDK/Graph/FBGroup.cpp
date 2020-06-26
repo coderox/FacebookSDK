@@ -11,120 +11,113 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBGroup::Id()
-    {
+    wstring FBGroup::Id() const {
         return _id;
     }
-    void FBGroup::Id(hstring const& value)
+	void FBGroup::Id(wstring const& value)
     {
         _id = value;
     }
 
-    hstring FBGroup::Description()
-    {
+    wstring FBGroup::Description() const {
         return _description;
     }
-    void FBGroup::Description(hstring const& value)
+	void FBGroup::Description(wstring const& value)
     {
         _description = value;
     }
 
-    hstring FBGroup::Email()
-    {
+    wstring FBGroup::Email() const {
         return _email;
     }
-    void FBGroup::Email(hstring const& value)
+	void FBGroup::Email(wstring const& value)
     {
         _email = value;
     }
 
-    hstring FBGroup::Icon()
-    {
+    wstring FBGroup::Icon() const {
         return _icon;
     }
-    void FBGroup::Icon(hstring const& value)
+	void FBGroup::Icon(wstring const& value)
     {
         _icon = value;
     }
 
-    hstring FBGroup::Link()
-    {
+    wstring FBGroup::Link() const {
         return _link;
     }
-    void FBGroup::Link(hstring const& value)
+	void FBGroup::Link(wstring const& value)
     {
         _link = value;
     }
 
-    hstring FBGroup::Name()
-    {
+    wstring FBGroup::Name() const {
         return _name;
     }
-    void FBGroup::Name(hstring const& value)
+	void FBGroup::Name(wstring const& value)
     {
         _name = value;
     }
 
-    hstring FBGroup::Privacy()
-    {
+    wstring FBGroup::Privacy() const {
         return _privacy;
     }
-    void FBGroup::Privacy(hstring const& value)
+	void FBGroup::Privacy(wstring const& value)
     {
         _privacy = value;
     }
 
     any FBGroup::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
         FBGroup group;
-        int found = 0;
+        auto found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
-                JsonObject obj = val.GetObject();
+	            auto obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    auto key = current.Key();
                     if  (key == L"id")
                     {
                         found++;
-                        group.Id(current.Value().GetString());
+                        group.Id(current.Value().GetString().c_str());
                     }
                     else if (key == L"description")
                     {
                         found++;
-                        group.Description(current.Value().GetString());
+						group.Description(current.Value().GetString().c_str());
                     }
                     else if (key == L"email")
                     {
                         found++;
-                        group.Email(current.Value().GetString());
+						group.Email(current.Value().GetString().c_str());
                     }
                     else if (key == L"icon")
                     {
                         found++;
-                        group.Icon(current.Value().GetString());
+						group.Icon(current.Value().GetString().c_str());
                     }
                     else if (key == L"link")
                     {
                         found++;
-                        group.Link(current.Value().GetString());
+						group.Link(current.Value().GetString().c_str());
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        group.Name(current.Value().GetString());
+						group.Name(current.Value().GetString().c_str());
                     }
                     else if (key == L"privacy")
                     {
                         found++;
-                        group.Privacy(current.Value().GetString());
+						group.Privacy(current.Value().GetString().c_str());
                     }
                 }
 

@@ -4,13 +4,14 @@
 #include <regex>
 #include <sstream>
 
+using namespace std;
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb
 {
-	GraphUriBuilder::GraphUriBuilder(hstring const& path)
+	GraphUriBuilder::GraphUriBuilder(wstring const& path)
 	{
 		Uri testUri{ nullptr };
 		bool buildDomain = false;
@@ -28,7 +29,7 @@ namespace winsdkfb
 
 		if (buildDomain)
 		{
-			hstring domain(L"https://graph.facebook.com/");
+			const hstring domain(L"https://graph.facebook.com/");
 			testUri = Uri(domain + path);
 		}
 		_host = testUri.Host();
@@ -64,23 +65,22 @@ namespace winsdkfb
 		return Uri(fullPath);
 	}
 
-	void GraphUriBuilder::AddQueryParam(hstring const& query, hstring const& param)
-	{
+	void GraphUriBuilder::AddQueryParam(wstring const& query, wstring const& param) const {
 		_queryParams.Insert(query, box_value(param));
 	}
 
 	void GraphUriBuilder::BuildApiVersionString() {
-		std::wstring regexString = LR"__(^.?(v\d\.\d)(.*))__";
-		std::wregex apiRegex{ regexString };
-		std::wsmatch match;
-		std::wstring searchString{ _path.c_str() };
-		std::regex_match(searchString, match, apiRegex);
+		wstring regexString = LR"__(^.?(v\d\.\d)(.*))__";
+		wregex apiRegex{ regexString };
+		wsmatch match;
+		wstring searchString{ _path.c_str() };
+		regex_match(searchString, match, apiRegex);
 		if (match.size() >= 3) // 1 for matched string + 2 for each capture group
 		{
-			std::wstring apiString = match[1].str();
+			wstring apiString = match[1].str();
 			_apiVersion = apiString.c_str();
 			// need to adjust _path so that the api version doesn't get added twice
-			std::wstring newPath = match[2].str();
+			wstring newPath = match[2].str();
 			_path = newPath.c_str();
 		}
 		else
@@ -88,18 +88,18 @@ namespace winsdkfb
 			auto session = FBSession::ActiveSession();
 			if (session->APIMajorVersion())
 			{
-				std::wstringstream wstringstream;
-				wstringstream << L"v" << session->APIMajorVersion() << L"." << session->APIMinorVersion();
-				_apiVersion = wstringstream.str().c_str();
+				wstringstream apiVersionStream;
+				apiVersionStream << L"v" << session->APIMajorVersion() << L"." << session->APIMinorVersion();
+				_apiVersion = apiVersionStream.str().c_str();
 			}
 		}
 	}
 
 	void GraphUriBuilder::FixPathDelimiters() {
 		hstring fixedPath;
-		std::wstring originalPath{ _path.c_str() };
-		std::wistringstream iss{ originalPath };
-		std::wstring token;
+		const wstring originalPath{ _path.c_str() };
+		wistringstream iss{ originalPath };
+		wstring token;
 		while (std::getline(iss, token, L'/'))
 		{
 			if (token.size() > 0)
@@ -110,7 +110,7 @@ namespace winsdkfb
 		_path = fixedPath;
 	}
 
-	void GraphUriBuilder::DecodeQueryParams(Uri const& uri) {
+	void GraphUriBuilder::DecodeQueryParams(Uri const& uri) const {
 		WwwFormUrlDecoder decoder(uri.QueryParsed());
 		if (decoder.Size() > 0)
 		{

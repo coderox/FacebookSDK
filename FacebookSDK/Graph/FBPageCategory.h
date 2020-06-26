@@ -7,18 +7,18 @@ namespace winsdkfb::Graph
     struct FBPageCategory
     {
         static std::any FromJson(
-            winrt::hstring const& JsonText
+            std::wstring const& jsonText
         );
 
-        winrt::hstring Id();
-        void Id(winrt::hstring const& value);
+        std::wstring Id() const;
+        void Id(std::wstring const& value);
 
-        winrt::hstring Name();
-        void Name(winrt::hstring const& value);
+        std::wstring Name() const;
+        void Name(std::wstring const& value);
 
     private:
 
-        winrt::hstring _id;
-        winrt::hstring _name;
+        std::wstring _id;
+        std::wstring _name;
     };
 }

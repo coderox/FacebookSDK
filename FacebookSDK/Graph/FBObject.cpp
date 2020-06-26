@@ -11,17 +11,16 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBObject::Id()
-    {
+    wstring FBObject::Id() const {
         return _id;
     }
-    void FBObject::Id(hstring const& value)
+	void FBObject::Id(wstring const& value)
     {
         _id = value;
     }
 
     any FBObject::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
@@ -29,18 +28,18 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if  (key == L"id")
                     {
                         found++;
-                        object.Id(current.Value().GetString());
+                        object._id = current.Value().GetString();
                     }
                 }
 

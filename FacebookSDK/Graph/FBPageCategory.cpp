@@ -11,26 +11,24 @@ using namespace Windows::Foundation::Collections;
 
 namespace winsdkfb::Graph
 {
-    hstring FBPageCategory::Id()
-    {
+    wstring FBPageCategory::Id() const {
         return _id;
     }
-    void FBPageCategory::Id(hstring const& value)
+	void FBPageCategory::Id(wstring const& value)
     {
         _id = value;
     }
 
-    hstring FBPageCategory::Name()
-    {
+    wstring FBPageCategory::Name() const {
         return _name;
     }
-    void FBPageCategory::Name(hstring const& value)
+	void FBPageCategory::Name(wstring const& value)
     {
         _name = value;
     }
 
     any FBPageCategory::FromJson(
-        hstring const& JsonText 
+		wstring const& jsonText 
         )
     {
         any result;
@@ -38,23 +36,23 @@ namespace winsdkfb::Graph
         int found = 0;
         JsonValue val{ nullptr };
 
-        if (JsonValue::TryParse(JsonText, val))
+        if (JsonValue::TryParse(jsonText, val))
         {
             if (val.ValueType() == JsonValueType::Object)
             {
                 JsonObject obj = val.GetObject();
                 for (auto&& current : obj)
                 {
-                    winrt::hstring key = current.Key();
+                    std::wstring key = current.Key().c_str();
                     if  (key == L"id")
                     {
                         found++;
-                        pageCategory.Id(current.Value().GetString());
+                        pageCategory._id = current.Value().GetString();
                     }
                     else if (key == L"name")
                     {
                         found++;
-                        pageCategory.Name(current.Value().GetString());
+                        pageCategory._name = current.Value().GetString();
                     }
                 }
 

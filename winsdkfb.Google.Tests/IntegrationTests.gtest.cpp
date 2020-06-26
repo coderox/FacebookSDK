@@ -22,12 +22,12 @@ TEST(IntegrationTests, MessagePolling) {
 	auto graphPath = L"/12345/apprequests";
 
 	// Properties
-	std::unordered_map<winrt::hstring, winrt::hstring> properties;
-	winrt::hstring data(L"data");
+	std::unordered_map<std::wstring, std::wstring> properties;
+	std::wstring data(L"data");
 	properties[L"fields"] = data;
 
 	// Conversion
-	winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult {
+	winsdkfb::JsonClassFactory fact = [](std::wstring JsonText) -> winsdkfb::FBResult {
 		int numberOfMessages = 0;
 		try {
 			auto messages = winrt::Windows::Data::Json::JsonObject::Parse(JsonText).GetNamedArray(L"data");
@@ -57,7 +57,7 @@ TEST(IntegrationTests, FBPaginatedArray) {
 
 	auto graphPath = L"/12345/users";
 
-	winsdkfb::JsonClassFactory fact = [](winrt::hstring JsonText) -> winsdkfb::FBResult
+	winsdkfb::JsonClassFactory fact = [](std::wstring JsonText) -> winsdkfb::FBResult
 	{
 		return winsdkfb::FBResult(winsdkfb::Graph::FBUser::FromJson(JsonText));
 	};

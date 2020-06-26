@@ -1,22 +1,20 @@
 ﻿#pragma once
 
-#include "HttpMethod.h"
 #include "IHttpClient.h"
 
-#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Web.Http.h>
 
 namespace winsdkfb
 {
-	struct FBClient : public IHttpClient
+	struct FBClient final : public IHttpClient
 	{
 		FBClient() = default;
 
 		// IHttpClient
-		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> PostTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		virtual winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskAsync(winrt::hstring const path, std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
-		virtual winrt::hstring ParametersToQueryString(std::unordered_map<winrt::hstring, winrt::hstring> const parameters);
+		concurrency::task<std::wstring> GetTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) override;
+		concurrency::task<std::wstring> PostTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) override;
+		concurrency::task<std::wstring> DeleteTaskAsync(std::wstring const path, std::unordered_map<std::wstring, std::wstring> const parameters) override;
+		std::wstring ParametersToQueryString(std::unordered_map<std::wstring, std::wstring> const parameters) override;
 
 	private:
 
@@ -25,17 +23,16 @@ namespace winsdkfb
 		 * @param path URL to send POST request to
 		 * @param parameters query parameters to attach to POST request
 		 * @return IAsyncOperation containing the response content
-		 * @exception Can throw any exception that is thrown by SimplePlostInternalAsync
+		 * @exception Can throw any exception that is thrown by SimplePostInternalAsync
 		 */
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring>
+		static concurrency::task<std::wstring>
 			SimplePostAsync(
-				winrt::hstring const& path,
-				std::unordered_map<winrt::hstring, winrt::hstring> parameters
+				std::wstring const& path,
+				std::unordered_map<std::wstring, std::wstring> parameters
 			);
 
 		/**
 		 * Builds request URI.
-		 * @param httpMethod Type of HTTP request to build URI for
 		 * @param path Request path
 		 * @param parameters Query parameters for the request
 		 * @return Request URI
@@ -43,9 +40,9 @@ namespace winsdkfb
 		 * attempting to be attached on non-POST requests.
 		 * @exception InvalidArgumentException if httpMethod is POST and improperly formatted/empty media object is attached.
 		 */
-		winrt::Windows::Foundation::Uri PrepareRequestUri(
-			winrt::hstring const& path,
-			std::unordered_map<winrt::hstring, winrt::hstring> parameters
+		static winrt::Windows::Foundation::Uri PrepareRequestUri(
+			std::wstring const& path,
+			const std::unordered_map<std::wstring, std::wstring>& parameters
 		);
 
 		/**
@@ -53,8 +50,8 @@ namespace winsdkfb
 		 * @param Response response to check
 		 * @return true if Response does indicate an OAuth error, false otherwise.
 		 */
-		bool IsOAuthErrorResponse(
-			winrt::hstring const& Response
+		static bool IsOAuthErrorResponse(
+			std::wstring const& Response
 		);
 
 		/**
@@ -63,7 +60,7 @@ namespace winsdkfb
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> GetTaskInternalAsync(
+		static concurrency::task<std::wstring> GetTaskInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
@@ -73,7 +70,7 @@ namespace winsdkfb
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> DeleteTaskInternalAsync(
+		static concurrency::task<std::wstring> DeleteTaskInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
@@ -83,11 +80,11 @@ namespace winsdkfb
 		 * @return The response content
 		 * @exception Exception Any exception that can occur during the request
 		 */
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> SimplePostInternalAsync(
+		static concurrency::task<std::wstring> SimplePostInternalAsync(
 			winrt::Windows::Foundation::Uri const& RequestUri
 		);
 
-		winrt::Windows::Foundation::IAsyncOperation<winrt::hstring> TryReceiveHttpResponseAsync(
+		static concurrency::task<std::wstring> TryReceiveHttpResponseAsync(
 			winrt::Windows::Web::Http::HttpResponseMessage const& responseMessage
 		);
 	};
