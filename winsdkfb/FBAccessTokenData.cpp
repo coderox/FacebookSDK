@@ -16,21 +16,44 @@ namespace winrt::winsdkfb::implementation
 {
 	FBAccessTokenData::FBAccessTokenData(
 		std::wstring accessToken,
-		std::wstring expiration)
+		std::wstring expiration,
+		std::wstring dataAccessExpiration)
 		: _accessToken(accessToken)
+		, _hasExpirationDate(false)
+		, _hasDataAccessExpirationDate(false)
 	{
 		if (!expiration.empty())
 		{
 			CalculateExpirationDateTime(expiration);
+		}
+		if (!dataAccessExpiration.empty()) {
+			CalculateDataAccessExpirationDateTime(dataAccessExpiration);
 		}
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
 #endif
 	}
 
-	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, Windows::Foundation::DateTime const& expiration)
+	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, DateTime const& expiration)
 		: _accessToken(accessToken.c_str())
 		, _expirationDate(expiration)
+		, _hasExpirationDate(true)
+		, _hasDataAccessExpirationDate(false)
+	{
+#ifdef _DEBUG
+		DebugPrintExpirationTime();
+#endif
+		auto v{ winrt::single_threaded_vector<hstring>() };
+		_grantedPermissions = make<FBPermissions>(v.GetView());
+		_declinedPermissions = make<FBPermissions>(v.GetView());
+	}
+
+	FBAccessTokenData::FBAccessTokenData(hstring const& accessToken, Windows::Foundation::DateTime const& expiration, Windows::Foundation::DateTime const& dataAccessExpiration)
+		: _accessToken(accessToken.c_str())
+		, _expirationDate(expiration)
+		, _dataAccessExpirationDate(dataAccessExpiration)
+		, _hasExpirationDate(true)
+		, _hasDataAccessExpirationDate(true)
 	{
 #ifdef _DEBUG
 		DebugPrintExpirationTime();
@@ -50,6 +73,11 @@ namespace winrt::winsdkfb::implementation
 		return _expirationDate;
 	}
 
+	Windows::Foundation::DateTime FBAccessTokenData::DataAccessExpirationDate()
+	{
+		return _dataAccessExpirationDate;
+	}
+
 	winsdkfb::FBPermissions FBAccessTokenData::GrantedPermissions()
 	{
 		return _grantedPermissions;
@@ -66,7 +94,24 @@ namespace winrt::winsdkfb::implementation
 		Calendar cal;
 		cal.SetToNow();
 		expired = (cal.CompareDateTime(_expirationDate) >= 0);
-		return expired;
+		return _hasExpirationDate && expired;
+	}
+
+	bool FBAccessTokenData::IsDataAccessExpired()
+	{
+		bool expired = true;
+		Calendar cal;
+		cal.SetToNow();
+		expired = (cal.CompareDateTime(_expirationDate) >= 0);
+		return _hasDataAccessExpirationDate && expired;
+	}
+
+	bool FBAccessTokenData::HasExpirationDate() {
+		return _hasExpirationDate;
+	}
+
+	bool FBAccessTokenData::HasDataAccessExpirationDate() {
+		return _hasDataAccessExpirationDate;
 	}
 
 	void FBAccessTokenData::SetPermissions(Windows::Foundation::Collections::IVectorView<Windows::Foundation::IInspectable> const& perms)
@@ -98,8 +143,10 @@ namespace winrt::winsdkfb::implementation
 	{
 		bool gotToken = false;
 		bool gotExpiration = false;
+		bool gotDataAccessExpiration = false;
 		hstring token;
 		hstring expiration;
+		hstring dataAccessExpiration;
 		winsdkfb::FBAccessTokenData data{ nullptr };
 
 		WwwFormUrlDecoder decoder = FBAccessTokenData::ParametersFromResponse(response);
@@ -118,11 +165,16 @@ namespace winrt::winsdkfb::implementation
 				expiration = entry.Value();
 				gotExpiration = true;
 			}
+			else if (entry.Name() == L"data_access_expiration_time")
+			{
+				dataAccessExpiration = entry.Value();
+				gotDataAccessExpiration = true;
+			}
 		}
 
-		if (gotToken && gotExpiration)
+		if (gotToken && gotExpiration && gotDataAccessExpiration)
 		{
-			data = make<FBAccessTokenData>(token.c_str(), expiration.c_str());
+			data = make<FBAccessTokenData>(token.c_str(), expiration.c_str(), dataAccessExpiration.c_str());
 		}
 
 		return data;
@@ -133,9 +185,25 @@ namespace winrt::winsdkfb::implementation
 	) {
 		Calendar cal;
 		int numSecs = _wtoi(expiration.c_str());
-		cal.SetToNow();
-		cal.AddSeconds(numSecs);
-		_expirationDate = cal.GetDateTime();
+		if (numSecs != 0) {
+			cal.SetToNow();
+			cal.AddSeconds(numSecs);
+			_expirationDate = cal.GetDateTime();
+			_hasExpirationDate = true;
+		}
+	}
+
+	void FBAccessTokenData::CalculateDataAccessExpirationDateTime(
+		wstring expiration
+	) {
+		Calendar cal;
+		int numSecs = _wtoi(expiration.c_str());
+		if (numSecs != 0) {
+			cal.SetToNow();
+			cal.AddSeconds(numSecs);
+			_dataAccessExpirationDate = cal.GetDateTime();
+			_hasDataAccessExpirationDate = true;
+		}
 	}
 
 	WwwFormUrlDecoder FBAccessTokenData::ParametersFromResponse(Uri const& response)
@@ -184,8 +252,15 @@ namespace winrt::winsdkfb::implementation
 	) {
 		DateTimeFormatter dtfDay(YearFormat::Default, MonthFormat::Default, DayFormat::Default, DayOfWeekFormat::Default);
 		DateTimeFormatter dtfTime(HourFormat::Default, MinuteFormat::Default, SecondFormat::Default);
-		hstring msgString = L"Token expires at " + dtfDay.Format(_expirationDate) + L", " + dtfTime.Format(_expirationDate) + L"\n";
+		hstring msgString(L"Token expires at " + dtfDay.Format(_expirationDate) + L", " + dtfTime.Format(_expirationDate) + L"\n");
 		OutputDebugString(msgString.c_str());
+		if (_hasDataAccessExpirationDate) {
+			msgString = L"Data Access expires at " + dtfDay.Format(_dataAccessExpirationDate) + L", " + dtfTime.Format(_dataAccessExpirationDate) + L"\n";
+			OutputDebugString(msgString.c_str());
+		}
+		else {
+			OutputDebugString(L"Data Access expires never!");
+		}
 	}
 #endif
 }

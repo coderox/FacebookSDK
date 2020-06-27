@@ -5,12 +5,12 @@
     xmlns:local="using:winsdkfb_Tests"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:facebook="using:winsdkfb"
+    xmlns:winsdkfb="using:winsdkfb"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
-        <facebook:ColorLuminosityConverter x:Key="ColorLuminosityConverter"/>
-        <facebook:ScaleConverter x:Key="ScaleConverter"/>
+        <winsdkfb:ColorLuminosityConverter x:Key="ColorLuminosityConverter"/>
+        <winsdkfb:ScaleConverter x:Key="ScaleConverter"/>
     </Page.Resources>
 
     <Grid Background="Red" Name="bgGrid" Padding="20" Loaded="OnLoaded">
@@ -23,17 +23,20 @@
               Path=ActualWidth,
               Converter={StaticResource ScaleConverter},
               ConverterParameter=0.7}"/>
-        
-        <StackPanel Orientation="Horizontal">
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
-            <facebook:FBLoginButton FetchedUserInfo="OnUserInfoFetched"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
-            <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnPostClicked" Content="Post" x:Name="postButton"/>
+
+        <StackPanel Orientation="Vertical">
+            <TextBox x:Name="tbPermission"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnLoginClicked" Content="Login" x:Name="loginButton"/>
+                <winsdkfb:FBLoginButton FetchedUserInfo="OnUserInfoFetched"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
+                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnReauthorizeClicked" Content="Reauthorize" x:Name="reauthorizeButton"/>
+            </StackPanel>
         </StackPanel>
-        
-        <facebook:FBProfilePictureControl x:Name="profilePicture" HorizontalAlignment="Right" Width="100" Height="100"/>
+
+        <winsdkfb:FBProfilePictureControl x:Name="profilePicture" HorizontalAlignment="Right" Width="100" Height="100"/>
 
     </Grid>
 </Page>

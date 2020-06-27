@@ -26,7 +26,7 @@ namespace winsdkfb_Tests
 		void OnRequestsClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnSendClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo);
-		void OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void OnReauthorizeClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

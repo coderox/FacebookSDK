@@ -50,6 +50,7 @@ namespace winsdkfb
 		Windows.Foundation.IAsyncOperation<winsdkfb.FBResult> LoginAsync();
 		Windows.Foundation.IAsyncOperation<winsdkfb.FBResult> LoginAsync(winsdkfb.FBPermissions permissions);
 		Windows.Foundation.IAsyncOperation<winsdkfb.FBResult> LoginAsync(winsdkfb.FBPermissions permissions, winsdkfb.SessionLoginBehavior behavior);
+        Windows.Foundation.IAsyncOperation<winsdkfb.FBResult> ReauthorizeAsync(winsdkfb.FBPermissions permissions);
 
 		void SetApiVersion(Int32 major, Int32 minor);
 		void SetWebViewRedirectUrl(String domain, String Path);

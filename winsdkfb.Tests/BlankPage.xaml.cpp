@@ -28,12 +28,12 @@ using namespace Windows::UI::Xaml::Navigation;
 
 const wchar_t* requested_permissions[] = {
 	L"public_profile",
-	L"user_friends",
-	L"user_likes",
-	L"user_location",
-	L"publish_pages",
-	L"manage_pages",
-	L"user_posts"
+	//L"user_friends",
+	//L"user_likes",
+	//L"user_location",
+	//L"publish_pages",
+	//L"manage_pages",
+	//L"user_posts"
 };
 
 BlankPage::BlankPage()
@@ -68,7 +68,6 @@ winsdkfb::FBPermissions^ BlankPage::BuildPermissions() {
 	}
 	return ref new winsdkfb::FBPermissions(v->GetView());
 }
-
 
 void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
 {
@@ -137,64 +136,51 @@ void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
 	if (session->LoggedIn) {
 		PropertySet^ params = ref new PropertySet();
 		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
-		
+
 		create_task(session->ShowSendDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
 			OutputDebugString(L"Showed 'Send' dialog.\n");
 		});
 	}
 }
 
-void winsdkfb_Tests::BlankPage::OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo)
+void BlankPage::OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo)
 {
 	profilePicture->UserId = userInfo->Id;
 }
 
 
-void winsdkfb_Tests::BlankPage::OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void BlankPage::OnReauthorizeClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	winsdkfb::FBSession^ sess = winsdkfb::FBSession::ActiveSession;
-	if (sess->LoggedIn)
+	auto session = winsdkfb::FBSession::ActiveSession;
+
+	
+	const wchar_t* requested_permissions[] = {
+		L"public_profile",
+		L"user_friends",
+		L"user_likes",
+		L"user_location",
+		L"user_posts",
+		L"user_status"
+	};
+
+	auto v = ref new Vector<String^>();
+	for (auto const& permission : requested_permissions)
 	{
-		// Set caption, link and description parameters
-		PropertySet^ parameters = ref new PropertySet();
-		parameters->Insert(L"caption", L"Microsoft");
-		parameters->Insert(L"link", L"https://www.microsoft.com/en-us/default.aspx");
-		parameters->Insert(L"description", L"Microsoft home page");
-
-		// Add message
-		parameters->Insert(L"message", L"Posting from my Universal Windows app.");
-
-		//Create Graph API path
-		String^ graphPath = sess->User->Id + L"/feed";
-
-		// Create a json class factory with a class (FBReturnObject class)
-		// that can receive and parse the json response returned
-		winsdkfb::JsonClassFactory^ fact = ref new winsdkfb::JsonClassFactory([](String^ JsonText) ->
-			Object^
-		{
-			auto returnObject = ref new FBReturnObject();
-			returnObject->Id = Windows::Data::Json::JsonObject::Parse(JsonText)->GetNamedString("id");
-			return returnObject;
-		});
-
-		winsdkfb::FBSingleValue^ sval = ref new winsdkfb::FBSingleValue(graphPath, parameters, fact);
-		create_task(sval->PostAsync()).then([=](winsdkfb::FBResult^ result)
-		{
-			if (result->Succeeded)
-			{
-				FBReturnObject^ response = static_cast<FBReturnObject ^>(result->Object);
-			}
-			else
-			{
-				// Posting failed
-			}
-		});
-
+		v->Append(ref new String(permission));
 	}
+	
+	create_task(session->ReauthorizeAsync(ref new winsdkfb::FBPermissions(v->GetView()))).then([&](winsdkfb::FBResult^ result) {
+		if (result->Succeeded) {
+			OutputDebugString(L"Reauthorize completed");
+		} else if (result->ErrorInfo != nullptr) {
+			auto message = result->ErrorInfo->Message;
+			OutputDebugString(message->Data());
+		}
+	});
 }
 
 
-void winsdkfb_Tests::BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+void BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 	SetSessionAppIds(); 
 	

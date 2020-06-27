@@ -60,6 +60,7 @@ extern const wchar_t* ErrorObjectJson;
 #define DefaultResponse L"token"
 #define AuthTypeKey     L"auth_type"
 #define Rerequest       L"rerequest"
+#define Reauthorize     L"reauthorize"
 #define RedirectUriKey  L"redirect_uri"
 
 #define SDK_APP_DATA_CONTAINER L"winsdkfb" // TODO: Should we move this?
@@ -297,6 +298,7 @@ namespace winrt::winsdkfb::implementation
 		if (finalResult == nullptr || !finalResult.Succeeded()) {
 			_loggedIn = false;
 			AccessTokenData(nullptr);
+			co_await TryDeleteTokenDataAsync();
 
 			if (finalResult == nullptr) {
 				finalResult = make<FBResult>(make<FBError>(0, L"Unexpected error", L"Log in attempt failed"));
@@ -307,6 +309,44 @@ namespace winrt::winsdkfb::implementation
 			SaveGrantedPermissions();
 		}
 		co_return finalResult;
+	}
+
+	IAsyncOperation<winsdkfb::FBResult> FBSession::ReauthorizeAsync(winsdkfb::FBPermissions permissions)
+	{
+		if (!LoggedIn()) {
+			return LoginAsync(permissions, winsdkfb::SessionLoginBehavior::DefaultOrdering);
+		}
+		else {
+			if (!permissions) {
+				permissions = make<FBPermissions>();
+			}
+
+			PropertySet parameters;
+			parameters.Insert(ScopeKey, box_value(permissions.ToString()));
+
+			parameters.Insert(AuthTypeKey, box_value(Reauthorize));
+
+			winsdkfb::FBResult result{ nullptr };
+
+			_asyncResult = co_await TryLoginViaWebViewAsync(parameters);
+
+			auto userInfoResult = co_await TryGetUserInfoAfterLoginAsync(_asyncResult);
+			auto finalResult = co_await TryGetAppPermissionsAfterLoginAsync(userInfoResult);
+
+			if (finalResult == nullptr || !finalResult.Succeeded()) {
+				_loggedIn = false;
+				AccessTokenData(nullptr);
+
+				if (finalResult == nullptr) {
+					finalResult = make<FBResult>(make<FBError>(0, L"Unexpected error", L"Reauthorize attempt failed"));
+					OutputDebugString(L"ReauthorizeAsync was about to return nullptr, created FBResult object to return instead");
+				}
+			}
+			else {
+				SaveGrantedPermissions();
+			}
+			co_return finalResult;
+		}
 	}
 
 	void FBSession::SetApiVersion(int32_t major, int32_t minor)
@@ -418,9 +458,9 @@ namespace winrt::winsdkfb::implementation
 		PropertySet parameters;
 		parameters.Insert(L"fields", box_value(L"gender,link,first_name,last_name,locale,timezone,email,updated_time,verified,name,id,picture"));
 		auto objectFactory = JsonClassFactory([](hstring jsonText) -> IInspectable
-		{
-			return Graph::FBUser::FromJson(jsonText);
-		});
+			{
+				return Graph::FBUser::FromJson(jsonText);
+			});
 
 		winsdkfb::FBSingleValue value = make<FBSingleValue>(
 			L"/me",
@@ -459,15 +499,45 @@ namespace winrt::winsdkfb::implementation
 
 					if (pos != wstring::npos)
 					{
-						hstring accessToken(vals.substr(0, pos).c_str());
-						hstring expirationString(vals.substr(pos + 1, wstring::npos).c_str());
 						DateTime expirationTime;
-
+						DateTime dataAccessExpirationTime;
+						hstring dataExpirationString;
+						hstring accessToken(vals.substr(0, pos).c_str());
 						hstring msg(L"Access Token: " + accessToken + L"\n");
 						OutputDebugString(msg.c_str());
 
-						expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
-						winsdkfb::FBAccessTokenData cachedData = make<FBAccessTokenData>(accessToken, expirationTime);
+						size_t nextPos = vals.find(L",", pos + 1);
+						hstring expirationString(vals.substr(pos + 1, nextPos - (pos +1)).c_str());
+						
+						winsdkfb::FBAccessTokenData cachedData{ nullptr };
+
+						if (nextPos != wstring::npos)
+						{
+							dataExpirationString = vals.substr(nextPos + 1, wstring::npos).c_str();
+							dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
+						}
+
+						if (expirationString != L"0") {
+							expirationTime = winrt::clock::from_time_t(_wtoi64(expirationString.c_str()));
+							if (dataExpirationString != L"0") {
+#ifdef _DEBUG
+								OutputDebugString(L"Read token with both expiration and data access expiration time!\n");
+#endif
+								dataAccessExpirationTime = winrt::clock::from_time_t(_wtoi64(dataExpirationString.c_str()));
+								cachedData = make<FBAccessTokenData>(accessToken, expirationTime, dataAccessExpirationTime);
+							}
+							else {
+#ifdef _DEBUG
+								OutputDebugString(L"Read token without any data access expiration time!\n");
+#endif
+								cachedData = make<FBAccessTokenData>(accessToken, expirationTime);
+							}
+						} else {
+#ifdef _DEBUG
+							OutputDebugString(L"Read token without any expiration time!\n");
+#endif
+							cachedData = make<FBAccessTokenData>(accessToken.c_str(), expirationString.c_str(), dataExpirationString.c_str());
+						}
 						result = make<FBResult>(cachedData);
 					}
 				}
@@ -486,16 +556,32 @@ namespace winrt::winsdkfb::implementation
 		{
 			wchar_t buffer[INT64_STRING_BUFSIZE];
 			DataProtectionProvider provider(L"LOCAL=user");
-			_i64tow_s(
-				WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
-				buffer, INT64_STRING_BUFSIZE, 10);
 			wstringstream tokenStream;
-			tokenStream << AccessTokenData().AccessToken().c_str() << L"," << hstring(buffer).c_str();
+			tokenStream << AccessTokenData().AccessToken().c_str();
+			if (AccessTokenData().HasExpirationDate()) {
+				_i64tow_s(
+					WindowsTickToUnixSeconds(AccessTokenData().ExpirationDate().time_since_epoch().count()),
+					buffer, INT64_STRING_BUFSIZE, 10);
+				tokenStream << L"," << hstring(buffer).c_str();
+			}
+			else {
+				tokenStream << L",0";
+			}
+			if (AccessTokenData().HasDataAccessExpirationDate()) {
+				_i64tow_s(
+					WindowsTickToUnixSeconds(AccessTokenData().DataAccessExpirationDate().time_since_epoch().count()),
+					buffer, INT64_STRING_BUFSIZE, 10);
+				tokenStream << L"," << hstring(buffer).c_str();
+			}
+			else {
+				tokenStream << L",0";
+			}
 			hstring tokenData(tokenStream.str().c_str());
 			IBuffer dataBuff = CryptographicBuffer::ConvertStringToBinary(tokenData, BinaryStringEncoding::Utf16LE);
 
 			auto protectedData = co_await provider.ProtectAsync(dataBuff);
 			StorageFolder folder = ApplicationData::Current().LocalFolder();
+			std::lock_guard<std::mutex> guard(_fileMutex);
 			auto file = co_await folder.CreateFileAsync(L"FBSDKData", CreationCollisionOption::OpenIfExists);
 			co_await FileIO::WriteBufferAsync(file, protectedData);
 		}
@@ -510,8 +596,11 @@ namespace winrt::winsdkfb::implementation
 		OutputDebugString(msg.c_str());
 #endif
 		try {
+			std::lock_guard<std::mutex> guard(_fileMutex);
 			auto item = co_await folder.TryGetItemAsync(L"FBSDKData");
-			item.DeleteAsync();
+			if (item) {
+				item.DeleteAsync();
+			}
 		}
 		catch (...) {
 			//Do nothing here, trying to delete the cache file is a "fire and
@@ -532,9 +621,9 @@ namespace winrt::winsdkfb::implementation
 			permStream.str().c_str(),
 			nullptr,
 			JsonClassFactory([](hstring const& JsonText) -> IInspectable
-		{
-			return Graph::FBPermission::FromJson(JsonText);
-		}));
+			{
+				return Graph::FBPermission::FromJson(JsonText);
+			}));
 
 		auto result = co_await permArr.FirstAsync();
 		if (result.Succeeded()) {
@@ -700,7 +789,7 @@ namespace winrt::winsdkfb::implementation
 		winsdkfb::FBResult loginResult{ nullptr };
 		auto session = FBSession::ActiveSession();
 
-		if (!IsRerequest(parameters)) {
+		if (!IsRerequest(parameters) && !IsReauthorize(parameters)) {
 			auto oauthResult = co_await CheckForExistingTokenAsync();
 			if (oauthResult != nullptr && oauthResult.Succeeded()) {
 				if (winsdkfb::FBAccessTokenData tokenData{ oauthResult.Object().try_as<winsdkfb::FBAccessTokenData>() }) {
@@ -709,9 +798,9 @@ namespace winrt::winsdkfb::implementation
 					}
 				}
 			}
-			else {
-				loginResult = co_await RunWebViewLoginOnUIThreadAsync(parameters);
-			}
+		}
+		if(loginResult == nullptr) {
+			loginResult = co_await RunWebViewLoginOnUIThreadAsync(parameters);
 		}
 		co_return loginResult;
 	}
@@ -968,11 +1057,22 @@ namespace winrt::winsdkfb::implementation
 	BOOL FBSession::IsRerequest(PropertySet parameters) {
 		bool isRerequest = false;
 		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
-			hstring value = parameters.Lookup(AuthTypeKey).as<IStringable>().ToString();
+			hstring value = unbox_value<hstring>(parameters.Lookup(AuthTypeKey));
 			if (compare_ordinal(value.c_str(), Rerequest) == 0) {
 				isRerequest = true;
 			}
 		}
 		return isRerequest;
+	}
+
+	BOOL FBSession::IsReauthorize(PropertySet parameters) {
+		bool isReauthorize = false;
+		if (parameters != nullptr && parameters.HasKey(AuthTypeKey)) {
+			hstring value = unbox_value<hstring>(parameters.Lookup(AuthTypeKey));
+			if (compare_ordinal(value.c_str(), Reauthorize) == 0) {
+				isReauthorize = true;
+			}
+		}
+		return isReauthorize;
 	}
 }

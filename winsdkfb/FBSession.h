@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "FBSession.g.h"
+#include <mutex>
 
 namespace winrt::winsdkfb::implementation
 {
@@ -38,6 +39,7 @@ namespace winrt::winsdkfb::implementation
 		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions);
 		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> LoginAsync(winsdkfb::FBPermissions permissions, winsdkfb::SessionLoginBehavior behavior);
 		Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> TryRefreshAccessTokenAsync();
+        Windows::Foundation::IAsyncOperation<winsdkfb::FBResult> ReauthorizeAsync(winsdkfb::FBPermissions permissions);
 
 		void SetApiVersion(int32_t major, int32_t minor);
 		void SetWebViewRedirectUrl(hstring const& domain, hstring const& Path);
@@ -51,6 +53,7 @@ namespace winrt::winsdkfb::implementation
 		Windows::Foundation::Uri BuildLoginUri(Windows::Foundation::Collections::PropertySet parameters);
 
 		BOOL IsRerequest(Windows::Foundation::Collections::PropertySet Parameters);
+		BOOL IsReauthorize(Windows::Foundation::Collections::PropertySet Parameters);
 
 		hstring GetGrantedPermissions();
 		hstring GetWebAuthRedirectUriString();
@@ -92,6 +95,7 @@ namespace winrt::winsdkfb::implementation
 		winsdkfb::Graph::FBUser _user{ nullptr };
 		winsdkfb::FBDialog _dialog{ nullptr };
 		winsdkfb::FBResult _asyncResult{ nullptr };
+		std::mutex _fileMutex;
 	};
 }
 
