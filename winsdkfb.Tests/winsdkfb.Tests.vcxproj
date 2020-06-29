@@ -265,11 +265,6 @@
     <Xml Include="UnitTestApp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\winsdkfb\winsdkfb.vcxproj">
-      <Project>{9667b8a9-57b5-426d-b8b9-00c732d2b4c4}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="BlankPage.xaml">
       <SubType>Designer</SubType>
     </Page>

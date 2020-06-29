@@ -14,7 +14,6 @@
                 <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnFeedClicked" Content="Feed" x:Name="feedButton"/>
                 <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnRequestsClicked" Content="Request" x:Name="requestsButton"/>
                 <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnSendClicked" Content="Send" x:Name="sendButton"/>
-                <Button Width="150" Height="100" Margin="10,0,0,0" Click="OnPostClicked" Content="Post" x:Name="postButton"/>
             </StackPanel>
         </Grid>
     </StackPanel>

@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb", "winsdkfb\winsdkfb.vcxproj", "{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb.Tests", "winsdkfb.Tests\winsdkfb.Tests.vcxproj", "{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "winsdkfb.CS.Tests", "winsdkfb.CS.Tests\winsdkfb.CS.Tests.csproj", "{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winsdkfb.Google.Tests", "winsdkfb.Google.Tests\winsdkfb.Google.Tests.vcxproj", "{811C7EFE-036D-459F-9300-2BA63DBA84B3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Google.Tests", "winsdkfb.Google.Tests\winsdkfb.Google.Tests.vcxproj", "{811C7EFE-036D-459F-9300-2BA63DBA84B3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FacebookSDK.Dynamic", "FacebookSDK\FacebookSDK.Dynamic.vcxproj", "{F205F607-96EC-4346-A0DA-D69F8469420E}"
 EndProject
@@ -35,38 +29,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Debug|x64.ActiveCfg = Debug|x64
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Debug|x64.Build.0 = Debug|x64
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Debug|x86.ActiveCfg = Debug|Win32
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Debug|x86.Build.0 = Debug|Win32
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Release|x64.ActiveCfg = Release|x64
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Release|x64.Build.0 = Release|x64
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Release|x86.ActiveCfg = Release|Win32
-		{9667B8A9-57B5-426D-B8B9-00C732D2B4C4}.Release|x86.Build.0 = Release|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x64.ActiveCfg = Debug|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x64.Build.0 = Debug|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x64.Deploy.0 = Debug|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x86.ActiveCfg = Debug|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x86.Build.0 = Debug|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Debug|x86.Deploy.0 = Debug|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x64.ActiveCfg = Release|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x64.Build.0 = Release|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x64.Deploy.0 = Release|x64
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x86.ActiveCfg = Release|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x86.Build.0 = Release|Win32
-		{F96C66E7-F363-4BE1-BDF0-2072B8E9EEAA}.Release|x86.Deploy.0 = Release|Win32
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x64.ActiveCfg = Debug|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x64.Build.0 = Debug|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x64.Deploy.0 = Debug|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x86.ActiveCfg = Debug|x86
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x86.Build.0 = Debug|x86
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Debug|x86.Deploy.0 = Debug|x86
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x64.ActiveCfg = Release|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x64.Build.0 = Release|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x64.Deploy.0 = Release|x64
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.ActiveCfg = Release|x86
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.Build.0 = Release|x86
-		{8BD2E669-027F-4D86-A38A-6A29D9A71FFA}.Release|x86.Deploy.0 = Release|x86
 		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x64.ActiveCfg = Debug|x64
 		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x64.Build.0 = Debug|x64
 		{811C7EFE-036D-459F-9300-2BA63DBA84B3}.Debug|x86.ActiveCfg = Debug|Win32

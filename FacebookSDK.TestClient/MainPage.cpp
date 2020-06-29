@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-
 #include "MainPage.h"
 #include "MainPage.g.cpp"
 #include "MockHttpClient.h"
@@ -42,160 +41,6 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		return winsdkfb::FBPermissions(v);
 	}
 
-	//void BlankPage::OnLoginClicked(Object^ sender, RoutedEventArgs^ e)
-	//{
-	//	auto session = winsdkfb::FBSession::ActiveSession;
-	//	if (session->LoggedIn) {
-	//		create_task(session->LogoutAsync());
-	//		loginButton->Content = ref new Platform::String(L"Login");
-	//		profilePicture->UserId = "";
-	//	}
-	//	else {
-	//		SetSessionAppIds();
-	//		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::WebView)).then([&](winsdkfb::FBResult^ result) {
-	//			auto session = winsdkfb::FBSession::ActiveSession;
-	//			if (session->LoggedIn) {
-	//				loginButton->Content = ref new Platform::String(L"Logout");
-	//				OutputDebugString(session->AccessTokenData->AccessToken->Data());
-	//				auto user = session->User;
-	//				Platform::String^ userId = user->Id;
-	//				profilePicture->UserId = userId;
-	//			}
-	//			else {
-	//				if (!result->Succeeded && result->ErrorInfo != nullptr) {
-	//					auto message = result->ErrorInfo->Message;
-	//					OutputDebugString(message->Data());
-	//				}
-	//			}
-	//			});
-	//	}
-	//}
-
-	//void BlankPage::OnFeedClicked(Object^ sender, RoutedEventArgs^ e)
-	//{
-	//	auto session = winsdkfb::FBSession::ActiveSession;
-
-	//	if (session->LoggedIn) {
-	//		PropertySet^ params = ref new PropertySet();
-	//		params->Insert(L"caption", L"I love Brussels Sprouts!");
-	//		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
-	//		params->Insert(L"description", L"Om Nom Nom!");
-
-	//		create_task(session->ShowFeedDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
-	//			OutputDebugString(L"Showed 'Feed' dialog.\n");
-	//			});
-	//	}
-	//}
-
-	//void BlankPage::OnRequestsClicked(Object^ sender, RoutedEventArgs^ e)
-	//{
-	//	auto session = winsdkfb::FBSession::ActiveSession;
-
-	//	if (session->LoggedIn) {
-	//		PropertySet^ params = ref new PropertySet();
-	//		params->Insert(L"title", L"I love Brussels Sprouts!");
-	//		params->Insert(L"message", L"Om Nom Nom!");
-
-	//		create_task(session->ShowRequestsDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
-	//			OutputDebugString(L"Showed 'Requests' dialog.\n");
-	//			});
-	//	}
-	//}
-
-	//void BlankPage::OnSendClicked(Object^ sender, RoutedEventArgs^ e)
-	//{
-	//	auto session = winsdkfb::FBSession::ActiveSession;
-
-	//	if (session->LoggedIn) {
-	//		PropertySet^ params = ref new PropertySet();
-	//		params->Insert(L"link", L"https://en.wikipedia.org/wiki/Brussels_sprout");
-
-	//		create_task(session->ShowSendDialogAsync(params)).then([=](winsdkfb::FBResult^ dialogResult) {
-	//			OutputDebugString(L"Showed 'Send' dialog.\n");
-	//			});
-	//	}
-	//}
-
-	//void winsdkfb_Tests::BlankPage::OnUserInfoFetched(winsdkfb::FBLoginButton^ sender, winsdkfb::Graph::FBUser^ userInfo)
-	//{
-	//	profilePicture->UserId = userInfo->Id;
-	//}
-
-
-	//void winsdkfb_Tests::BlankPage::OnPostClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-	//{
-	//	winsdkfb::FBSession^ sess = winsdkfb::FBSession::ActiveSession;
-	//	if (sess->LoggedIn)
-	//	{
-	//		// Set caption, link and description parameters
-	//		PropertySet^ parameters = ref new PropertySet();
-	//		parameters->Insert(L"caption", L"Microsoft");
-	//		parameters->Insert(L"link", L"https://www.microsoft.com/en-us/default.aspx");
-	//		parameters->Insert(L"description", L"Microsoft home page");
-
-	//		// Add message
-	//		parameters->Insert(L"message", L"Posting from my Universal Windows app.");
-
-	//		//Create Graph API path
-	//		String^ graphPath = sess->User->Id + L"/feed";
-
-	//		// Create a json class factory with a class (FBReturnObject class)
-	//		// that can receive and parse the json response returned
-	//		winsdkfb::JsonClassFactory^ fact = ref new winsdkfb::JsonClassFactory([](String^ JsonText) ->
-	//			Object^
-	//			{
-	//				auto returnObject = ref new FBReturnObject();
-	//				returnObject->Id = Windows::Data::Json::JsonObject::Parse(JsonText)->GetNamedString("id");
-	//				return returnObject;
-	//			});
-
-	//		winsdkfb::FBSingleValue^ sval = ref new winsdkfb::FBSingleValue(graphPath, parameters, fact);
-	//		create_task(sval->PostAsync()).then([=](winsdkfb::FBResult^ result)
-	//			{
-	//				if (result->Succeeded)
-	//				{
-	//					FBReturnObject^ response = static_cast<FBReturnObject^>(result->Object);
-	//				}
-	//				else
-	//				{
-	//					// Posting failed
-	//				}
-	//			});
-
-	//	}
-	//}
-
-
-	//void winsdkfb_Tests::BlankPage::OnLoaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-	//{
-	//	SetSessionAppIds();
-
-	//	auto session = winsdkfb::FBSession::ActiveSession;
-	//	if (!session->LoggedIn) {
-	//		create_task(session->LoginAsync(BuildPermissions(), winsdkfb::SessionLoginBehavior::Silent)).then([&](winsdkfb::FBResult^ result) {
-	//			auto session = winsdkfb::FBSession::ActiveSession;
-	//			if (session->LoggedIn) {
-	//				loginButton->Content = ref new Platform::String(L"Logout");
-	//				OutputDebugString(session->AccessTokenData->AccessToken->Data());
-	//				auto user = session->User;
-	//				Platform::String^ userId = user->Id;
-	//				profilePicture->UserId = userId;
-	//			}
-	//			else {
-	//				if (!result->Succeeded && result->ErrorInfo != nullptr) {
-	//					auto message = result->ErrorInfo->Message;
-	//					OutputDebugString(message->Data());
-	//				}
-	//			}
-	//			});
-	//	}
-	//}
-
-	void MainPage::OnLoaded(winrt::Windows::Foundation::IInspectable const&, RoutedEventArgs const&)
-	{
-		SetSessionAppIds();
-	}
-
 	winrt::fire_and_forget LoginInternal() {
 		auto session = winsdkfb::FBSession::ActiveSession();
 		if (session->LoggedIn()) {
@@ -208,7 +53,8 @@ namespace winrt::FacebookSDK_TestClient::implementation
 			if (session->LoggedIn()) {
 				auto user = session->User();
 				OutputDebugString(user.FirstName().c_str());
-			} else {
+			}
+			else {
 				if (!result.Succeeded() && result.ErrorInfo().Code() > 0) {
 					OutputDebugString(result.ErrorInfo().Message().c_str());
 				}
@@ -216,14 +62,36 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		}
 	}
 
+	void MainPage::OnLoaded(winrt::Windows::Foundation::IInspectable const&, RoutedEventArgs const&)
+	{
+		SetSessionAppIds();
+
+		LoginInternal();
+	}
+
 	void MainPage::OnLoginClicked(IInspectable const&, RoutedEventArgs const&)
 	{
 		LoginInternal();
 	}
 
+	winrt::fire_and_forget OnFeedClickedInternal()
+	{
+		auto session = winsdkfb::FBSession::ActiveSession();
+
+		if (session->LoggedIn()) {
+			std::unordered_map<wstring, wstring> params;
+			params[L"caption"] = L"I love Brussels Sprouts!";
+			params[L"link"] = L"https://en.wikipedia.org/wiki/Brussels_sprout";
+			params[L"description"] =  L"Om Nom Nom!";
+
+			auto dialogResult = co_await session->ShowFeedDialogAsync(params);
+			OutputDebugString(L"Showed 'Feed' dialog.\n");
+		}
+	}
+	
 	void MainPage::OnFeedClicked(IInspectable const&, RoutedEventArgs const&)
 	{
-
+		OnFeedClickedInternal();
 	}
 
 	winrt::fire_and_forget OnRequestsClickedInternal() {
@@ -235,7 +103,7 @@ namespace winrt::FacebookSDK_TestClient::implementation
 			params[L"message"] = L"Om Nom Nom!";
 
 			auto dialogResult = co_await session->ShowRequestsDialogAsync(params);
-			OutputDebugString(L"Showed dialog");
+			OutputDebugString(L"Showed 'Requests' dialog");
 		}
 	}
 
@@ -244,13 +112,16 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		OnRequestsClickedInternal();
 	}
 
-	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
+	winrt::fire_and_forget OnSendClickedInternalWithMock()
 	{
 		auto mockHttpClient = std::make_shared<MockHttpClient>();
 		winsdkfb::HttpManager::Instance()->SetHttpClient(mockHttpClient);
+
+		// test values returned from request
+		mockHttpClient->ResponseData(L"{\"data\":[{\"from\":\"Micke\"},{\"from\":\"Magnus\"},{\"from\":\"Aron\"}]}");
+
 		// test no values returned from request
-		//mockHttpClient->ResponseData(L"{\"data\":[{\"from\":\"Micke\"},{\"from\":\"Magnus\"},{\"from\":\"Aron\"}]}");
-		mockHttpClient->ResponseData(L"{\"data\":[]}");
+		//mockHttpClient->ResponseData(L"{\"data\":[]}");
 
 		auto graphPath = L"/12345/apprequests";
 
@@ -267,23 +138,37 @@ namespace winrt::FacebookSDK_TestClient::implementation
 		};
 
 		std::unordered_map<wstring, wstring> properties;
-		wstring data(L"data");
-		properties[L"fields"] = data;
+		properties[L"fields"] = L"data";
 
 		auto likes = winsdkfb::FBSingleValue(graphPath, properties, fact);
-		auto result = concurrency::create_task(likes.GetAsync()).get();
+		auto result = co_await likes.GetAsync();
 
-		bool succeeded = result.Succeeded();
-		if (succeeded) {
+		if (result.Succeeded()) {
 			auto resultObject = result.Object<int>();
 			if (resultObject > 0) {
-
+				OutputDebugString(L"Received a number of responses");
+			} else {
+				OutputDebugString(L"Received zero responses");
 			}
 		}
 	}
 
-	void MainPage::OnPostClicked(IInspectable const&, RoutedEventArgs const&)
+	winrt::fire_and_forget OnSendClickedInternal()
 	{
+		auto session = winsdkfb::FBSession::ActiveSession();
 
+		if (session->LoggedIn()) {
+			std::unordered_map<wstring, wstring> params;
+			params[L"link"] = L"https://en.wikipedia.org/wiki/Brussels_sprout";
+
+			auto dialogResult = co_await create_task(session->ShowSendDialogAsync(params));
+			OutputDebugString(L"Showed 'Send' dialog.\n");
+		}
+	}
+
+	void MainPage::OnSendClicked(IInspectable const&, RoutedEventArgs const&)
+	{
+		OnSendClickedInternal();
+		//OnSendClickedInternalWithMock();
 	}
 }
